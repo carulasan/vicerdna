@@ -1,0 +1,1035 @@
+{% extends "myapp/layout.html" %}
+{% load static %}
+ 
+
+
+
+
+{% block content %}
+  
+
+
+        
+<div class="row">
+  
+  <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+    <q-breadcrumbs >
+        <q-breadcrumbs-el style="color: red; " label="Dashboard /" icon="insert_chart_outlined" />
+        
+       
+      </q-breadcrumbs>
+  </div>
+  
+  <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+
+        <q-btn-dropdown
+        flat
+        icon="date_range"
+         color="red-10"
+         label="My Calendar"
+       >
+ 
+       
+         <div class="row no-wrap q-pa-md">
+           <div class="column">
+             <div class="text-h6 q-mb-md">Set Date</div>
+             <small>This information will  help to HR Department to set the Deliberation Schedule easily.</small>
+
+             <div class="row">
+                 
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding: 5px;;">
+                        
+                           
+                        <q-input filled   type="text" label="Description" ></q-input>
+       
+                        </div>
+
+                 
+                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding: 5px;;">
+                    
+                        
+                        <q-input color="red-10"  style="width: 100%;" label="Date" filled v-model="mycalendardate" mask="" :rules="['date']">
+                                <template v-slot:append>
+                                  <q-icon name="event" class="cursor-pointer">
+                                    <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
+                                      <q-date v-model="mycalendardate" @input="() => $refs.qDateProxy.hide()" />
+                                    </q-popup-proxy>
+                                  </q-icon>
+                                </template>
+                        </q-input>
+                        <q-btn color="red" icon="save" label="Save My Schedule"  ></q-btn>
+
+                 </div>
+ 
+               
+                 
+             </div>
+          
+           </div>
+   
+           
+   
+          
+         </div>
+       </q-btn-dropdown>
+
+
+
+        <q-btn-dropdown
+       flat
+       
+       icon="date_range"
+        color="red-9"
+        label="Deliberation Schedule"
+      >
+
+      
+        <div class="row no-wrap q-pa-md">
+          <div class="column">
+            <div class="text-h6 q-mb-md"></div>
+            <div class="row">
+                
+                
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <q-date
+                        color="red"
+                        v-model="deliberationdate"
+                        readonly
+                        dark
+                        ></q-date>
+                </div>
+
+              
+                
+            </div>
+         
+          </div>
+  
+          
+  
+         
+        </div>
+      </q-btn-dropdown>
+
+
+
+     
+
+      <q-btn color="grey-7" flat icon="assessment" label="Evaluate Result" >
+        <q-badge color="orange" text-color="white" label="8" floating ></q-badge>
+    </q-btn>
+
+    <q-btn color="grey-7" flat icon="assignment_turned_in" label="Deliberation Result" >
+            <q-badge color="orange" text-color="white" label="8" floating ></q-badge>
+        </q-btn>
+        <q-btn color="grey-7" flat icon="book" label="Customer Concerns" >
+                <q-badge color="orange" text-color="white" label="8" floating ></q-badge>
+            </q-btn>
+
+  </div>
+  
+  
+</div>
+
+  <div class="row animated fadeInDown" style="padding: 20px; ">
+         <div id="employee_num" class="col-xs-12 col-sm-4 col-md-2 col-lg-2 " style="background-color: #283747; color: white;" > 
+            <div class="titles" > 
+                <span>Total Employees</span>
+               
+            </div>
+
+           
+           <div class="row animated fadeInDown delay-1s"  >
+               
+               <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" >
+                    <q-icon name="people"  style="width: 100%; margin-top: 10px; opacity: .5; font-size: 50px; margin-left: auto;margin-right: auto; "></q-icon>
+               </div>
+               <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                    <div class="employee_num_content" > 
+                            <span>3050</span>
+                    </div>
+               </div>
+               
+           </div>
+                    
+            
+         </div>
+
+         <div id="employee_num_probationary" class="col-xs-12 col-sm-4 col-md-2 col-lg-2 " style="background-color: #186A3B ; color: white;"> 
+                <div class="titles" > 
+                    <span>Probationary</span>
+                </div>
+    
+                <div class="row animated fadeInDown delay-2s" >
+               
+                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" >
+                             <q-icon name="people"  style="width: 100%; opacity: .5; margin-top: 10px; font-size: 50px; margin-left: auto;margin-right: auto; "></q-icon>
+                        </div>
+                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                <div class="employee_num_content" > 
+                                        <span>500</span>
+                                </div>
+                        </div>
+                        
+                    </div>
+
+               
+                        
+                
+         </div>
+
+             <div id="employee_num_regular" class="col-xs-12 col-sm-4 col-md-2 col-lg-2 " style="background-color: #873600 ; color: white;"> 
+                    <div class="titles" > 
+                        <span>Regular</span>
+                    </div>
+        
+                    <div class="row animated fadeInDown delay-3s" >
+               
+                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" >
+                                 <q-icon name="people"  style="width: 100%; opacity: .5; margin-top: 10px; font-size: 50px; margin-left: auto;margin-right: auto; "></q-icon>
+                            </div>
+                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                    <div class="employee_num_content" > 
+                                            <span>2017</span>
+                                    </div>
+
+                            </div>
+                            
+                        </div>
+
+                        
+                   
+                            
+                    
+                </div>
+
+
+                <div id="employee_num_best" class="col-xs-12 col-sm-4 col-md-2 col-lg-2 " style="background-color: #21618C  ; color: white;"> 
+                        <div class="titles" > 
+                            <span>Best Employees</span>
+                        </div>
+            
+
+                        <div class="row animated fadeInDown delay-3s" >
+               
+                                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" >
+                                     <q-icon name="people"  style="width: 100%; opacity: .5; margin-top: 10px; font-size: 50px; margin-left: auto;margin-right: auto; "></q-icon>
+                                </div>
+                                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                        
+                                        <div class="employee_num_content" > 
+                                                <span>20</span>
+                                    </div>
+                                </div>
+                                
+                            </div>
+
+                            
+                       
+                        
+                    </div>
+
+
+
+
+                    <div id="employee_num_under" class="col-xs-12 col-sm-4 col-md-2 col-lg-2 " style="background-color: #5B2C6F   ; color: white;"> 
+                            <div class="titles" > 
+                                <span>Performing Employees</span>
+                            </div>
+                
+    
+                            <div class="row animated fadeInDown delay-2s" >
+                   
+                                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" >
+                                         <q-icon name="people"  style="width: 100%; opacity: .5; margin-top: 10px; font-size: 50px; margin-left: auto;margin-right: auto; "></q-icon>
+                                    </div>
+                                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                            
+                                            <div class="employee_num_content" > 
+                                                    <span>20</span>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+    
+                                
+                           
+                            
+                        </div>
+
+
+                        
+                    <div id="employee_of_the_month" class="col-xs-12 col-sm-4 col-md-2 col-lg-2 " style="background-color: #7B241C ; color: white;"> 
+                            <div class="titles" > 
+                                <span>Under Performing Employees</span>
+                            </div>
+                
+    
+                            <div class="row animated fadeInDown delay-1s" >
+                   
+                                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" >
+                                         <q-icon name="people"  style="width: 100%; opacity: .5; margin-top: 10px; font-size: 50px; margin-left: auto;margin-right: auto; "></q-icon>
+                                    </div>
+                                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                            
+                                            <div class="employee_num_content" > 
+                                                    <span>20</span>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+    
+                                
+                           
+                            
+                        </div>
+       
+  </div>
+  
+  <div class="row " style="padding: 20px; margin-top:-30px; 
+  ">
+      
+      
+    
+    <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5 animated fadeInLeft"  style="background-color: white; -webkit-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12);
+    -moz-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12);
+    box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12);
+    background-color: white; "   >
+    <div class="row animated fadeInRight" style="padding:20px">
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                        <div class="row animated fadeInLeft" style="font-size: 15px;font-weight: 900;color: #5D6D7E">
+                                        Overall Performance
+                                </div>
+        </div>
+</div>
+                <div class="row animated fadeInDown" style=" width: 100%;" >
+                        
+                        <div class="col-xs-6 col-sm-6 col-md-8 col-lg-8">
+                                        <div style="width: 100px; margin-top: 20px; float: right; font-size: 15px; color: grey;">
+                                                        <span>Filter</span>
+                                                        <q-icon style="font-size: 25px;" name="filter_list"></q-icon>
+                                        </div>
+                        </div>
+                        <div class="col-xs-6 col-sm-6 col-md-4 col-lg-4">
+                                        <q-select  style="float: right ; padding: 10px; width: 100%;" outlined  v-model="year"  :value="year"  :options="options_year" label="Year" ></q-select> 
+                        </div>
+                        
+                               
+                        
+                </div>
+            <canvas id="myChart" >
+            
+            </canvas>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5 animated fadeInRight" style="background-color: white ; -webkit-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12);
+    -moz-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12);
+    box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12);
+    background-color: white;"> 
+
+<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+    <div class="row animated fadeInDown" style="font-size: 15px;font-weight: 900;color: #5D6D7E; padding: 20px;">
+                    Employee Deliberation Result
+            </div>
+</div>
+                  <div class="row animated fadeInDown" style=" width: 100%;" >
+                  
+                                  <div class="col-xs-6 col-sm-6 col-md-8 col-lg-8">
+                                                  <div style="width: 100px; margin-top: 20px; float: right; font-size: 15px; color: grey;">
+                                                                  <span>Filter</span>
+                                                                  <q-icon style="font-size: 25px;" name="filter_list"></q-icon>
+                                                  </div>
+                                  </div>
+                                  <div class="col-xs-6 col-sm-6 col-md-4 col-lg-4">
+                                                  <q-select  style="float: right ; padding: 10px; width: 100%;" outlined  v-model="year"  :value="year"  :options="options_year" label="Year" ></q-select> 
+                                  </div>
+                                  
+                                         
+                                  
+                          </div>
+                  <canvas id="employee_violation"></canvas>
+    </div>
+
+    <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 animated fadeInLeft"  style="-webkit-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12);
+    -moz-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12);
+    box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12);
+    background-color: white;">
+        <div class="row animated fadeInDown" style="background-color: whitesmoke; color:#5D6D7E; padding: 20px; font-weight: 900; font-size: 15px;">Employee Need to Evaluate</div>
+        <div  id="to_evaluate" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                </q-list>
+               
+                        <q-item v-for="contact in offline" :key="contact.id" class="q-mb-sm" clickable v-ripple>
+                                        <q-item-section avatar>
+                                          <q-avatar>
+                                            <img :src="`https://cdn.quasar.dev/img/${contact.avatar}`">
+                                          </q-avatar>
+                                        </q-item-section>
+                                
+                                        <q-item-section>
+                                          <q-item-label>${contact.name }</q-item-label>
+                                          <q-item-label caption lines="1">${ contact.email }</q-item-label>
+                                        </q-item-section>
+                                
+                                        <q-item-section side>
+                                          <q-icon name="assignment" color="grey" />
+                                        </q-item-section>
+                                      </q-item>
+                 </q-list>
+        </div>
+        
+    </div>
+    
+  </div>
+
+  <div class="row animated fadeInDown" style="padding: 20px; margin-top: -30px ; ">
+         
+
+         
+
+
+
+
+
+          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" style="background-color: white; -webkit-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12);
+          -moz-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12);
+          box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12);
+          background-color: white;">
+
+<div class="row animated fadeInDown" style="padding: 20px; ">
+    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+
+            
+                    <div class="row animated fadeInDown" style="font-size: 15px;font-weight: 900;color: #5D6D7E">
+                                    Employee Violations
+                            </div>
+    </div>
+
+   
+</div>
+
+                        <div class="row animated fadeInDown" style=" width: 100%;" >
+                        
+                                        <div class="col-xs-6 col-sm-6 col-md-8 col-lg-8">
+                                                        <div style="width: 100px; margin-top: 20px; float: right; font-size: 15px; color: grey;">
+                                                                        <span>Filter</span>
+                                                                        <q-icon style="font-size: 25px;" name="filter_list"></q-icon>
+                                                        </div>
+                                        </div>
+                                        <div class="col-xs-6 col-sm-6 col-md-4 col-lg-4">
+                                                        <q-select  style="float: right ; padding: 10px; width: 100%;" outlined  v-model="year"  :value="year"  :options="options_year" label="Year" ></q-select> 
+                                        </div>
+                                        
+                                               
+                                        
+                                </div>
+                        <canvas id="employee_deliberation_growth" style="background-color: white;"></canvas>
+        </div>
+
+
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" style="background-color: white; -webkit-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12);
+        -moz-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12);
+        box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12);
+        background-color: white;">
+
+                                
+                                <div class="row animated fadeInDown" style="padding: 20px;">
+                                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                                    <div class="row animated fadeInDown" style="font-size: 15px;font-weight: 900;color: #5D6D7E">
+                                                                    Customer Concerns
+                                                            </div>
+                                    </div>
+                        </div>
+
+
+                      <div class="row animated fadeInDown" style=" width: 100%;" >
+                      
+                                      <div class="col-xs-6 col-sm-6 col-md-8 col-lg-8">
+                                                      <div style="width: 100px; margin-top: 20px; float: right; font-size: 15px; color: grey;">
+                                                                      <span>Filter</span>
+                                                                      <q-icon style="font-size: 25px;" name="filter_list"></q-icon>
+                                                      </div>
+                                      </div>
+                                      <div class="col-xs-6 col-sm-6 col-md-4 col-lg-4">
+                                                      <q-select  style="float: right ; padding: 10px; width: 100%;" outlined  v-model="year"  :value="year"  :options="options_year" label="Year" ></q-select> 
+                                      </div>
+                                      
+                                             
+                                      
+                              </div>
+                      <canvas id="customer_concerns" style="background-color: white;"></canvas>
+        </div>
+        
+          
+  </div>
+
+ 
+ 
+  
+
+  
+
+
+{% endblock %}
+{% block script %}
+<!-- <script src="{% static 'js/dashboard.js'  %}"></script> -->
+
+
+<script >
+    
+new Vue({
+    el: '#app',
+    delimiters: ['${','}'],
+    data: function () {
+      return {
+        drawerState: false,
+      
+     
+        employee_list : [],
+        profile_list : [],
+        token : '',
+        global_hostname : '',
+        no_account_employee : '',
+        mark_as_read : [],
+        dash : {
+            backgroundColor : '#273746',
+           color : 'white'
+           },
+           
+           Deliberation : {
+           backgroundColor : '#273746',
+           color : 'white',
+       },
+
+       employee : {
+            backgroundColor : '#273746',
+           color : 'white'
+           },
+           performance_evaluation : {
+           backgroundColor : '#273746',
+           color : 'white',
+        
+       },
+       settings : {
+            backgroundColor : '#273746',
+           color : 'white'
+           },
+           Deliberation : {
+           backgroundColor : '#273746',
+           color : 'white',
+       },
+       report : {
+           backgroundColor : '#273746',
+           color : 'white',
+       },
+       concern : {
+           backgroundColor : '#273746',
+           color : 'white',
+       },
+
+        offline : [
+            {
+            id: 5,
+            name: 'Brunhilde Panswick',
+            email: 'bpanswick4@csmonitor.com',
+            avatar: 'avatar2.jpg'
+          },
+           {
+            id: 6,
+            name: 'Winfield Stapforth',
+            email: 'wstapforth5@pcworld.com',
+            avatar: 'avatar6.jpg'
+          }
+        ],
+        options_year :[
+            
+                '2015','2019',
+            
+        ],
+        year : '',
+        pic_user : 'http://res.heraldm.com/phpwas/restmb_jhidxmake.php?idx=5&simg=201701181539234376570_20170118154018_02.jpg',
+        userlevel : '{{ user }}',
+        myuser : {
+            user : true
+        },
+        deliberationdate : '2019/02/01',
+        mycalendardate : '',
+        AccessLevelData  : []
+
+       
+      }
+    },mounted () {
+        
+        
+
+        
+
+        this.employee_growth()
+        this.employee_violation_growth()
+        this.employee_deliberation_report()
+        this.customer_concerns()
+
+
+       
+        
+
+       
+
+
+
+    },
+    beforeMount () {
+        var user = 0
+        this.MyUser = 'admin'
+        var hostname = window.location.hostname;
+        var port = window.location.port
+        if(port != '' ){
+
+            hostname = hostname+':8000'
+        }
+        else{
+            hostname = hostname
+        }
+
+       
+	 this.global_hostname = `${window.location.protocol}//${hostname}`
+     var csrftoken = Cookies.get('csrftoken');
+     this.token = csrftoken
+     this.AccessLevel()
+     this.get_employee()
+     
+      
+     
+        
+        
+    },
+
+    methods: {
+        // predefined
+        logout(){
+              axios.post(`${this.global_hostname}/logout/`,{
+                  
+                   headers: {
+                               'Content-Type': 'application/json',
+                                  'X-CSRFToken': this.token
+                   }
+                  
+              })
+              .then(res => {
+                  window.location.replace(`${this.global_hostname}/login/`)
+                
+              })
+              .catch(err => {
+                  
+              })
+
+              
+        },
+        AccessLevel(){
+            axios.get(`${this.global_hostname}/api/AccessLevel/`,{
+                
+                 headers: {
+                             'Content-Type': 'application/json',
+                                'X-CSRFToken': this.token
+                 }
+                
+            })
+            .then(res => {
+                this.AccessLevelData = res.data
+            })
+            .catch(err => {
+                console.error(err); 
+            })
+        },
+        get_employee_mark_as_read(){
+
+            var data = this.mark_as_read
+            var emplist = this.employee_list
+
+            var employee = []
+           
+            for (let index = 0; index < emplist.length; index++) {
+                const element = emplist[index];
+                    var emp = element.EmpCode
+                    var obj = data.filter(
+                        function(el){
+                            return el.empcode == emp
+                        }
+                    )
+
+                    employee.push(obj)
+
+                    if(index == emplist.length - 1 ){
+                            this.mark_as_read = employee
+                            console.log(`final mark`)
+                            console.log(this.mark_as_read)
+
+                    }
+
+                
+            }
+
+
+        },
+        get_mark_as_read(){
+            axios.get(`${this.global_hostname}/api/GET_PROFILE/`,{
+                 headers: {
+                             'Content-Type': 'application/json',
+                                'X-CSRFToken': this.token
+                 }
+                
+            })
+            .then(res => {
+                console.log(res)
+
+                var data = res.data
+                var filtered = data.filter(function(el){ return el.markasread == false})
+                this.mark_as_read = filtered
+                console.log('mark as read')
+                console.log(this.mark_as_read)
+                if(this.mark_as_read.length > 0){
+                    this.get_employee_mark_as_read()
+                }
+
+            })
+            .catch(err => {
+                console.error(err); 
+            })
+        },
+
+        createLevel(empcode,level_rank){
+
+            var level = this.AccessLevelData
+            var info = level.filter((element)=>{
+                    return element.NameofUserLevel.toLowerCase() == level_rank.toLowerCase()
+            })
+            console.log('hai')
+            console.log(info)
+            var obj = {
+                                
+                    
+                    "EmpCode": empcode,
+                    "EmployeePerformance": info[0].EmployeePerformance,
+                    "ReportsModule": info[0].ReportsModule,
+                    "PerformanceEvaluationModule": info[0].PerformanceEvaluationModule,
+                    "SystemDashboardModule": info[0].SystemDashboardModule,
+                    "FileMaintenanceModule": info[0].FileMaintenanceModule,
+                    "FileMaintenance_General": info[0].FileMaintenance_General,
+                    "FileMaintenance_Accounts": info[0].FileMaintenance_Accounts,
+                    "FileMaintenance_EvaluationSheet": info[0].FileMaintenance_EvaluationSheet,
+                    "FileMaintenance_Departments":info[0].FileMaintenance_Departments,
+                    "FileMaintenance_Offense": info[0].FileMaintenance_Offense,
+                    "FileMaintenance_EvaluationGuide": info[0].FileMaintenance_EvaluationGuide,
+                    "FileMaintenance_PlaceofAssignment": info[0].FileMaintenance_PlaceofAssignment,
+                    "FileMaintenance_JobLevelorAccessLevel": info[0].FileMaintenance_JobLevelorAccessLevel,
+                    "FileMaintenance_201File": info[0].FileMaintenance_201File,
+                    "DeliberationModule": info[0].DeliberationModule,
+                    "CustomerConcern": info[0].CustomerConcern
+                    
+                
+ 
+            }
+            axios.post(`${this.global_hostname}/api/UserLevelEachEmployee/`,obj,{
+
+              
+
+                 headers: {
+                             'Content-Type': 'application/json',
+                                'X-CSRFToken': this.token
+                 }
+                
+            })
+            .then(res => {
+                this.$q.notify({ //put dollor sign(q)
+                    message: `Message: Employee ${empcode} Account has Been Created Successfully`,
+                    timeout: 3000, // in milliseconds; 0 means no timeout
+                  
+                    color: 'orange',
+                    textColor: 'white', // if default 'white' doesn't fit
+                 icon: 'check', //or  avatar: 'statics/boy-avatar.png',
+                   
+                 position: 'bottom', // 'op', 'left', 'bottom-left' etc.
+                    closeBtn: true, // or string as button message e.g. 'dismiss'
+                    })
+                
+                
+            })
+            .catch(err => {
+                console.error(err); 
+            })
+
+
+        },
+        send_post_to_create(empcode){
+
+                var emp = empcode
+                var emplist = this.employee_list
+                var employee = emplist.filter(function(el){return  el.EmpCode == emp})
+
+
+                let data = new FormData()
+                data.append('empcode',emp)
+                data.append('firstname',employee[0].FirstName)
+                axios.post(`${this.global_hostname}/createaccount/`,data,{
+                 
+                     headers: {
+                                 'Content-Type': 'application/json',
+                                    'X-CSRFToken': this.token
+                     }
+                    
+                })
+
+
+
+
+                .then(res => {
+                    console.log('created')
+                    console.log(res)
+                    this.createLevel(emp,employee[0].JobLevel)
+                    
+                })
+                .catch(err => {
+                    console.error(err);
+                    this.$q.notify({ //put dollor sign(q)
+                              message: `Unsuccessfull - unstable connections!`,
+                              timeout: 10000, // in milliseconds; 0 means no timeout
+
+                              color: 'red',
+                              textColor: 'white', // if default 'white' doesn't fit
+                             icon: 'error', //or  avatar: 'statics/boy-avatar.png',
+
+                             position: 'top', // 'top', 'left', 'bottom-left' etc.
+
+                              }) 
+                })
+        },
+        create_account_employee(){
+            var data  = this.no_account_employee
+            
+            data.forEach(element => {
+                this.send_post_to_create(element)    
+            });
+        },
+        get_compare(){
+
+            var profile = this.profile_list
+            var emplist = this.employee_list
+            var no_account = []
+            for (let index = 0; index < emplist.length; index++) {
+                const element =  emplist[index];    
+               
+                var info = profile.filter(function(el){return  el.empcode == element.EmpCode })
+                if(info.length== 0){
+                    no_account.push(element.EmpCode)
+                }
+
+
+                if(index == emplist.length - 1){
+                    this.no_account_employee = no_account
+                    console.log(this.no_account_employee)
+                    this.create_account_employee()
+                    this.get_mark_as_read()  
+                }
+               
+                   
+              
+            }
+            
+            
+            this.get_mark_as_read()
+            
+
+
+          
+
+        },
+        get_profile(){
+            axios.get(`${this.global_hostname}/api/GET_PROFILE/`,{
+                
+                 headers: {
+                             'Content-Type': 'application/json',
+                                'X-CSRFToken': this.token
+                 }
+                
+            })
+            .then(res => {
+                console.log(`profile`)
+                this.profile_list = res.data
+                console.log(this.profile_list)
+                this.get_compare()
+            })
+            .catch(err => {
+                console.error(err); 
+            })
+        },
+
+        get_employee(){
+            axios.get(`${this.global_hostname}/api/Employee/`,{
+                
+                 headers: {
+                             'Content-Type': 'application/json',
+                                'X-CSRFToken': this.token
+                 }
+                
+            })
+            .then(res => {
+                console.log(`employee`)
+                this.employee_list = res.data
+                console.log(this.employee_list)
+                this.get_profile()
+            })
+            .catch(err => {
+                console.error(err); 
+            })
+        },
+        employee_growth() {
+            var ctx = document.getElementById('myChart').getContext('2d');
+            var chart = new Chart(ctx, {
+                // The type of chart we want to create
+                type: 'line',
+
+                // The data for our dataset
+                data: {
+                    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July','August','September','October','November','December'],
+                    datasets: [{
+                        label: 'Overall Growth of Employee Performance',
+                        backgroundColor: 'rgb(244, 246, 246',
+                        borderColor: 'rgb(231, 76, 60)',
+                        data: [85, 75, 78, 78, 78, 78, 89,90, 85, 75, 96, 97],
+                        fill : false
+                    }]
+                },
+
+                // Configuration options go here
+                options: {
+                   
+                }
+            });
+        },
+        employee_violation_growth(){
+            var ctx = document.getElementById('employee_violation').getContext('2d');
+            var chart = new Chart(ctx, {
+                // The type of chart we want to create
+                type: 'line',
+                
+
+                // The data for our dataset
+                data: {
+                    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July','August','September','October','November','December'],
+                    datasets: [{
+                        label: 'Regularized',
+                        backgroundColor: 'rgb(244, 246, 246',
+                        borderColor: 'rgb(192, 57, 43)',
+                        data: [85, 75, 78, 78, 78, 78, 89,90, 85, 75, 96, 97],
+                        fill : false
+                    },
+                    {
+                        label: 'Termination of Contract',
+                        backgroundColor: 'rgb(244, 246, 246',
+                        borderColor: 'rgb(82, 190, 128)',
+                        data: [85, 5, 78, 85, 89, 78, 72,63, 45, 75, 82, 74],
+                        fill : false
+
+                    },
+                    {
+                        label: 'Termination of Contract with Chance',
+                        backgroundColor: 'rgb(244, 246, 246',
+                        borderColor: 'rgb(230, 126, 34)',
+                        data: [25, 56, 89, 54, 41, 56, 54,26, 89, 45, 54, 32],
+                        fill : false
+                    }
+                
+                ],
+                    
+                },
+
+                // Configuration options go here
+                options: {}
+            });
+        },
+        employee_deliberation_report(){
+            var ctx = document.getElementById('employee_deliberation_growth').getContext('2d');
+            var chart = new Chart(ctx, {
+                // The type of chart we want to create
+                type: 'line',
+
+                // The data for our dataset
+                data: {
+                    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July','August','September','October','November','December'],
+                    datasets: [{
+                        label: 'Grave',
+                        backgroundColor: 'rgb(244, 246, 246',
+                        borderColor: 'rgb(192, 57, 43)',
+                        data: [85, 75, 78, 78, 78, 78, 89,90, 85, 75, 96, 97],
+                        fill : false
+                    },
+                    {
+                        label: 'Minor',
+                        backgroundColor: 'rgb(244, 246, 246',
+                        borderColor: 'rgb(82, 190, 128)',
+                        data: [85, 5, 78, 85, 89, 78, 72,63, 45, 75, 82, 74],
+                        fill : false
+                    }
+                
+                ],
+                    
+                },
+
+                // Configuration options go here
+                options: {}
+            });
+        },
+        customer_concerns(){
+
+            var ctx = document.getElementById('customer_concerns').getContext('2d');
+            var chart = new Chart(ctx, {
+                // The type of chart we want to create
+                type: 'line',
+
+                // The data for our dataset
+                data: {
+                    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July','August','September','October','November','December'],
+                    datasets: [{
+                        label: 'Complaints',
+                        backgroundColor: 'rgb(244, 246, 246',
+                        borderColor: 'rgb(192, 57, 43)',
+                        data: [85, 75, 78, 78, 78, 78, 89,90, 85, 75, 96, 97],
+                        fill : false
+                    },
+                    {
+                        label: 'Complement',
+                        backgroundColor: 'rgb(244, 246, 246',
+                        borderColor: 'rgb(82, 190, 128)',
+                        data: [85, 5, 78, 85, 89, 78, 72,63, 45, 75, 82, 74],
+                        fill : false
+                    },
+                    {
+                        label: 'Suggestions',
+                        backgroundColor: 'rgb(244, 246, 246',
+                        borderColor: 'rgb(246, 126, 20)',
+                        data: [55, 18, 96, 45, 74, 75, 71,52, 74, 63, 52, 45],
+                        fill : false
+                    }
+                
+                ],
+                    
+                },
+
+                // Configuration options go here
+                options: {}
+            });
+        }
+    },
+})
+
+
+
+
+
+</script>
+
+
+
+{% endblock %}
+
+
+
+

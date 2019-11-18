@@ -1,0 +1,78 @@
+FINALDELIBERATIONREPORT : [
+   {
+        "url": "http://127.0.0.1:8000/api/GET_PARTICIPANTS_VOTE/85/",
+        "id": 85,
+        "evaluation_sheet": "62",
+        "participants": "finaldecision",
+        "finaldecision": "Regularized",
+        "date_created": "2019-11-04T15:21:58.996571Z",
+        "date_updated": "2019-11-04T15:21:58.d",
+        "employeeinformation" : [
+
+                  {
+                  "url": "http://127.0.0.1:8000/api/HR_COPY_EVALUATION_RESULT/62/",
+                  "id": 62,
+                  "empcode": "emp01",
+                    "evaluation_sheet": "http://127.0.0.1:8000/api/POST_EVALUATION_PERIOD/72/",
+                  "employeefullname": "Cyrene Hanz Carulasan",
+                  "datehired": "Wed Oct 16 2019",
+                  "jobstatus": "Probationary",
+                  "supervisorrater": "admin",
+                  "send": true,
+                  "designation": "Bus Driver",
+                  "departmentsection": "Operation",
+                  "placeofassignment": "Cubao",
+                  "readyfordeliberation": true,
+                  "delibationisdone": true,
+                  "date_created": "2019-11-03T00:54:19.564568Z",
+                  "date_updated": "2019-11-04T15:22:51.199273Z",
+                    "Violation" : [
+                              {
+                              "url": "http://127.0.0.1:8000/api/TVR/5/",
+                              "id": 5,
+                              "EmpCode": "emp01",
+                              "CaseNO": "fsdf434",
+                              "IncidentDate": "2019-10-01",
+                              "Type": "minor",
+                              "NatureofOffense": "CONTROL AREA",
+                              "Decision": "fasdfsd",
+                              "DateofDecision": "fsdfasdfsdfas",
+                              "ReportedBy": "dfasdf"
+                          },
+                          {
+                              "url": "http://127.0.0.1:8000/api/TVR/7/",
+                              "id": 7,
+                              "EmpCode": "DE1902",
+                              "CaseNO": "09457",
+                              "IncidentDate": "2019-10-07",
+                              "Type": "minor",
+                              "NatureofOffense": "MULTIPLE PUNCHING",
+                              "Decision": "10 na pagwa na walang bayad",
+                              "DateofDecision": "August 3, 2019",
+                              "ReportedBy": "Mr Jonel Deguzman"
+                          },
+                    ]
+              },
+        ],
+    },
+  
+    {
+        "url": "http://127.0.0.1:8000/api/GET_PARTICIPANTS_VOTE/87/",
+        "id": 87,
+        "evaluation_sheet": "63",
+        "participants": "finaldecision",
+        "finaldecision": "Regularized",
+        "date_created": "2019-11-04T15:22:08.274766Z",
+        "date_updated": "2019-11-04T15:22:08.274766Z"
+    },
+
+    {
+        "url": "http://127.0.0.1:8000/api/GET_PARTICIPANTS_VOTE/89/",
+        "id": 89,
+        "evaluation_sheet": "66",
+        "participants": "finaldecision",
+        "finaldecision": "Regularized",
+        "date_created": "2019-11-04T15:22:16.273220Z",
+        "date_updated": "2019-11-04T15:22:16.273220Z"
+    }
+]

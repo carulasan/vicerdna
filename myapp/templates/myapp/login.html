@@ -1,0 +1,347 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no,initial-scale=1,maximum-scale=1,minimum-scale=1,width=device-width">
+
+    <title>Victory Liner</title>
+    
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons" rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/npm/animate.css@^3.5.2/animate.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/quasar@^1.1.0/dist/quasar.min.css" rel="stylesheet" type="text/css">
+
+    
+    <link rel="stylesheet" href="{% static 'css/animate_v2.css' %}">
+    <link rel="stylesheet" href="{% static 'css/performance_evaluation.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/dashboard.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/employee.css' %}" />
+
+<script src="{% static 'js/axios.js' %}"></script>
+    <style type="text/css">
+    
+     
+     .contents{
+    margin-top : 100px;
+   width: 100%;;
+   margin-right: auto;
+   margin-left: auto;
+   /* border : 1px solid red; */
+   /* border-radius: 15px; */
+
+
+  
+
+}
+
+.page {
+     width: 100%;  padding: 10px;
+    margin-right: auto;
+   margin-left: auto;
+}
+.con{
+    padding: 10px;
+}
+html { 
+  background: url('https://2.bp.blogspot.com/-PU0qhtcgkUs/Vrhg_RoNlZI/AAAAAAAASVg/XmcVpkwpXC4/s1600/x5.JPG') no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+
+
+    </style>
+
+<link rel="stylesheet" href="{% static 'css/animate_v2.css' %}">
+  </head>
+  <body >
+    <div id="app">
+      
+      
+      
+       
+      
+      	
+      
+            
+
+			<div class="row" style="margin-top : 30px; opacity: .9;">
+
+
+
+
+                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 page animated fadeIn" style="background-color: white; border-radius : 10px;">
+                
+                            <div class="row" style="margin-left: auto;margin-right: auto; width: 100%;">
+                                            <img class="header animated rotateInDownLeft " style="margin-left: auto;margin-right: auto; width: 80%;" src="{% static 'img/logos.png' %}">
+                                            <legend class="animated bounceInLeft  zoomIn " style=" margin-left: auto;margin-right: auto; width: 100%; margin-top : 20px;font-size: 15px; color:#34495E;font-weight: 900;text-align: center">Performance Evaluation Management System</legend>
+                                        
+                            </div>
+                           
+                            <div class="animated zoomIn " style="font-weight:900; text-align: center; font-size:25px; color:#34495E;text-align:center; padding:30px;">
+<!--                                        Employee Login -->
+						 
+                            </div>
+                            <div id="gg" class="animated heartBeat " style="display: none; font-weight:900; text-align: center; font-size:15px; color:red;text-align:center; ">
+                                Invalid Username or Password! Please try again......
+                          </div>
+                        
+                                    
+                                <div class="row con animated zoomIn ">
+
+                                        <q-input color="#34495E"  ref="username"
+                                      
+                                       
+                                        :rules="[username => !!username || 'Please Enter Username']"  v-model="username" style="width: 100%;" outlined type="text"  label="Username">
+                                                <template v-slot:prepend>
+                                                  <q-icon name="account_circle" />
+                                                </template>
+                                              </q-input>
+
+
+
+                                </div>
+
+                                <div class="row con animated zoomIn  ">
+
+                                        <q-input v-on:keypress.enter.prevent="login_enter(event)"  :rules="[username => !!username || 'Please Enter Password']"  ref="password"  color="#34495E -8" v-model="password" style="width: 100%;" outlined  :type="isPwd ? 'password' : 'text'" label="Password">
+                                                <template v-slot:prepend>
+                                                  <q-icon name="lock" />
+                                                </template>
+                                                <template v-slot:append>
+                                                  <q-icon
+                                                    :name="isPwd ? 'visibility_off' : 'visibility'"
+                                                    class="cursor-pointer"
+                                                    @click="isPwd = !isPwd"
+                                                  />
+                                                </template>
+                                                
+                                              </q-input>
+
+                                              
+                                             
+                                              
+                                              
+                                              
+
+
+
+                                </div>
+
+
+                            <div class="row con animated zoomIn ">
+                            
+                                    <q-btn color="red-8" style="width : 100%" @click="login"    outline label="Login"  ></q-btn>
+                                    
+                                    
+                                    
+                                    
+                                    
+                            </div>
+                            <div class="row  animated fadeIn delay-2s"  style=" margin: 10px;" >
+                                
+                              <a href="" style="float: right; ;color:#34495E; font-weight:900;">Forgot password?</a>
+                                
+                                
+                            </div>
+                                    
+
+                                
+                        </div>
+
+
+
+
+
+	      </div>
+         
+	     
+		    
+		      
+        
+
+    </div>
+
+   
+
+    <!-- <script src="{% static 'js/quasar_minifiedjs.js' %}"></script>
+    <script src="{% static 'js/vue.js' %}"></script>
+    <script src="{% static 'js/quasar_min.js' %}"></script> -->
+
+    <script src="https://cdn.jsdelivr.net/npm/quasar@^1.1.0/dist/quasar.ie.polyfills.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@latest/dist/vue.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/quasar@^1.1.0/dist/quasar.umd.min.js"></script>
+    
+    <script >
+    
+    new Vue({
+        el: '#app',
+    delimiters: ['${','}'],
+    data: function () {
+      return {
+        
+        logo : '',
+	 username : '',
+	   password : '',
+        global_hostname : '',
+        isPwd: true,
+        
+          
+        }
+      
+      
+    },
+	methods : {
+
+
+
+      send(){
+        	// Send a POST request
+			let data = new FormData()
+			data.append('username',this.username)
+      
+			data.append('password',this.password)
+			
+    var admin = this.username
+			axios.post(`${this.global_hostname}/login_user/`,data)
+					  .then(function (response) {
+					    console.log(response);
+              var data = response.data
+           
+
+              var data = response.data
+               
+              
+                
+            
+              if(data.is_authenticated ==  true){
+               
+                    
+                      if(admin != 'admin'){
+                      window.location.href="/EmployeePerformance/"
+                    }else{
+                      window.location.href="/Dashboard/"
+                    }
+              }
+              
+              if(data.is_authenticated == false ){
+                
+              
+                document.getElementById('gg').style.display = 'block'
+                    
+              this.username = ''
+              this.password = ''
+
+              
+              setTimeout(() => {
+                
+                document.getElementById('gg').style.display = 'none'
+                
+               
+              }, 4000);
+
+            
+              
+
+
+        
+
+          } 
+          
+      
+              
+              
+
+             
+						
+					  })
+					  .catch(function (error) {
+					    console.log(error);
+
+            
+            
+
+
+			});
+      },
+      login_enter(e){
+
+        e.code == 'Enter' || e.code == 'NumpadEnter'
+        this.login()
+      },
+      login(){
+
+      
+      this.$refs.username.validate()
+      this.$refs.password.validate()
+      
+
+      if (this.$refs.username.hasError || this.$refs.password.hasError ) {
+           this.formHasError = true
+         
+                
+
+           return;
+      }else{
+        this.send()
+       
+      }
+			
+			
+			
+		},
+	},
+    mounted () {
+
+     
+	    
+     
+      
+      
+      
+      
+      
+     
+      
+         
+    },
+    beforeMount () {
+      var hostname = window.location.hostname;
+      var port = window.location.port
+        if(port != ''){
+
+            hostname = hostname+':8000'
+        }
+        else{
+            hostname = hostname
+        }
+
+        this.logo = `${window.location.protocol}//${hostname}/media/media/logongvictory_final.PNG`;
+	 this.global_hostname = `${window.location.protocol}//${hostname}`
+   
+        
+        console.log(this.logo)
+    },
+    
+    
+})
+
+    
+    </script>
+   
+   
+    
+    
+    
+
+   
+
+   
+  </body>
+</html>

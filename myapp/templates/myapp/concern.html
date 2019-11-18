@@ -1,0 +1,2072 @@
+{% extends "myapp/layout.html" %}
+
+{% block content %}
+
+<q-breadcrumbs style="cursor: pointer" >
+    <q-breadcrumbs-el style="color: red; " label="Customer Concern /" icon="insert_chart_outlined" />
+    
+    {{ JobLevel }}
+   
+
+  </q-breadcrumbs>
+
+  <div class="row animated fadeInDown" style="width:100%;margin-top: 5px;">
+      <q-list   >
+          <q-item style=" border-radius: 5px;"
+         >
+              <q-item-section>
+                <q-item-label style="font-size: 20px; font-weight: 900; color: #34495E ">Customer Feedback</q-item-label>
+                
+              </q-item-section>
+          
+              <q-item-section side top>
+                <q-item-label caption>
+
+                  
+                </q-item-label>
+                
+              </q-item-section>
+            </q-item>
+      </q-list>
+
+  </div>
+
+  
+  <div class="row animated fadeInDown" style="width:100%;margin-top: 5px;">
+     
+    <q-tabs
+        v-model="mytab"
+        class="text-green"
+    >
+        <q-tab name="complaints" icon="mail" label="Complaint" ></q-tab>
+        <q-tab name="commendation" icon="alarm" label="Complement" >
+
+                <q-badge color="orange" text-color="white" :label="complement_new.length" floating ></q-badge>
+        </q-tab>
+        <q-tab name="suggestion" icon="movie" label="Suggestion" ></q-tab>
+    </q-tabs>
+    <q-tab-panels v-model="mytab" animated style="width: 100% ">
+        <q-tab-panel name="complaints">
+            
+           <!-- comment_complaint -->
+           <q-tabs
+           v-model="tab"
+          
+           style="width: 100%; color: #34495E "
+       >
+    
+           <q-tab :name="item.CategoryName" icon="label_important" :label="item.CategoryName" v-for="(item,index) in CategoryConcern" >
+               <q-badge color="orange" text-color="white" :label="item.concern.length" floating ></q-badge>
+           </q-tab>
+          
+         
+       </q-tabs>
+
+       <q-tab-panels v-model="tab" animated style="width: 100% ; height: 500px; overflow-x: scroll;">
+           <q-tab-panel :name="item.CategoryName" v-for="item in CategoryConcern"  >
+               <!-- <q-btn-group>
+                   <q-btn color="red" label="Complement" ></q-btn>
+                   <q-btn color="red-8" label="Suggestion"></q-btn>
+                   <q-btn color="red-10" label="Complaint" ></q-btn>
+
+               </q-btn-group> -->
+               
+
+              <div class="row" style="width: 100%;">
+                   
+                   <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2" style="color: red; padding: 5px;;" v-for="itemConcern in item.concern">
+                          
+                      
+                      
+                       <q-card class="my-card" v-if="itemConcern">
+                           <!-- ${itemConcern.photo} -->
+                           
+                                  
+                           
+                           <q-card-section>
+                               <div class="text-h6">${itemConcern.ConcernType}</div>
+                               <div class="text-subtitle2">by ${itemConcern.Name}</div>
+
+                               
+                               <div class="text-subtitle2" v-if="itemConcern.MobileNumber">
+                                       <q-icon name="phone"  ></q-icon>${itemConcern.MobileNumber}
+                                   </div>
+                                   <div class="text-subtitle2" v-if="itemConcern.Email">
+   
+                                           <q-icon name="mail" ></q-icon>
+                                           
+                                           ${itemConcern.Email}
+                                   </div>
+
+
+
+
+                               <q-btn-dropdown
+                               style="margin-top: 10px;;"
+                               color="grey-9"
+                               label="Show Concern"
+                             >
+                               <div class="row no-wrap q-pa-md">
+                                 <div class="column">
+                                   <div class="text-h6 q-mb-md">
+                                           <div class="text-subtitle2">Customer Concern : <br> <span style="color: #34495E ;"> ${itemConcern.Topic} </span></div>
+                                           <div class="text-subtitle2" style="color: #34495E ;" v-if="itemConcern.OtherConcern">
+                                               
+                                               ${itemConcern.OtherConcern}
+                                               
+                                           </div>
+                                           <div class="text-subtitle2" v-if="itemConcern.EmpCode">
+                                                   Employee Information
+                                                     <div class="text-subtitle2"> <span style="color: #34495E ;">  <q-icon name="person" ></q-icon>
+                                                       ${ itemConcern.EmpCode.FirstName } ${ itemConcern.EmpCode.MiddleName } ${ itemConcern.EmpCode.LastName }
+               
+                                                    </span></div>
+                                                    <div class="text-subtitle2"> <span style="color: #34495E ;">  <q-icon name="work" ></q-icon>
+                                                       ${ itemConcern.EmpCode.Designation} 
+                                                    </span></div>
+                                                    <div class="text-subtitle2"> <span style="color: #34495E ;">  <q-icon name="perm_contact_calendar" ></q-icon>
+                                                       ${ itemConcern.EmpCode.Department} Department
+                                                    </span></div>
+                                                    <div class="text-subtitle2"> <span style="color: #34495E ;">  <q-icon name="settings_ethernet" ></q-icon>
+                                                       ${ itemConcern.EmpCode.JobStatus}
+                                                    </span></div>
+                                                   
+
+                                                    <div class="text-subtitle1"> <span style="color: #34495E ;">  <q-icon name="room" ></q-icon>
+                                                       ${ itemConcern.EmpCode.PlaceOfAssignment}
+                                                    </span></div>
+                                                     
+                                             </div>
+                                             
+                                             <div class="text-subtitle2" style="background-color: aliceblue;">
+                                                 Proof | Evidences
+                                                 <br>
+                                                
+                                           </div>
+                                           
+
+                                                 <div v-for="itemphoto in itemConcern.photo" >
+                                                    <img    style="border-radius: 10px;; cursor: pointer;" width="150" :src="itemphoto.Proof" @click="openImage(itemphoto.Proof)"  >
+                                                    
+                                                        
+                                                 </div>
+                                                    
+                                                     
+                                                     
+                                                 
+
+                                           
+                                               
+                                            
+
+
+
+                                   </div>
+
+                                   
+                                 </div>
+                              
+                         
+                                 <q-separator vertical inset class="q-mx-lg" ></q-separator>
+                         
+                                 <div class="column items-center">
+                                 
+                                   <q-btn-dropdown
+                                       v-if="itemConcern.place"
+                                  
+                                   class=""
+                                   color="red-10"
+                                   label="More Details"
+                                 >
+                                   <div class="row no-wrap q-pa-md">
+                                                   <div class="column" >
+                                                       <div class="text-h6 q-mb-md" v-if="itemConcern.place.BusNo" style="color: #273746;">
+                                                                   Bus No : 
+                                                                   <div class="text-subtitle1 q-mt-md q-mb-xs" style="color:  #5D6D7E ;">${ itemConcern.place.BusNo }</div>
+                                                                   
+                                                       
+                                                       </div>
+
+
+                                                       <div class="text-h6 q-mb-md" v-if="itemConcern.place.BusNo" style="color: #273746;">
+                                                               Place of Assignment : 
+                                                               <div class="text-subtitle1 q-mt-md q-mb-xs" style="color:  #5D6D7E ;">${ itemConcern.place.PlaceOfAssignment }</div>
+                                                   </div>
+
+                                                   <div class="text-h6 q-mb-md" v-if="itemConcern.place.BusNo" style="color: #273746;">
+                                                           Type : 
+                                                           <div class="text-subtitle1 q-mt-md q-mb-xs" style="color:  #5D6D7E ;">${ itemConcern.place.Type }</div>
+                                                   </div>
+
+
+
+
+
+
+                                                   <div class="column" >
+                                                           <div class="text-h6 q-mb-md" v-if="itemConcern.place.location" style="color: #273746;">
+                                                                       Location
+                                                                       <div class="text-subtitle1 q-mt-md q-mb-xs" style="color:  #5D6D7E ;">${ itemConcern.place.location } ${ itemConcern.place.category }</div>
+                                                                       
+                                                           
+                                                           </div>
+   
+   
+                                                          
+                                                       </div>     
+
+                                      
+                                     
+                                     </div>
+<!--                               
+                                     <q-separator vertical inset class="q-mx-lg" ></q-separator>
+                                     <div class="column items-center">
+                                            
+                                   
+                                           
+                                            
+                                     </div> -->
+     
+                                     
+                                     
+                                   </div>
+                                 </q-btn-dropdown>
+
+
+                                   <div class="text-subtitle1 q-mt-md q-mb-xs">
+
+                                           <q-card-section style="">
+                                  
+                                                   <div class="text-subtitle2">Message : <br> <span style="color: #34495E ;">${itemConcern.YourConcern} </span></div>
+                                              
+               
+                                           </q-card-section>
+
+                                   </div>
+                                   
+                         
+                                  
+                                 </div>
+                               </div>
+                             </q-btn-dropdown>
+
+                          
+                            
+
+
+                               
+
+                        
+                           </q-card-section>
+
+                           <q-card-section>
+                          
+                           
+                       </q-card-section>
+                           
+                           
+                           <q-card-section>
+                                   <div class="text-subtitle2">Date Submitted : ${itemConcern.date_created}</div>
+                                   <div class="text-subtitle2">Time : ${itemConcern.Time}</div>
+                                   
+                                   <div v-if="itemConcern.IsDone == true" style="color: green;">
+                                           <q-icon name="check" > </q-icon> This Issue is Resolved
+                                    </div >
+                                    <div v-if="itemConcern.IsToCustomerService == true && itemConcern.IsToCallCenter == true  && itemConcern.IsDone == false " style="color: green;">
+                                       <q-icon name="check" > </q-icon> Customer Service Will Now Handle This Issue
+                                   </div>
+                                   <div v-if="itemConcern.IsToLegal == true" style="color: green;">
+                                       <q-icon name="check" > </q-icon> Legal Department  Will Now Handle This Issue
+                                   </div >
+                                   
+                                    
+                               </q-card-section>
+
+                               
+
+                               <q-card-section>
+                                     
+
+                                       <div>
+                                                     
+                                               {% if JobLevel == 'admin' %}
+                                                  
+                                                       <div   v-if="itemConcern.IsDone == false && itemConcern.ConcernType == 'Complaint'  ">
+                                                                <q-btn color="green" style="width: 100%;" @click="MarkAsResolved(itemConcern.id,itemConcern)" icon="check" label="This Issue Has Been Solved"  ></q-btn>
+                                                       
+                                                       </div >
+
+                                                       <div   v-if="itemConcern.IsDone == false && itemConcern.ConcernType == 'Complement'  ">
+                                                               <q-btn color="green" style="width: 100%;" @click="MarkAsResolved(itemConcern.id,itemConcern)" icon="check" label="This Issue Has Been Solved"  ></q-btn>
+                                                      
+                                                      </div >
+                                                       <div   v-if="itemConcern.IsDone == false && itemConcern.ConcernType == 'Suggestion'  ">
+                                                           <q-btn color="green" style="width: 100%;" @click="MarkAsResolved(itemConcern.id,itemConcern)" icon="check" label="This Issue Has Been Solved"  ></q-btn>
+                                                  
+                                                        </div >
+
+                                                       <div v-if="itemConcern.IsDone == false ">
+                                                           <q-btn color="red-8" style="width: 100%;" @click="TransferToCustomerService(itemConcern.id,itemConcern)" icon="accessibility" label="Transfer to Customer Service" ></q-btn>
+                                                       
+                                                       </div>
+
+                                                       <div v-if="itemConcern.IsDone == false">
+
+                                                               <q-btn color="red-10" style="width: 100%;" @click="TransferToLegalDepartment(itemConcern.id,itemConcern)" icon="nature_people" label="Transfer to Legal Department"  ></q-btn>
+                                                           
+                                                       </div>
+                                               {% elif UserLevel.Is_CallCenter == True %}
+                                                  
+                                                       <div   v-if="itemConcern.IsDone == false">
+                                                       <q-btn color="green" style="width: 100%;" @click="MarkAsResolved(itemConcern.id,itemConcern)" icon="check" label="This Issue Has Been Solved"  ></q-btn>
+                                                       
+                                                       </div >
+
+                                                       <div v-if="itemConcern.IsDone == false ">
+                                                           <q-btn color="red-8" style="width: 100%;" @click="TransferToCustomerService(itemConcern.id,itemConcern)" icon="accessibility" label="Transfer to Customer Service" ></q-btn>
+                                                       
+                                                       </div>
+
+                                                       <div v-if="itemConcern.IsDone == false">
+
+                                                               <q-btn color="red-10" style="width: 100%;" @click="TransferToLegalDepartment(itemConcern.id,itemConcern)" icon="nature_people" label="Transfer to Legal Department"  ></q-btn>
+                                                           
+                                                       </div>
+
+                                               {% elif  UserLevel.Is_CustomerService == True  %}
+                                                       <div   v-if="itemConcern.IsDone == false">
+                                                           <q-btn color="green" style="width: 100%;" @click="MarkAsResolved(itemConcern.id,itemConcern)" icon="check" label="This Issue Has Been Solved"  ></q-btn>
+                                                       
+                                                       </div >
+                                                       <div v-if="itemConcern.IsDone == false">
+
+                                                                   <q-btn color="red-10" icon="nature_people" @click="TransferToLegalDepartment(itemConcern.id,itemConcern)"  label="Transfer to Legal Department"  ></q-btn>
+                                                               
+                                                       </div>
+
+                                               {% elif UserLevel.Is_LegalDepartment == True %}
+
+                                                       <div   v-if="itemConcern.IsDone == false">
+                                                           <q-btn color="green" style="width: 100%;" @click="MarkAsResolved(itemConcern.id,itemConcern)" icon="check" label="This Issue Has Been Solved"  ></q-btn>
+                                                   
+                                                       </div >
+                                                       <div v-if="itemConcern.IsDone == false ">
+                                                               <q-btn color="red-8"  style="width: 100%;" icon="accessibility" @click="TransferToCustomerService(itemConcern.id,itemConcern)" label="Transfer to Customer Service" ></q-btn>
+                                                           
+                                                       </div>
+                                               
+                                               
+                                               
+
+                                               {% endif %}
+
+
+
+
+                                       </div>
+                                   
+                               </q-card-section>
+
+                               
+                          
+                       </q-card>
+
+                      
+                   </div>
+                   
+              </div>
+              
+         
+
+           </q-tab-panel>
+
+
+          
+       </q-tab-panels>
+
+       <!-- comment_complaintend -->
+
+
+       
+<div class="row" style="width: 100%; margin-top: 20px;;"> 
+
+    <q-table
+    title="Issue Resolved"
+    style="width: 100% ;"
+    :data="data"
+    :columns="columns"
+    row-key="id"
+    selection="single"
+    :selected.sync="selected_data"
+    :loading="concerntable"
+  >
+
+
+  <template  slot="top-selection" >
+
+                        <div>
+                            <q-tooltip >
+                            Click to Open
+                            </q-tooltip>
+                            <q-btn push class="animated fadeInDown" dense color="red-8" label="See more" @click="SeeMore"  icon="visibility"  ></q-btn>
+                            
+                        </div>
+</template>
+
+         <template v-slot:top-right>
+<!--           
+              <div style="width: 100px; font-size: 15px; color: grey;">
+                      <span>Filter</span>
+                      <q-icon style="font-size: 25px;" name="filter_list"></q-icon>
+                  </div>
+
+
+      <div style="width: 200px;padding: 10px;">
+          <q-select  outlined :options="options_terminal"  label="Place of Asignment" ></q-select>
+      </div>
+      
+      <div style="width: 200px;padding: 10px;">
+          <q-select outlined :options="options_department" label="Department" ></q-select>
+      </div>
+      -->
+      
+      
+      
+      
+     
+                    <template v-slot:append>
+                    <q-icon name="search" ></q-icon>
+                    </template>
+                    </q-input>
+</template>
+
+
+
+    </q-table>
+
+
+    
+
+
+</div>
+
+
+<!-- end table -->
+
+
+        </q-tab-panel>
+        <q-tab-panel name="commendation">
+           
+                <!-- <div class="text-h6" style="color: red;">New</div> -->
+                <div class="row">
+                    
+                    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                        <q-select @input="eventfilter" v-model="modelfiltercomplement" :value="modelfiltercomplement" :options="filter_options_complement" label="Filter" filled ></q-select>
+                    </div>
+                    
+                   
+                    
+                    
+                </div>
+            <div class="row">
+                
+                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 "  v-for="item in complement_new"> 
+                
+                    <div class="row" style="
+                    -webkit-box-shadow: 0px 0px 15px 0px rgba(209,198,209,1);
+                    -moz-box-shadow: 0px 0px 15px 0px rgba(209,198,209,1);
+                    box-shadow: 0px 0px 15px 0px rgba(209,198,209,1);
+                    
+                    
+                    margin: 5px;
+                    border: 1px orange solid;
+                    border-radius: 5px;;
+                    ">
+                        <q-item >
+                            <!-- kharene -->
+                            <q-item-section top avatar>
+                                <q-avatar color="red" text-color="white" icon="new_releases" ></q-avatar>
+                            </q-item-section>
+                            <q-item-section>
+                                <q-item-label caption style="color: black;"><small>Customer Name</small></q-item-label>
+                                <q-item-label style="font-weight: 900;">${item.Name}</q-item-label>
+                                <q-item-label caption style="color: black;"><small>Customer FeedBack</small></q-item-label>
+                                <q-item-label>${item.Topic}</q-item-label>
+                                <q-item-label caption style="color: black;"><small>Message</small></q-item-label>
+                                <q-item-label caption lines="2">${item.YourConcern}  fsadffffffffffffffffffffffffffffffffffffffffffffffff fsfsafsfsfsfdfasd</q-item-label>
+                            </q-item-section>
+                            <q-item-section side top>
+                                <q-item-label caption>Date Submitted : ${ new Date( item.date_created).toString().substring(0,15) }</q-item-label>
+                               <div>
+                                   <q-tooltip>
+                                       Click to see more details
+                                   </q-tooltip>
+                                   <!-- kharene -->
+                                   <q-btn color="red" size="sm" icon="launch" @click="event_commedation(item)"  label="more details" flat ></q-btn>
+                               </div>
+                               <q-btn color="green"  icon="launch" label="Mark as read" @click="event_mark_as_read(item)"  flat ></q-btn>
+                            </q-item-section>
+                        </q-item>
+
+                    </div>
+                </div>  
+
+               
+                
+            </div>
+
+            <div class="row">
+                
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                         <q-table
+
+     
+style="width: 100%"
+:data="complement_done"
+:columns="complement_columns"
+row-key="id"
+selection="single"
+:selected.sync="complement_selected"
+ :filter="complement_terms"
+   
+    title="Customer Feedback"
+
+>
+
+
+
+     <template v-slot:top-right>
+  
+   
+<q-input outlined  style="width: 200px;padding: 10px;" v-model="complement_terms"  filled  dense debounce="300"  placeholder="Search">
+        <template v-slot:append>
+          <q-icon name="search" ></q-icon>
+        </template>
+    </q-input>
+  
+  
+  
+  
+ 
+
+
+       
+
+
+ 
+  </template>
+
+
+
+</q-table> 
+
+
+
+
+                        
+                </div>
+                
+            </div>
+
+
+        </q-tab-panel>
+        <q-tab-panel name="suggestion">
+            <div class="text-h6">Movies</div>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+        </q-tab-panel>
+    </q-tab-panels>
+
+
+</div>
+
+
+
+
+
+<q-dialog v-model="modalSeeMore" >
+    <q-card style="width: 400px; max-width: 1020;">
+      
+        <q-card-section>
+
+            <div class="row">
+                
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="text-h6">Complaint</div>
+                    <div class="text-subtitle2">by John Doe</div>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                  
+                    
+                    
+                        <div class="text-subtitle2" >
+                            <q-icon name="phone"  ></q-icon>04465456465
+                        </div>
+                        <div class="text-subtitle2">
+
+                                <q-icon name="mail" ></q-icon>
+                                
+                                Cycarusflafn
+                        </div>
+                        <div  style="color: green;">
+                            <q-icon name="check" > </q-icon> This Issue is Resolved
+                     </div >
+
+                     <!-- <div class="text-subtitle2">Customer Concern : <br> <span style="color: #34495E ;"> ${itemConcern.Topic} </span></div>
+                        <div class="text-subtitle2" style="color: #34495E ;" v-if="itemConcern.OtherConcern"> -->
+
+
+
+                </div>
+                
+            </div>
+        </q-card-section>
+        
+    
+      <q-card-actions align="center">
+          <!-- <q-btn push  label="Close" color="grey" v-close-popup ></q-btn>
+        <q-btn push icon="print" @click="printna"  label="Print" color="red-8"  ></q-btn> -->
+      </q-card-actions>
+    </q-card>
+  </q-dialog>
+
+  
+
+
+
+  <q-dialog v-model="modal_more_details" >
+        <q-card style="width: 900px; max-width: 1020;">
+
+                <q-card-section>
+
+                    <div class="text-h6">Customer Information</div>
+                    <q-input style="padding: 5px;" v-model="model_customername" type="text" label="Customer Name" ></q-input>
+                    <q-input style="padding: 5px;" v-model="model_mobilenumber" type="text" label="Mobile Number" ></q-input>
+                    <q-input style="padding: 5px;" v-model="model_customerfeedback" type="text" label="Customer FeedBack All About" ></q-input>
+                    <div class="text-h6">Commended Employee</div>
+                    <q-input style="padding: 5px;" v-model="modelempnumber" type="text" label="EmployeeNumber" ></q-input>
+                    <q-input style="padding: 5px;" v-model="modelcommendedemployee" type="text" label="EmployeeName" ></q-input>
+                    <q-input style="padding: 5px;" v-model="modeljobstatus" type="text" label="JobStatus" ></q-input> 
+                    <q-input style="padding: 5px;" v-model="modelcommendedemployee" type="text" label="EmployeeName" ></q-input>
+
+
+                    <q-input style="padding: 5px;" v-model="modelemessage" outlined type="textarea" label="EmployeeNumber" ></q-input>
+                    
+                   
+                </q-card-section>
+                
+        
+          <q-card-actions align="center">
+              <q-btn push  label="Close" color="grey" v-close-popup ></q-btn>
+            <q-btn icon="check"   label="mark as read" color="green"   ></q-btn>
+          </q-card-actions>
+        </q-card>
+      </q-dialog>
+
+      <q-dialog v-model="modalImage" >
+          <q-card>
+
+            <q-card-actions >
+               <q-card class="my-card">
+                   <img :src="imgUrl">
+                  
+               </q-card>
+            </q-card-actions>
+
+              <q-card-actions align="right">
+                  <q-btn flat label="close" color="grey" v-close-popup ></q-btn>
+                  <q-btn flat label="open" color="red"  @click="window.open(imgUrl,'_blank')" >
+              </q-card-actions>
+          </q-card>
+      </q-dialog>
+
+
+
+
+
+{% endblock %}
+
+{% block script %}
+<script>
+
+// setup
+new Vue({
+            el: '#app',
+            delimiters: ['${','}'],
+            data: function () {
+              return {
+                drawerState: false,
+                pic_user : 'http://res.heraldm.com/phpwas/restmb_jhidxmake.php?idx=5&simg=201701181539234376570_20170118154018_02.jpg',
+                left : false,
+                dash : {
+            backgroundColor : '#273746',
+           color : 'white'
+           },
+           
+           Deliberation : {
+           backgroundColor : '#273746',
+           color : 'white',
+       },
+
+       employee : {
+            backgroundColor : '#273746',
+           color : 'white'
+           },
+           performance_evaluation : {
+           backgroundColor : '#273746',
+           color : 'white',
+        
+       },
+       settings : {
+            backgroundColor : '#273746',
+           color : 'white'
+           },
+           Deliberation : {
+           backgroundColor : '#273746',
+           color : 'white',
+       },
+       report : {
+           backgroundColor : '#273746',
+           color : 'white',
+       },
+       concern : {
+           backgroundColor : '#273746',
+           color : 'white',
+       },
+
+     
+       global_hostname : '',
+       token : '',
+       tab : '',
+       CategoryConcern : [
+        {
+            "CategoryName": "Travel Experience",
+            "concern" : []
+        },
+        {
+            "CategoryName": "Emloyee",
+            "concern" : []
+        }
+        
+           
+       ],
+       columns: [
+        {
+          name: 'Name',
+          required: true,
+          label: 'Customer Name',
+          align: 'left',
+          field: row => row.Name,
+          format: val => `${val}`,
+          sortable: true
+        },
+        { name: 'MobileNumber', label: 'Mobile Number', field: 'MobileNumber' },
+        { name: 'Email', label: 'Email', field: 'Email' },
+
+        { name: 'ConcernType', align: 'center', label: 'Type', field: 'ConcernType', sortable: true },   
+        { name: 'Concern', align: 'center', label: 'Concern', field: 'Topic', sortable: true },  
+        { name: 'OtherCategory', label: 'Other', field: 'OtherCategory', sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) }, 
+        { name: 'YourConcern', label: 'Message', field: 'YourConcern' },
+        { name: 'IsToLegal', label: 'Resolved by Legal', field: 'IsToLegal' },
+        { name: 'IsCustomerService', label: 'Resolved by Customer Service', field: 'IsToCustomerService' },
+        { name: 'IsCallCenter', label: 'Resolved by Customer Service', field: 'IsToCallCenter' },
+        
+       
+      ],
+      data: [
+        
+    ],
+    selected_data : [],
+    CATEGORY : [],
+    LATESTCONCERN : [],
+    CONCERN : [],
+    checkload : false,
+    OldConcerns : [],
+    concerntable : false,
+    checkserverdatalength : 0, 
+    employee  : [],
+    Proof : [],
+    Busses : [],
+    PlaceAssignment : [],
+    modalSeeMore : false,
+    mytab : 'complaints',
+    complement_done : [],
+    complement_new : [],
+
+    complement_terms: '',
+complement_selected : [],
+
+
+ complement_columns : [
+        {
+          name: 'Name',
+          required: true,
+          label: 'Customer Name',
+          align: 'left',
+          field: row => row.Name,
+          format: val => `${val}`,
+          sortable: true
+        },
+        { name: 'MobileNumber', label: 'Mobile Number', field: 'MobileNumber' },
+        { name: 'Email', label: 'Email', field: 'Email' },
+
+        { name: 'ConcernType', align: 'center', label: 'Type', field: 'ConcernType', sortable: true },   
+        { name: 'Concern', align: 'center', label: 'Concern', field: 'Topic', sortable: true },  
+        { name: 'OtherCategory', label: 'Other', field: 'OtherCategory', sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) }, 
+        { name: 'YourConcern', label: 'Message', field: 'YourConcern' },
+        { name: 'date_created', label: 'Date Submitted', field: 'date_created' },
+       
+      ],
+      complement_done: [
+        // bry
+    ],
+    modal_more_details : false,
+    // kharene
+    modelfiltercomplement : '',
+    filter_options_complement : [],
+    searchcommendation : '',
+    tofiltercomplement : '',
+    tofiltercomplement_data : [],
+    model_customerfeedback : '',
+     model_mobilenumber : '',
+model_customername : '',
+model_customerfeedback : '',
+modelcommendedemployee : '',
+modelempnumber :'',
+modelcommendedemployee:'',
+modeljobstatus:'',
+modelcommendedemployee:'',
+modelemessage:'',
+modalImage : false,
+imgUrl : ''
+
+
+
+
+
+
+       
+        
+               
+              }
+            },
+            watch: {
+                searchcommendation  : function(){
+                    // kharene
+                  
+                    
+                },
+                
+            },
+            beforeMount () {
+              if(innerWidth < 1017){
+                    this.drawerState = false
+                }
+            },
+          methods: {
+            logout(){
+              axios.post(`${this.global_hostname}/logout/`,{
+                  
+                   headers: {
+                               'Content-Type': 'application/json',
+                                  'X-CSRFToken': this.token
+                   }
+                  
+              })
+              .then(res => {
+                  window.location.replace(`${this.global_hostname}/login/`)
+                
+              })
+              .catch(err => {
+                  
+              })
+
+              
+        },
+        openImage(link){
+            this.modalImage = true
+            this.imgUrl = link
+        },
+        eventfilter(){
+            var data =  this.tofiltercomplement_data
+            var info = data.filter(
+                (element)=>{
+                    return element.Topic == this.modelfiltercomplement
+                }
+            )
+            this.complement_new = info
+            if(this.modelfiltercomplement == 'See All'){
+                this.complement_new  = this.tofiltercomplement_data
+            }
+        },
+        event_mark_as_read(data){
+            this.$q.dialog({
+        title: 'Confirm',
+        message: 'Would you like to Mark as Read?',
+        cancel: true,
+        persistent: true
+      }).onOk(() => {
+        
+        var payload = {
+            
+            "ConcernType": data.ConcernType,
+            "ConcernCategory": data.ConcernCategory,
+            "ConcernCategoryIDPlace": data.ConcernCategoryIDPlace,
+            "EmpCode": data.EmpCode,
+            "Name":  data.Name,
+            "MobileNumber": data.MobileNumber,
+            "Email": data.Email,
+            "Topic": data.Topic,
+            "OtherConcern": data.OtherConcern,
+            "YourConcern": data.YourConcern,
+            "IsToCallCenter": data.IsToCallCenter,
+            "IsToCustomerService": data.IsToCustomerService,
+            "IsToLegal":  data.IsToLegal,
+            "IsDone":  true,
+
+
+        }
+        
+        console.log(payload)
+        axios.put(`${this.global_hostname}/api/GET_CustomerConcern/${data.id}/`,payload,{
+        
+             headers: {
+                         'Content-Type': 'application/json',
+                            'X-CSRFToken': this.token
+             }
+            
+        })
+        .then(res => {
+            // kharene
+             this.$q.notify({ //put dollor sign(q)
+                        message: `Mark as Read Successfull`,
+                        timeout: 3000, // in milliseconds; 0 means no timeout
+
+                        color: 'green',
+                        textColor: 'white', // if default 'white' doesn't fit
+                        icon: 'check', //or  avatar: 'statics/boy-avatar.png',
+
+                        position: 'top', // 'top', 'left', 'bottom-left' etc.
+
+            })
+            this.GetConcern()
+
+
+        })
+        .catch(err => {
+            console.error(err); 
+        })
+      }).onOk(() => {
+        // console.log('>>>> second OK catcher')
+      }).onCancel(() => {
+        // console.log('>>>> Cancel')
+      }).onDismiss(() => {
+        // console.log('I am triggered on both OK and Cancel')
+})
+
+        },
+        event_commedation(data){
+            alert(data)
+
+            // kharene
+            this.modal_more_details = true
+            console.log(data)
+          this.model_customerfeedback = data.Topic,
+     this.model_mobilenumber = data.MobileNumber
+this.model_customername = data.Name
+
+            // clock
+        },
+        SeeMore(){
+           
+            var id =this.selected_data[0].id
+            var info = this.CategoryConcern.filter(
+                (element)=>{
+                    return element.id == id
+                }
+            )
+            //display now
+            this.modalSeeMore = true
+
+        },
+
+        MarkAsResolved(id,obj){
+
+            
+             console.log('dito')
+             console.log(obj)
+             
+           
+             
+            
+             
+            
+            console.log('here')
+
+            console.log(obj)
+            
+            var emp = ''
+            if(obj.EmpCode){
+                // alert(obj.EmpCode.EmpCode)
+                emp = obj.EmpCode.EmpCode
+            }else{
+                
+                emp = null
+            }
+            var  payload = {
+                "ConcernType": obj.ConcernType,
+                "ConcernCategory": obj.ConcernCategory,
+                "ConcernCategoryIDPlace": obj.ConcernCategoryIDPlace,
+                "EmpCode": emp,
+                "Name": obj.Name,
+                "MobileNumber": obj.MobileNumber,
+                "Email": obj.Email,
+                "Topic": obj.Topic,
+                "OtherConcern":obj.OtherConcern,
+                "YourConcern": obj.YourConcern,
+                "IsToCallCenter": obj.IsToCallCenter,
+                "IsToCustomerService": obj.IsToCustomerService,
+                "IsToLegal": obj.IsToLegal,
+                "IsDone": true,
+            }
+
+            this.$q.dialog({
+                            title: 'Confirm',
+                            message: 'This Issue Has Been Solved?',
+                            cancel: true,
+                            persistent: true
+                        }).onOk(() => {
+                            // console.log('>>>> OK')
+
+                          
+                            axios.put(`${this.global_hostname}/api/GET_CustomerConcern/${id}/`,payload,{
+                                
+                                 headers: {
+                                             'Content-Type': 'application/json',
+                                                'X-CSRFToken': this.token
+                                 }
+                                
+                            })
+                            .then(res => {
+                                console.log(res)
+                                this.GetCategory()
+                                this.$q.notify({ //put dollor sign(q)
+                                    message: `Success!`,
+                                    timeout: 3000, // in milliseconds; 0 means no timeout
+                                   
+                                    color: 'green',
+                                    textColor: 'white', // if default 'white' doesn't fit
+                                 icon: 'check', //or  avatar: 'statics/boy-avatar.png',
+                                   
+                                 position: 'top', // 'top', 'left', 'bottom-left' etc.
+                                  
+                                    })
+                                
+                                    this.GetConcernIsdone()
+
+
+                                    var firstWord = obj.Name.replace(/ .*/, '');
+             
+                                    
+                                    this.sendemail(firstWord,obj.Email)
+
+
+
+                                
+                            })
+                            .catch(err => {
+                                console.error(err); 
+                            })
+                        }).onOk(() => {
+                            // console.log('>>>> second OK catcher')
+                        }).onCancel(() => {
+                           return
+                        }).onDismiss(() => {
+                            // console.log('I am triggered on both OK and Cancel')
+                })
+
+
+            
+        },
+        sendemail(fname,email){
+            let formData = new FormData()
+            formData.append('name',fname)
+            formData.append('email',email)
+
+            axios.post(`${this.global_hostname}/sendemail/issue/resolved/`,formData,{
+               
+                 headers: {
+                             'Content-Type': 'application/json',
+                                'X-CSRFToken': this.token
+                 }
+                
+            })
+            .then(res => {
+                console.log(res)
+            })
+            .catch(err => {
+                console.error(err); 
+            })
+        },
+
+        TransferToLegalDepartment(id,obj){
+            
+            var myatab = this.tab
+            
+            var emp = ''
+            if(obj.EmpCode){
+                // alert(obj.EmpCode.EmpCode)
+                emp = obj.EmpCode.EmpCode
+            }else{
+                
+                emp = null
+            }
+            var  payload = {
+                "ConcernType": obj.ConcernType,
+                "ConcernCategory": obj.ConcernCategory,
+                "ConcernCategoryIDPlace": obj.ConcernCategoryIDPlace,
+                "EmpCode": emp,
+                "Name": obj.Name,
+                "MobileNumber": obj.MobileNumber,
+                "Email": obj.Email,
+                "Topic": obj.Topic,
+                "OtherConcern":obj.OtherConcern,
+                "YourConcern": obj.YourConcern,
+                "IsToCallCenter": obj.IsToCallCenter,
+                "IsToCustomerService": obj.IsToCustomerService,
+                "IsToLegal": true,
+                "IsDone": obj.IsDone,
+            }
+
+            this.$q.dialog({
+                            title: 'Confirm',
+                            message: 'Would you like to transfer to Legal?',
+                            cancel: true,
+                            persistent: true
+                        }).onOk(() => {
+//                             // console.log('>>>> OK')
+// anokaba
+                          
+                            axios.put(`${this.global_hostname}/api/GET_CustomerConcern/${id}/`,payload,{
+                                
+                                 headers: {
+                                             'Content-Type': 'application/json',
+                                                'X-CSRFToken': this.token
+                                 }
+                                
+                            })
+                            .then(res => {
+                                console.log(res)
+                                this.GetCategory()
+                                this.$q.notify({ //put dollor sign(q)
+                                    message: `Success!`,
+                                    timeout: 3000, // in milliseconds; 0 means no timeout
+                                   
+                                    color: 'green',
+                                    textColor: 'white', // if default 'white' doesn't fit
+                                 icon: 'check', //or  avatar: 'statics/boy-avatar.png',
+                                   
+                                 position: 'top', // 'top', 'left', 'bottom-left' etc.
+                                  
+                                    })
+                                    
+                                    this.GetConcernIsdone()
+                                    this.tab = myatab
+                                
+                            })
+                            .catch(err => {
+                                console.error(err); 
+                            })
+                        }).onOk(() => {
+                            // console.log('>>>> second OK catcher')
+                        }).onCancel(() => {
+                           return
+                        }).onDismiss(() => {
+                            // console.log('I am triggered on both OK and Cancel')
+                })
+
+
+           
+        },
+
+
+        TransferToCustomerService(id,obj){
+            
+          
+            
+            var emp = ''
+            if(obj.EmpCode){
+                // alert(obj.EmpCode.EmpCode)
+                emp = obj.EmpCode.EmpCode
+            }else{
+                
+                emp = null
+            }
+            var  payload = {
+                "ConcernType": obj.ConcernType,
+                "ConcernCategory": obj.ConcernCategory,
+                "ConcernCategoryIDPlace": obj.ConcernCategoryIDPlace,
+                "EmpCode": emp,
+                "Name": obj.Name,
+                "MobileNumber": obj.MobileNumber,
+                "Email": obj.Email,
+                "Topic": obj.Topic,
+                "OtherConcern":obj.OtherConcern,
+                "YourConcern": obj.YourConcern,
+                "IsToCallCenter": obj.IsToCallCenter,
+                "IsToCustomerService": true,
+                "IsToLegal": obj.IsToLegal,
+                "IsDone": obj.IsDone,
+            }
+
+            this.$q.dialog({
+                            title: 'Confirm',
+                            message: 'Would you like to transfer to Customer Service?',
+                            cancel: true,
+                            persistent: true
+                        }).onOk(() => {
+                            // console.log('>>>> OK')
+
+                          
+                            axios.put(`${this.global_hostname}/api/GET_CustomerConcern/${id}/`,payload,{
+                                
+                                 headers: {
+                                             'Content-Type': 'application/json',
+                                                'X-CSRFToken': this.token
+                                 }
+                                
+                            })
+                            .then(res => {
+                                console.log(res)
+                                this.GetCategory()
+                                this.$q.notify({ //put dollor sign(q)
+                                    message: `Success!`,
+                                    timeout: 3000, // in milliseconds; 0 means no timeout
+                                   
+                                    color: 'green',
+                                    textColor: 'white', // if default 'white' doesn't fit
+                                 icon: 'check', //or  avatar: 'statics/boy-avatar.png',
+                                   
+                                 position: 'top', // 'top', 'left', 'bottom-left' etc.
+                                  
+                                    })
+                                
+                                    this.GetConcernIsdone()
+                                
+                            })
+                            .catch(err => {
+                                console.error(err); 
+                            })
+                        }).onOk(() => {
+                            // console.log('>>>> second OK catcher')
+                        }).onCancel(() => {
+                           return
+                        }).onDismiss(() => {
+                            // console.log('I am triggered on both OK and Cancel')
+                })
+
+
+            
+        },
+
+
+
+        GetConcern(){
+            axios.get(`${this.global_hostname}/api/GET_CustomerConcern/`,{
+              
+                 headers: {
+                             'Content-Type': 'application/json',
+                                'X-CSRFToken': this.token
+                 }
+                
+            })
+            .then(res => {
+               var data = res.data
+               var filtereddata = data.filter(
+                   (element) =>{
+                     return element.IsToCallCenter == true && element.IsDone == true
+                   }
+               )    
+              
+               this.CONCERN = filtereddata
+
+
+               var complement = res.data.filter(
+                        (element)=>{
+                            return element.ConcernType.toLowerCase() == "complement"
+                        }
+                    )
+                    // done
+                    var complement_filterd_done = complement.filter(
+                        (element)=>{
+                            return element.IsDone == true
+                        }
+                    ) 
+                    var isdone = complement_filterd_done
+                    for (let index = 0; index < isdone.length; index++) {
+                        const element = isdone[index];
+                        var obj = {
+                            "id": element.id,
+                            "ConcernType": element.ConcernType,
+                            "ConcernCategory": element.ConcernCategory,
+                            "ConcernCategoryIDPlace": element.ConcernCategoryIDPlace,
+                            "EmpCode": element.EmpCode,
+                            "Name": element.Name, //customername
+                            "MobileNumber": element.MobileNumber,
+                            "Email": element.Email,
+                            "Topic": element.Topic,
+                            "OtherConcern": element.OtherConcern,
+                            "YourConcern": element.YourConcern,
+                            "IsToCallCenter": element.IsToCallCenter,
+                            "IsToCustomerService": element.IsToCustomerService,
+                            "IsToLegal": element.IsToLegal,
+                            "IsDone": element.IsDone,
+                            "date_created": new Date(element.date_created).toString().substring(0,15),
+                            
+
+                        }
+                        this.complement_done.push(obj)
+                    }
+                    
+                
+                    //new
+                    var complement_filterd_new = complement.filter(
+                        (element2)=>{
+                            return element2.IsDone == false
+                        }
+                    ) 
+                    
+                       
+                        this.complement_new = complement_filterd_new
+                        this.tofiltercomplement_data = complement_filterd_new
+                        console.log('carisd;fasd')
+                        console.log(complement_filterd_new )
+                       
+                       
+                        // kharene
+
+
+
+            })
+            .catch(err => {
+                console.error(err); 
+            })
+        },
+
+
+      
+      
+sort_date_sorted(element){
+
+var d = new Date();
+
+var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+
+var init_y = element.date_created.substring(0,4);
+var init_m  = parseInt(element.date_created.substring(5,7));
+var init_d = element.date_created.substring(8,10);
+var d = new Date(init_y,init_m,init_d);
+var m  = months[parseInt(d.getMonth()) - 1];
+
+var y = d.getFullYear()
+var d = d.getDate();
+var result = `${m} ${d}, ${y}`
+return result
+
+
+
+},
+        
+
+    formatAMPM(date) {
+    var hours = date.getHours();
+    var minutes = date.getMinutes();
+    var ampm = hours >= 12 ? 'pm' : 'am';
+    hours = hours % 12;
+    hours = hours ? hours : 12; // the hour '0' should be '12'
+    minutes = minutes < 10 ? '0'+minutes : minutes;
+    var strTime = hours + ':' + minutes + ' ' + ampm;
+    return strTime;
+    },
+
+
+        employeefilter(EmpCode){
+            var employee = this.employee
+            var info = employee.filter(
+                (element)=>{
+                    return element.EmpCode == EmpCode
+                }
+
+            )
+
+            return info[0]
+
+        },
+        getPhoto(id){
+            var id_photo = id
+           
+                var info = this.Proof
+                var  pro = info.filter(
+                    (element)=>{
+                        return element.CustomerConcernID == id_photo
+                    }
+                )
+                
+               
+                return pro
+
+        },
+        getPlace(busorterminal , id){
+            var idplace = id
+
+            console.log(busorterminal)
+           
+            if(busorterminal == 'Bus'){
+                var busses = this.Busses
+                var info = busses.filter(
+                    (element)=>{
+                        return element.id == idplace
+                    }
+                )
+
+                    
+                    return info[0]
+                
+
+
+            }
+            if(busorterminal == 'TerminalsOfficeShop'){
+
+                var place  = this.PlaceAssignment
+                var info  = place.filter(
+                    (element)=>{
+                        return element.id = idplace
+                    }
+
+                )
+                return info[0]
+            }
+        },
+        get_concern(category){
+            var concern = this.LATESTCONCERN
+            var filtered =concern.filter(
+                (element)=>{
+                    return element.Topic == category 
+                }
+            )
+            var temp = []
+            for (let index = 0; index < filtered.length; index++) {
+                const element = filtered[index];
+                
+                var obj = {
+                        "id": element.id,
+                        "ConcernType": element.ConcernType,
+                        "ConcernCategory": element.ConcernCategory,
+                        "ConcernCategoryIDPlace" : element.ConcernCategoryIDPlace,
+                        "EmpCode": this.employeefilter(element.EmpCode),
+                        "Name": element.Name,
+                        "MobileNumber": element.MobileNumber,
+                        "Email": element.Email,
+                        "Topic": element.Topic,
+                        "OtherConcern": element.OtherConcern,
+                        "YourConcern": element.YourConcern,
+                        "Picture": element.Picture,
+                        "IsToCallCenter": element.IsToCallCenter,
+                        "IsToCustomerService": element.IsToCustomerService,
+                        "IsToLegal": element.IsToLegal,
+                        "IsDone": element.IsDone,
+                        "date_created": this.sort_date_sorted(element),
+                        "Time": this.formatAMPM(new Date(element.date_created)),
+                        "photo": this.getPhoto(element.id),
+                        "place" : this.getPlace(element.ConcernCategory,element.ConcernCategoryIDPlace)
+                        
+
+
+                }
+                temp.push(obj)
+
+                // if(index == filtered.length - 1){
+                //     var data = temp
+                   
+                //     return data
+                // }
+            }
+            console.log('evidence=========== tenmp')
+            console.log(temp)
+            return temp
+               
+        },
+        solveer(){
+           var cat=  this.CATEGORY
+            var concern = this.LATESTCONCERN
+
+            
+
+            
+            var temp = []
+            for (let index = 0; index < cat.length; index++) {
+                const element = cat[index];
+               
+                        //    abi
+                            var obj = {
+                                "id": element.id,
+                                "CategoryName": element.CategoryName,
+                                "concern" : this.get_concern(element.CategoryName)
+                            }
+                            temp.push(obj)
+                            if (index == cat.length - 1) {
+                                this.CategoryConcern = temp
+                                console.log('ito na yung pro')
+                                console.log(temp)
+                                console.log('ito na')
+                                console.log(this.CategoryConcern)
+                                
+
+                                if(this.checkload == true){
+                                    for (let index = 0; index < this.CategoryConcern.length; index++) {
+                                        const element = this.CategoryConcern[index];
+                                        if(element.concern.length > 0){
+                                            this.tab = this.CategoryConcern[index].CategoryName
+                                            break;
+                                        }
+                                        
+                                    }
+                                    
+                                }
+                            }
+                
+            }
+
+
+            
+
+
+        },
+        GetLatestConcern(){
+            var user = '{{user}}'
+            var callcenter = '{{UserLevel.Is_CallCenter}}'
+            var legal = '{{ UserLevel.Is_LegalDepartment }}'
+            var customer_service = '{{UserLevel.Is_CustomerService}}'
+
+            console.log(user)
+            console.log(callcenter)
+            console.log(legal)
+            console.log(customer_service)
+            axios.get(`${this.global_hostname}/api/GET_CustomerConcern/`,{
+              
+                 headers: {
+                             'Content-Type': 'application/json',
+                                'X-CSRFToken': this.token
+                 }
+                
+            })
+            .then(res => {
+               var data = res.data
+               console.log('fdsafdsfsdaf')
+               console.log(data)
+              
+               if(legal.toString() == 'True'){
+
+                        var filtereddata = data.filter(
+                        (element) =>{
+                            return element.IsToCallCenter == true && element.IsToCustomerService == false && element.IsToLegal == true && element.IsDone == false
+                        }
+                    )  
+                    this.LATESTCONCERN = filtereddata
+                    this.solveer()  
+
+               }
+               if(callcenter.toString() == 'True'){
+
+                var filtereddata = data.filter(
+                        (element) =>{
+                            return element.IsToCallCenter == true  && element.IsToCustomerService == false && element.IsToLegal == false && element.IsDone == false
+                        }
+                    )  
+                    this.LATESTCONCERN = filtereddata
+                    this.solveer()  
+
+               }
+               if(user.toLowerCase().includes('admin') == true  ){
+
+                var filtereddata = data.filter(
+                        (element) =>{
+                            return element.IsToCallCenter == true && element.IsDone == false
+                        }
+                    )  
+                    this.LATESTCONCERN = filtereddata
+                    this.solveer()  
+
+                }
+               
+                // alert(customer_service.toString())
+                if(customer_service.toString() == 'True'  ){
+                   
+            var filtereddata = data.filter(
+                    (element) =>{
+                        return element.IsToCallCenter == true && element.IsToCustomerService == true && element.IsToLegal == false && element.IsDone == false
+                    }
+                )  
+                this.LATESTCONCERN = filtereddata
+                this.solveer()  
+
+            }
+
+
+            // if(user.toLowerCase().includes('callcenter') == true  ){
+
+            //     var filtereddata = data.filter(
+            //             (element) =>{
+            //                 return element.IsToCallCenter == true && element.IsDone == false
+            //             }
+            //         )  
+            //         this.LATESTCONCERN = filtereddata
+            //         this.solveer()  
+
+            //     }
+            //     if(user.toLowerCase().includes('customerservice') == true  ){
+
+            //     var filtereddata = data.filter(
+            //         (element) =>{
+            //             return element.IsToCallCenter == true && element.IsToCustomerService == true && element.IsToLegal == false && element.IsDone == false
+            //         }
+            //     )  
+            //     this.LATESTCONCERN = filtereddata
+            //     this.solveer()  
+
+            //     }
+
+
+
+
+             
+              
+            })
+            .catch(err => {
+                console.error(err); 
+            })
+        },
+
+
+        GetCategory(){
+            
+            axios.get(`${this.global_hostname}/api/CategoryConcern/`,{
+             
+                 headers: {
+                             'Content-Type': 'application/json',
+                                'X-CSRFToken': this.token
+                 }
+                
+            })
+            .then(res => {
+                
+                this.CATEGORY = res.data
+
+                for (let index = 0; index < res.data.length; index++) {
+                    const element = res.data[index];
+                    this.filter_options_complement.push(element.CategoryName)
+                    if(index == res.data.length - 1){
+                        this.filter_options_complement.push('See All')
+                    }
+                    
+                }
+                this.CATEGORY.push({'CategoryName' : 'Others' })
+               
+                this.GetLatestConcern()
+                
+               
+                
+
+                    
+                   
+
+            
+               
+
+                
+            })
+            .catch(err => {
+                console.error(err); 
+            })
+        },
+        GetConcernIsdone(){
+            axios.get(`${this.global_hostname}/api/GET_CustomerConcern/`,{
+
+               
+                 headers: {
+                             'Content-Type': 'application/json',
+                                'X-CSRFToken': this.token
+                 }
+                
+            })
+            .then(res => {
+              
+                this.concerntable = false
+                this.OldConcerns = res.data
+                var filtered = this.OldConcerns.filter(
+                    (element)=>{
+                        return element.IsDone == true
+                    }
+                )
+                this.data = filtered
+
+            })
+            .catch(err => {
+                console.error(err); 
+            })
+        },
+
+        checklength(){
+                var previos = this.checkconcernlength
+                axios.get(`${this.global_hostname}/api/GET_CustomerConcern/`,{
+                   
+                     headers: {
+                                 'Content-Type': 'application/json',
+                                    'X-CSRFToken': this.token
+                     }
+                    
+                })
+                .then(res => {
+                    console.log(res)
+                     
+                    var user = '{{user}}'
+
+                //     'Is_CallCenter' :  request.session['Is_CallCenter'],
+                // 'Is_CustomerService' : request.session['Is_CustomerService'],
+                // 'Is_LegalDepartment' :  request.session['Is_LegalDepartment'],
+                var callcenter= '{{UserLevel.Is_CallCenter}}'
+                var customer_service = '{{UserLevel.Is_CustomerService}}'
+                var legaldepartment = '{{UserLevel.Is_LegalDepartment}}'
+                //dito
+                if(customer_service.toString() == 'True'){
+                    var data =res.data.filter(
+                        (element)=>{
+                            return element.IsToCallCenter == true && element.IsToCustomerService == true
+                        }
+                    )
+                    var a = data.length
+
+                    // var a = res.data.length
+                    console.log(a + ' ' + previos)
+
+                    
+
+                    console.log(user)
+                    if(  a > previos ){
+                        this.$q.notify({ //put dollor sign(q)
+                            message: `New Message`,
+                            timeout: 3000, // in milliseconds; 0 means no timeout
+                            
+                            color: 'orange',
+                            textColor: 'white', // if default 'white' doesn't fit
+                         icon: 'emoji_people', //or  avatar: 'statics/boy-avatar.png',
+                            
+                         position: 'top', // 'top', 'left', 'bottom-left' etc.
+                            
+                            })
+                        
+                            this.getProof()
+                            this.GetCategory()
+                              
+                              this.getBusses()
+              this.getPlaceofAssignment()
+             
+      
+              // this.GetLatestConcern()
+            
+           this.GetConcernIsdone()
+      
+             
+              this.getemployee()
+                             
+                
+                        
+                    }
+                    
+                    this.checkconcernlength  = a
+
+
+                }
+
+                if(legaldepartment.toString() == 'True'){
+                    var data =res.data.filter(
+                        (element)=>{
+                            return element.IsToCallCenter == true && element.IsToLegal == true
+                        }
+                    )
+                    var a = data.length
+
+                    // var a = res.data.length
+                    console.log(a + ' ' + previos)
+
+                    
+
+                    console.log(user)
+                    if(  a > previos ){
+                        this.$q.notify({ //put dollor sign(q)
+                            message: `New Message`,
+                            timeout: 3000, // in milliseconds; 0 means no timeout
+                            
+                            color: 'orange',
+                            textColor: 'white', // if default 'white' doesn't fit
+                         icon: 'emoji_people', //or  avatar: 'statics/boy-avatar.png',
+                            
+                         position: 'top', // 'top', 'left', 'bottom-left' etc.
+                            
+                            })
+                            this.getProof()
+                            this.GetCategory()
+                              
+                        this.getBusses()
+        this.getPlaceofAssignment()
+       
+
+        // this.GetLatestConcern()
+      
+     this.GetConcernIsdone()
+
+       
+        this.getemployee()
+                       
+                    }
+                    
+                    this.checkconcernlength  = a
+
+
+                }
+
+
+                if(user.toLowerCase().includes('admin')){
+                    var data =res.data.filter(
+                        (element)=>{
+                            return element.IsToCallCenter == true 
+                        }
+                    )
+                    var a = data.length
+
+                    // var a = res.data.length
+                 
+                    
+
+                    console.log(user)
+                    if(  a > previos ){
+                        this.$q.notify({ //put dollor sign(q)
+                            message: `New Message`,
+                            timeout: 3000, // in milliseconds; 0 means no timeout
+                            
+                            color: 'orange',
+                            textColor: 'white', // if default 'white' doesn't fit
+                         icon: 'emoji_people', //or  avatar: 'statics/boy-avatar.png',
+                            
+                         position: 'top', // 'top', 'left', 'bottom-left' etc.
+                            
+                            })
+                            this.getProof()
+                        
+                            this.GetCategory()
+                              
+                              this.getBusses()
+              this.getPlaceofAssignment()
+             
+      
+              // this.GetLatestConcern()
+            
+           this.GetConcernIsdone()
+      
+             
+              this.getemployee()
+
+                       
+
+                    }
+                    
+                    this.checkconcernlength  = a
+
+
+                }
+                if(callcenter.toString() == 'True'){
+                    var data =res.data.filter(
+                        (element)=>{
+                            return element.IsToCallCenter == true 
+                        }
+                    )
+                    var a = data.length
+
+                    // var a = res.data.length
+                  
+
+                    
+
+                    console.log(user)
+                    if(  a > previos ){
+                        this.$q.notify({ //put dollor sign(q)
+                            message: `New Message`,
+                            timeout: 3000, // in milliseconds; 0 means no timeout
+                            
+                            color: 'orange',
+                            textColor: 'white', // if default 'white' doesn't fit
+                         icon: 'emoji_people', //or  avatar: 'statics/boy-avatar.png',
+                            
+                         position: 'top', // 'top', 'left', 'bottom-left' etc.
+                            
+                            })
+                        
+                            this.getProof()
+                            this.GetCategory()
+                              
+                              this.getBusses()
+              this.getPlaceofAssignment()
+             
+      
+              // this.GetLatestConcern()
+            
+           this.GetConcernIsdone()
+      
+             
+              this.getemployee()
+                        
+                        
+                    }
+                    
+                    this.checkconcernlength  = a
+
+
+                }
+
+
+
+                    
+                   
+                   
+                })
+                .catch(err => {
+                    console.error(err); 
+                })
+        },
+        getemployee(){
+            axios.get(`${this.global_hostname}/api/Employee/`,{
+            
+                 headers: {
+                             'Content-Type': 'application/json',
+                                'X-CSRFToken': this.token
+                 }
+                
+            })
+            .then(res => {
+                this.employee  = res.data
+            })
+            .catch(err => {
+                console.error(err); 
+            })
+        },
+        //proof photos
+        getProof(){
+
+            axios.get(`${this.global_hostname}/api/GET_UploadProof/`,{
+          
+             headers: {
+                         'Content-Type': 'application/json',
+                            'X-CSRFToken': this.token
+             }
+            
+            })
+            .then(res => {
+               this.Proof = res.data
+               this.GetConcern()
+               
+            })
+            .catch(err => {
+                console.error(err); 
+            })
+        },
+        getBusses(){
+            axios.get(`${this.global_hostname}/api/Busses/`, {
+           
+              headers: {
+                          'Content-Type': 'application/json',
+                             'X-CSRFToken': this.token
+              }
+             
+            })
+            .then(res => {
+                
+                this.Busses = res.data
+            })
+        },
+        getPlaceofAssignment(){
+            axios.get(`${this.global_hostname}/api/GET_PLACE_OF_ASSIGNMENT_LOCATION/`,{
+               
+                 headers: {
+                             'Content-Type': 'application/json',
+                                'X-CSRFToken': this.token
+                 }
+                
+            })
+            .then(res => {
+              
+                this.PlaceAssignment = res.data
+            })
+            .catch(err => {
+                console.error(err); 
+            })
+        },
+
+          },
+
+          mounted () {
+            
+            var hostname = window.location.hostname;
+            var port = window.location.port
+        if(port != ''){
+
+            hostname = hostname+':8000'
+        }
+        else{
+            hostname = hostname
+        }
+
+        this.global_hostname = `${window.location.protocol}//${hostname}`;
+        var csrftoken = Cookies.get('csrftoken');
+        this.token = csrftoken
+       
+        this.concerntable = true
+        this.getProof()
+
+        this.getBusses()
+        this.getPlaceofAssignment()
+        
+
+        // this.GetLatestConcern()
+       
+     this.GetConcernIsdone()
+
+       
+        this.getemployee()
+       
+        this.GetCategory()
+    
+        this.checkload = true
+        setInterval(() => {
+        
+         this.checklength()
+           
+            
+        }, 1000);
+        
+        
+        
+        
+          },
+        })
+
+
+
+     
+        
+
+
+
+</script>
+
+
+{% endblock %}

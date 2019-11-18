@@ -1,0 +1,802 @@
+{% extends "myapp/layout.html" %}
+{% block title %}
+
+{% endblock %}
+{% block content %}
+
+<q-breadcrumbs style="color: red; cursor: pointer">
+    <q-breadcrumbs-el label="File Maintenance /" onclick="window.location.href='{% url 'settings_panel' %}' " icon="settings" />
+    <q-breadcrumbs-el label="Job Description " icon="all_inbox" />
+    <q-breadcrumbs-el label=" /"  />
+</q-breadcrumbs>
+
+  <div class="row" style="width:100%;margin-top: 20px; ">
+      <q-list   >
+          <q-item style=" border-radius: 5px;"
+         >
+              <q-item-section>
+                <q-item-label style="font-size: 20px; font-weight: 900; color: #34495E ">Job Descripion</q-item-label>
+                <q-item-label caption lines="2">Describes the general tasks, or other related duties, and responsibilities of a position.</q-item-label>
+                <q-item-label style="color: #34495E"> </q-item-label>
+              </q-item-section>
+            
+              <q-item-section side top>
+                <q-item-label caption>
+
+                  
+                </q-item-label>
+                
+              </q-item-section>
+            </q-item>
+      </q-list>
+
+  </div>
+
+
+<div class="row" style="width:100%;margin-top: 20px;  ">
+
+     
+     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 animated fadeInDown " style="background-color: white;border-radius: 10px; padding: 20px;">
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                    <q-input  type="text" v-model="JobTitle" label="Job Title"  outlined></q-input>
+                    
+                </div>
+
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" style="margin-top: 5px;">
+                        <q-input  type="text" v-model="ReportsTo" label="Reports To"  outlined></q-input>
+                        
+                    </div>
+            
+               
+        
+              <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                    
+                      
+                  </div>
+          
+                  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" style="margin-top: 5px;">
+                        <q-select  v-model="model_department" :value="model_department" :options="departmentoptions" label="Select Department" outlined ></q-select>
+                          <!--  <q-select v-model="model" :options="options" label="Standard" filled /> -->
+                  </div>
+
+                  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" style="margin-top: 5px;">
+                        <q-input  type="text" v-model="Section" label="Section"  outlined></q-input>
+                        
+                    </div>
+          
+          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                    
+                      
+              </div>
+      
+              <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" style="margin-top: 10px;">
+                 <span style="font-size: 15px;"> Job Description</span>
+                 <q-editor
+                 style="margin-top: 10px;"
+                 v-model="editor"
+                 :dense="$q.screen.lt.md"
+                 :toolbar="[
+                   [
+                     {
+                       label: $q.lang.editor.align,
+                       icon: $q.iconSet.editor.align,
+                       fixedLabel: true,
+                       list: 'only-icons',
+                       options: ['left', 'center', 'right', 'justify']
+                     },
+                     {
+                       label: $q.lang.editor.align,
+                       icon: $q.iconSet.editor.align,
+                       fixedLabel: true,
+                       options: ['left', 'center', 'right', 'justify']
+                     }
+                   ],
+                   ['bold', 'italic', 'strike', 'underline', 'subscript', 'superscript'],
+                   ['token', 'hr', 'link', 'custom_btn'],
+                   ['print', 'fullscreen'],
+                   [
+                     {
+                       label: $q.lang.editor.formatting,
+                       icon: $q.iconSet.editor.formatting,
+                       list: 'no-icons',
+                       options: [
+                         'p',
+                         'h1',
+                         'h2',
+                         'h3',
+                         'h4',
+                         'h5',
+                         'h6',
+                         'code'
+                       ]
+                     },
+                     {
+                       label: $q.lang.editor.fontSize,
+                       icon: $q.iconSet.editor.fontSize,
+                       fixedLabel: true,
+                       fixedIcon: true,
+                       list: 'no-icons',
+                       options: [
+                         'size-1',
+                         'size-2',
+                         'size-3',
+                         'size-4',
+                         'size-5',
+                         'size-6',
+                         'size-7'
+                       ]
+                     },
+                     {
+                       label: $q.lang.editor.defaultFont,
+                       icon: $q.iconSet.editor.font,
+                       fixedIcon: true,
+                       list: 'no-icons',
+                       options: [
+                         'default_font',
+                         'arial',
+                         'arial_black',
+                         'comic_sans',
+                         'courier_new',
+                         'impact',
+                         'lucida_grande',
+                         'times_new_roman',
+                         'verdana'
+                       ]
+                     },
+                     'removeFormat'
+                   ],
+                   ['quote', 'unordered', 'ordered', 'outdent', 'indent'],
+           
+                   ['undo', 'redo']
+                 ]"
+                 :fonts="{
+                   arial: 'Arial',
+                   arial_black: 'Arial Black',
+                   comic_sans: 'Comic Sans MS',
+                   courier_new: 'Courier New',
+                   impact: 'Impact',
+                   lucida_grande: 'Lucida Grande',
+                   times_new_roman: 'Times New Roman',
+                   verdana: 'Verdana'
+                 }"
+               ></q-editor>
+               <q-btn color="red" style="margin-top: 15px;" @click="save_jobDescription" icon="save" label="Save"  ></q-btn>
+                      
+              </div>
+     </div>
+     
+    <div>
+        
+        
+      
+    </div>
+
+</div>
+
+<div class="row animated fadeInDown" style="width:100%;margin-top: 20px; ">
+   <!-- //qtable -->
+
+   <q-table
+   style="width: 100%"
+   :data="data"
+   :columns="columns"
+   row-key="id"
+   :filter="search"
+   selection="single"
+   :selected.sync="selected"
+ >
+
+ <template  slot="top-selection" >
+
+         <div>
+           <q-tooltip >
+            Open
+           </q-tooltip>
+             <q-btn push class="animated fadeInDown" dense color="red-8" label="See More"  @click="show_dialog" icon="visibility"  ></q-btn>
+             
+        </div>
+               </template>
+
+        <template v-slot:top-right>
+          <q-input outlined  style="width: 200px;padding: 10px;"  v-model="search"  dense debounce="300"  placeholder="Search">
+            <template v-slot:append>
+              <q-icon name="search" ></q-icon>
+            </template>
+        </q-input>
+       
+    
+     
+    
+     
+    
+     <template v-slot:append>
+      <q-icon name="search" ></q-icon>
+     </template>
+     </q-input>
+     </template>
+
+
+
+   </q-table>
+   
+   
+</div>
+
+
+<q-dialog
+      v-model="fullHeight"
+      full-height
+      full-width
+    >
+      <q-card class="column full-height" style="width: 900px; max-width: 1020px;">
+        
+
+
+        <q-card-section >
+            <div class="row" style="width: 100%">
+                    
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <q-btn style="float: right;" flat label="Close" v-close-popup ></q-btn>
+                    </div>
+                    
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <q-input v-model="display_jobtitle" type="text" readonly label="Job Title" ></q-input>
+                       </div>
+                       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <q-input v-model="display_reportto" type="text" readonly label="Reports To" ></q-input>
+                           
+                       </div>
+                       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <q-input v-model="display_department" type="text" readonly label="Department" ></q-input>
+                       </div>
+                       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <q-input v-model="display_section" type="text" readonly label="Section" ></q-input>
+                       </div>
+                       
+                       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <span style="font-size: 15px;"> Job Description
+                          
+                               <q-tooltip >
+                                   Edit Job Desciption Content
+                               </q-tooltip>
+                               <q-btn color="orange" @click="eventeditko" flat icon="edit"  ></q-btn>
+                          
+                            </span>
+                            <div v-if="editko">
+                                    <q-btn  color="red" push label="Update" @click="update_content"  ></q-btn>
+                            </div>
+                          
+                            
+                            <q-editor
+                            :readonly="editor_readonly"
+                            style="margin-top: 10px;"
+                            v-model="editor2"
+                            :dense="$q.screen.lt.md"
+                            :toolbar="[
+                              [
+                                {
+                                  label: $q.lang.editor.align,
+                                  icon: $q.iconSet.editor.align,
+                                  fixedLabel: true,
+                                  list: 'only-icons',
+                                  options: ['left', 'center', 'right', 'justify']
+                                },
+                                {
+                                  label: $q.lang.editor.align,
+                                  icon: $q.iconSet.editor.align,
+                                  fixedLabel: true,
+                                  options: ['left', 'center', 'right', 'justify']
+                                }
+                              ],
+                              ['bold', 'italic', 'strike', 'underline', 'subscript', 'superscript'],
+                              ['token', 'hr', 'link', 'custom_btn'],
+                              ['print', 'fullscreen'],
+                              [
+                                {
+                                  label: $q.lang.editor.formatting,
+                                  icon: $q.iconSet.editor.formatting,
+                                  list: 'no-icons',
+                                  options: [
+                                    'p',
+                                    'h1',
+                                    'h2',
+                                    'h3',
+                                    'h4',
+                                    'h5',
+                                    'h6',
+                                    'code'
+                                  ]
+                                },
+                                {
+                                  label: $q.lang.editor.fontSize,
+                                  icon: $q.iconSet.editor.fontSize,
+                                  fixedLabel: true,
+                                  fixedIcon: true,
+                                  list: 'no-icons',
+                                  options: [
+                                    'size-1',
+                                    'size-2',
+                                    'size-3',
+                                    'size-4',
+                                    'size-5',
+                                    'size-6',
+                                    'size-7'
+                                  ]
+                                },
+                                {
+                                  label: $q.lang.editor.defaultFont,
+                                  icon: $q.iconSet.editor.font,
+                                  fixedIcon: true,
+                                  list: 'no-icons',
+                                  options: [
+                                    'default_font',
+                                    'arial',
+                                    'arial_black',
+                                    'comic_sans',
+                                    'courier_new',
+                                    'impact',
+                                    'lucida_grande',
+                                    'times_new_roman',
+                                    'verdana'
+                                  ]
+                                },
+                                'removeFormat'
+                              ],
+                              ['quote', 'unordered', 'ordered', 'outdent', 'indent'],
+                      
+                              ['undo', 'redo']
+                            ]"
+                            :fonts="{
+                              arial: 'Arial',
+                              arial_black: 'Arial Black',
+                              comic_sans: 'Comic Sans MS',
+                              courier_new: 'Courier New',
+                              impact: 'Impact',
+                              lucida_grande: 'Lucida Grande',
+                              times_new_roman: 'Times New Roman',
+                              verdana: 'Verdana'
+                            }"
+                          ></q-editor>
+                       </div>
+                       
+                       
+                     
+            </div>
+           
+         
+        </q-card-section>
+
+       
+      </q-card>
+    </q-dialog>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% endblock %}
+
+
+{% block script %}
+<script>
+
+// setup
+new Vue({
+            el: '#app',
+            delimiters: ['${','}'],
+            data: function () {
+              return {
+                drawerState: false,
+                pic_user : 'http://res.heraldm.com/phpwas/restmb_jhidxmake.php?idx=5&simg=201701181539234376570_20170118154018_02.jpg',
+                left : false,
+                dash : {
+            backgroundColor : '#273746',
+           color : 'white'
+           },
+           
+           Deliberation : {
+           backgroundColor : '#273746',
+           color : 'white',
+       },
+
+       employee : {
+            backgroundColor : '#273746',
+           color : 'white'
+           },
+           performance_evaluation : {
+           backgroundColor : '#273746',
+           color : 'white',
+        
+       },
+       settings : {
+            backgroundColor : '#273746',
+           color : 'white'
+           },
+           Deliberation : {
+           backgroundColor : '#273746',
+           color : 'white',
+       },
+       report : {
+           backgroundColor : '#273746',
+           color : 'white',
+       },
+       concern : {
+           backgroundColor : '#273746',
+           color : 'white',
+       },
+
+        
+       global_hostname : '',
+       token : '',
+       editor : '',
+       editor2 : '',
+
+       JobTitle: "",
+        Section: "",
+        ReportsTo: "",
+        RawDepartment : [],
+        departmentoptions : [],
+        model_department : '',
+        AllJobDescription : [],
+        
+           
+        columns: [
+          
+          {
+          name: 'id',
+          required: true,
+          label: 'Department',
+          align: 'left',
+          field: row => row.Department,
+          format: val => `${val}`,
+          sortable: true
+        },
+        { name: 'JobTitle', align: 'center', label: 'JobTitle', field: 'JobTitle', sortable: true },
+        { name: 'Section', align: 'center', label: 'Section', field: 'Section', sortable: true },
+        { name: 'ReportsTo', label: 'ReportsTo', field: 'ReportsTo', sortable: true },
+        { name: 'date_created', label: 'DateCreated', field: 'date_created' },
+        { name: 'date_updated', label: 'Last Updated', field: 'date_updated' },
+        
+      ],
+      data: [
+               
+      ],
+        
+      selected : [],
+      fullHeight : false,
+      display_section :'',
+                display_department: '',
+                display_reportto : '',
+                    display_jobtitle : '',
+                    editko : false,
+                    editor_readonly :true,
+                    search : '',
+
+         
+        //state
+                                          
+
+
+
+       
+        
+               
+              }
+            },beforeMount () {
+              if(innerWidth < 1017){
+                    this.drawerState = false
+                }
+            },
+          methods: {
+                                logout(){
+                                axios.post(`${this.global_hostname}/logout/`,{
+                                    
+                                    headers: {
+                                                'Content-Type': 'application/json',
+                                                    'X-CSRFToken': this.token
+                                    }
+                                    
+                                })
+                                .then(res => {
+                                    window.location.replace(`${this.global_hostname}/login/`)
+                                    
+                                })
+                                .catch(err => {
+                                    
+                                })
+
+                                
+                            },
+
+                            update_content(){
+                                this.editor_readonly = true
+                            this.editko =  false
+                            var dep = this.RawDepartment
+                            var department = this.display_department
+                                var filter = dep.filter(
+                                    (element)=>{    
+                                            return element.department ==  department
+
+                                    }
+                                )
+
+                            var obj = {
+                                "Department": `${this.global_hostname}/api/DEPARTMENT/${filter[0].id}/`,
+                                "JobTitle": this.display_jobtitle,
+                                "Section":this.display_section,
+                                "ReportsTo":  this.display_reportto,
+                                "Content":  this.editor2 ,
+                            }
+                            axios.put(`${this.global_hostname}/api/POST_JobDescription/${this.selected[0].id}/`,obj,{
+                              
+                                 headers: {
+                                             'Content-Type': 'application/json',
+                                                'X-CSRFToken': this.token
+                                 }
+                                
+                            })
+                            .then(res => {
+                                console.log(res)
+                                this.$q.notify({ //put dollor sign(q)
+                                    message: `Job Description is Successfully Updated!`,
+                                    timeout: 3000, // in milliseconds; 0 means no timeout
+                                
+                                    color: 'gray',
+                                    textColor: 'white', // if default 'white' doesn't fit
+                                 icon: 'check', //or  avatar: 'statics/boy-avatar.png',
+                                 
+                                 position: 'top', // 'top', 'left', 'bottom-left' etc.
+                                 
+                                    })
+                                
+                                
+
+                                this.getJobDescriptionAll()
+                            })
+                            .catch(err => {
+                                console.error(err); 
+                            })
+
+
+                            },
+                            eventeditko(){
+                            
+                            this.editor_readonly = false
+                            this.editko =  true
+
+                            },
+
+                                show_dialog(){
+                                //show
+                                this.fullHeight = true
+                                var id = this.selected[0].id
+
+                                var temp = this.data
+                                var getcontent = temp.filter(
+                                    (element)=>{
+                                        return element.id == id
+                                    }
+                                )
+                               this.display_section = getcontent[0].Section
+                                this.display_department = getcontent[0].Department
+                                this.display_reportto  = getcontent[0].ReportsTo
+                               this.display_jobtitle = getcontent[0].JobTitle
+                               this.editor2 = getcontent[0].Content
+                                    
+
+                            },
+                            save_jobDescription(){
+
+                                var dep = this.RawDepartment
+                                var modeldep = this.model_department
+
+                                var filter = dep.filter(
+                                    (element)=>{    
+                                            return element.department = modeldep
+
+                                    }
+                                )
+                                    
+                                  var forsection  = this.Section
+                                  if(this.Section  == ''){
+                                    forsection = '-'
+                                  }
+                                var payload = {
+                                            "Department": `${this.global_hostname}/api/DEPARTMENT/${filter[0].id}/`,
+                                            "JobTitle": this.JobTitle,
+                                            "Section": forsection,
+                                            "ReportsTo":this.ReportsTo,
+                                            "Content": this.editor,
+                                }
+
+                                console.log(this.editor.length)
+                                axios.post(`${this.global_hostname}/api/POST_JobDescription/`,payload,{
+                                   
+                                     headers: {
+                                                 'Content-Type': 'application/json',
+                                                    'X-CSRFToken': this.token
+                                     }
+                                    
+                                })
+                                .then(res => {
+                                    console.log(res)
+                                    this.getJobDescriptionAll()
+                                    this.JobTitle = ''
+                                    this.Section = ''
+                                    this.ReportsTo = ''
+                                    this.editor = ''
+                                    this.editor2  = ''
+                                    this.$q.notify({ //put dollor sign(q)
+                                      message: `New Job Description Successfully Saved!`,
+                                      timeout: 3000, // in milliseconds; 0 means no timeout
+                                    
+                                      color: 'gray',
+                                      textColor: 'white', // if default 'white' doesn't fit
+                                     icon: 'check', //or  avatar: 'statics/boy-avatar.png',
+                                     
+                                     position: 'top', // 'top', 'left', 'bottom-left' etc.
+                                      
+                                      })
+                                    
+                                    
+                                })
+                                .catch(err => {
+                                    console.error(err); 
+                                })
+                            },
+                            getDepertment(){
+                                axios.get(`${this.global_hostname}/api/DEPARTMENT/`,{
+                                   
+                                     headers: {
+                                                 'Content-Type': 'application/json',
+                                                    'X-CSRFToken': this.token
+                                     }
+                                    
+                                })
+                                .then(res => {
+                                    console.log(res)
+
+                                    var data = res.data
+                                    this.RawDepartment  =res.data
+                                    var temp = []
+                                    for (let index = 0; index < data.length; index++) {
+                                        const element = data[index];
+                                        temp.push(element.department)
+                                        if(index == data.length - 1){
+
+                                                this.departmentoptions = temp
+                                        }
+                                        
+                                    }
+                                })
+                                .catch(err => {
+                                    console.error(err); 
+                                })
+                            },
+                            getJobDescriptionAll(){
+                                axios.get(`${this.global_hostname}/api/GET_JobDescription/`,{
+                                
+                                     headers: {
+                                                 'Content-Type': 'application/json',
+                                                    'X-CSRFToken': this.token
+                                     }
+                                    
+                                })
+                                .then(res => {
+                                  
+                                    this.AllJobDescription = res.data
+                                    var temp = []
+                                    for (let index = 0; index < this.AllJobDescription.length; index++) {
+                                        const element = this.AllJobDescription[index];
+                                        var obj = {
+                                            "url": element.url,
+                                            "id": element.id,
+                                            "Department": element.Department,
+                                            "JobTitle": element.JobTitle,
+                                            "Section": element.Section,
+                                            "ReportsTo": element.ReportsTo,
+                                            "Content": element.Content,
+                                            "date_created": this.sort_date(element),
+                                            "date_updated": this.sort_date_updated(element),
+                                        }
+                                        
+                                        temp.push(obj)
+                                        if(index == this.AllJobDescription.length - 1){
+                                                this.data = temp
+                                        }
+                                        
+                                    }
+                                    
+                                    //current
+
+                                })
+                                .catch(err => {
+                                    console.error(err); 
+                                })
+                            },
+                            sort_date_updated(element){
+
+                        var d = new Date();
+                       
+                        var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+
+                        var init_y = element.date_updated.substring(0,4);
+                        var init_m  = parseInt(element.date_updated.substring(5,7));
+                        var init_d = element.date_updated.substring(8,10);
+                        var d = new Date(init_y,init_m,init_d);
+                        var m  = months[parseInt(d.getMonth()) - 1];
+                        
+                        var y = d.getFullYear()
+                        var d = d.getDate();
+                        var result = `${m} ${d}, ${y}`
+                        return result
+
+
+
+                        },
+
+                            sort_date(element){
+
+                            var d = new Date();
+                            console.log(element.date_created)
+                            var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+
+                            var init_y = element.date_created.substring(0,4);
+                            var init_m  = parseInt(element.date_created.substring(5,7));
+                            var init_d = element.date_created.substring(8,10);
+                            var d = new Date(init_y,init_m,init_d);
+                            var m  = months[parseInt(d.getMonth()) - 1];
+                            console.log(m)
+                            var y = d.getFullYear()
+                            var d = d.getDate();
+                            var result = `${m} ${d}, ${y}`
+                            return result
+
+
+
+                            },
+
+
+
+
+
+          },
+          mounted () {
+            
+            var hostname = window.location.hostname;
+            var port = window.location.port
+        if(port != ''){
+
+            hostname = hostname+':8000'
+        }
+        else{
+            hostname = hostname
+        }
+
+        this.global_hostname = `${window.location.protocol}//${hostname}`;
+        var csrftoken = Cookies.get('csrftoken');
+        this.token = csrftoken
+        this.getDepertment()
+        this.getJobDescriptionAll()
+        
+        
+        
+        
+          },
+        })
+
+
+</script>
+
+{% endblock %}

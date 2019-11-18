@@ -1,0 +1,2044 @@
+{% extends "myapp/layout.html" %}
+
+
+{% block content %}
+
+<q-breadcrumbs style="color: red; cursor: pointer">
+    <q-breadcrumbs-el label="File Maintenance /" onclick="window.location.href='{% url 'settings_panel' %}' " icon="settings" />
+    <q-breadcrumbs-el label="Access Level " icon="all_inbox" />
+    <q-breadcrumbs-el label=" /"  />
+</q-breadcrumbs>
+
+<div class="row animated fadeInDown" style="padding: 10px;">
+    <div style="width: 100% ">
+         <legend style="font-size: 25px; color:#34495E;font-weight: 900">Job Level | Access Level</legend>
+    </div>
+    <div class="row animated fadeInDown">
+         <span style="color: #34495E">
+            <small>Job levels are categories of authority in a system. Each level has a Module that allow to access.</small>
+         </span>  
+    </div>
+</div>
+
+
+<!-- 
+<div class="row animated fadeInDown" style="padding: 10px; width: 100% ">
+            
+            
+
+    <div class="col-xs-12 col-sm-4 col-md-4 col-lg-3" style="padding: 10px;">
+
+        <q-list  >
+
+            <q-item clickable style="width: 100% ;padding: 20px;; ; border-radius: 5px; -webkit-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12);
+            -moz-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12);
+            box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12); background-color: white;">
+                <q-item-section>
+                  <q-item-label> <q-tooltip v-model="showing">
+                      Add New Job Level
+                  </q-tooltip>
+                
+                  <q-icon style="width: 100%;text-align:center;color:red;font-size: 30px;" @click="add_new_joblevel" name="add"></q-icon> 
+                </q-item-label>
+                  <q-item-label caption lines="2">
+                 
+                                             
+
+                  </q-item-label>
+                </q-item-section>
+        
+                <q-item-section side top>
+                  <q-item-label caption></q-item-label>
+                  
+                </q-item-section>
+              </q-item>
+        </q-list>
+
+
+      </div>
+
+
+
+   
+
+      
+
+  <div class="col-xs-12 col-sm-4 col-md-4 col-lg-3" v-for="item in joblevel" style="padding: 10px;">
+
+    <q-list  >
+
+        <q-item clickable style="width: 100% ; border-radius: 5px; -webkit-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12);
+        -moz-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12);
+        box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12); background-color: white;">
+            <q-item-section>
+              <q-item-label style="font-size: 18px; color:#5D6D7E;font-weight: 900">${ item.joblevel }</q-item-label>
+              <q-item-label caption lines="2">
+                                <q-btn icon="delete" flat color="grey" @click="delete_joblevel(item.id)" ></q-btn>
+                                <q-btn icon="edit" flat color="orange" @click="edit_joblevel(item.id)"></q-btn>
+              </q-item-label>
+            </q-item-section>
+           
+    
+            <q-item-section side top>
+              <q-item-label>
+                 ${ item.descritption }
+              </q-item-label>
+
+              <q-icon name="location_city" color="red" />
+            </q-item-section>
+          </q-item>
+    </q-list>
+
+
+  </div>
+ -->
+
+
+
+  <!-- //brylle -->
+<div class="row animated fadeInDown" style="padding: 10px; width: 100% ; background-color: white;border-radius: 10px; margin-top: 10px;;" >
+    <div class="row" style="width: 100%; margin-top: 10px;;">
+        <div style="width: 100%;">
+            <legend style="font-size: 20px; color:#34495E;font-weight: 900"></legend>
+       </div>
+    </div>
+  
+  
+  <div style="width: 100% ">
+      <q-list >
+        <q-item >
+          <q-item-section avatar>
+            <q-icon style=" color:#34495E" name="person" ></q-icon>
+          </q-item-section>
+          <q-item-section style="font-size: 20px; color:#34495E;font-weight: 900">Administrator
+          <br>
+          <small></small>
+          </q-item-section>
+
+          <!-- <q-btn color="orange" icon="edit" label="Change Password" ></q-btn> -->
+        </q-item>
+
+      </q-list>
+        
+    </div>
+    
+    
+    
+    </div> 
+ 
+
+    <!-- //brylle -->
+
+
+
+
+    
+    
+    
+    
+    <div class="row" style="width:100%;margin-top: 20px;  ">
+     <!-- @click="new_bus" -->
+     <q-btn color="red-8" icon="add" label="Add Access Level"  @click="event_new_accesslevel" ></q-btn>
+    
+    </div>
+
+    
+
+
+<div class="row animated fadeInDown"  v-for="item in AccessLevel" style="padding: 10px; width: 100% ; background-color: white;border-radius: 10px; margin-top: 10px;;" >
+    <div class="row" style="width: 100%; margin-top: 10px;;">
+        <div style="width: 100%;">
+          <div class="row">
+            
+         
+            
+            <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                <q-btn color="orange" icon="edit" @click="rename(item)" flat label="RENAME"  ></q-btn>
+                <q-btn color="grey" icon="delete" @click="deletejoblevel(item)" flat label="delete"  ></q-btn>
+
+            </div>
+
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                      
+ <q-table
+
+     
+ style="width: 100%"
+ :data="item.tables.data"
+ :columns="item.tables.columns"
+
+ selection="single"
+ :selected.sync="item.tables.selecteds"
+  :filter="item.tables.terms"
+    
+     :title="item.NameofUserLevel"
+ 
+ >
+ 
+ 
+ 
+ <template  slot="top-selection" >
+ 
+          <q-btn color="red" class="animated fadeInRight" icon="visibility" label="Modify" @click="event_modify(item.tables.selecteds)" ></q-btn>
+ </template>
+ 
+ 
+ 
+      <template v-slot:top-right>
+   
+ <q-input outlined  style="width: 200px;padding: 10px;" v-model="item.tables.terms"  filled  dense debounce="300"  placeholder="Search">
+         <template v-slot:append>
+           <q-icon name="search" ></q-icon>
+         </template>
+     </q-input>
+   
+   
+   
+   
+  
+ 
+ 
+        
+ 
+ 
+  
+   </template>
+ 
+ 
+ 
+ </q-table>  
+            </div>
+            
+            
+            
+          </div>
+       </div>
+
+
+       
+    </div>
+  
+  
+  
+        
+  </div>
+    
+    
+    
+     
+ 
+
+
+  
+  
+
+
+
+<!-- 
+
+<div class="row animated fadeInDown" style="padding: 10px; width: 100% ; background-color: white;border-radius: 10px; margin-top: 10px;;"  v-for="item in ACCESS_LEVEL">
+  <div style="width: 100% ">
+       <legend style="font-size: 20px; color:#34495E;font-weight: 900">${item.JobLevel}</legend>
+  </div>
+  <div style="width: 100% ">
+    <legend style="font-size: 15px; color:#34495E;">Modules</legend>
+</div>
+  <div class="row animated fadeInDown" style="width: 100%">
+                <q-list v-for="item2 in item.Module" >
+                  <q-item  >
+                    <q-item-section avatar>
+                      <q-icon color="red" name="info"/>
+                    </q-item-section>
+                    <q-item-section>${item2.ModuleName}
+                        <q-item-label caption>
+                         ${item2.details}
+                          </q-item-label>
+
+                    </q-item-section>
+                   
+                       
+                
+
+                    
+
+                  </q-item>
+                  <q-item>
+                     
+                  
+                    <q-item-section style="margin-left: 50px;" v-if="item2.ListofJobLevel.length > 0" >
+                        <q-list >
+                          <q-item>
+                              <q-item-section style="width: 100%; font-size: 15px;;">-List of JobLevel to Evaluate</q-item-section>
+                          </q-item>
+                          <q-item v-for="item3 in item2.ListofJobLevel" > 
+                            <q-item-section>${item3.name}</q-item-section>
+                            <q-btn color="gray" flat icon="delete" ></q-btn>
+                          </q-item>
+                         
+                        </q-list>
+                      <q-input   type="text" label="Job Level to Evaluate" filled ></q-input>
+                      <q-btn color="red" flat  label="save"  ></q-btn>
+                    </q-item-section>
+                   
+                  
+                   
+                  </q-item>
+                </q-list>
+                
+  </div>
+</div>
+ -->
+
+
+
+
+
+  <q-dialog v-model="new_joblevel" persistent>
+    <q-card style="width: 900px;">
+      <q-card-section class="row items-center" style="padding: 30px;">
+          <div class="row animated fadeInDown" style="width: 100%; padding: 5px;">
+             
+            <legend style="font-size: 25px; color:#34495E;font-weight: 900">New Job Level</legend>
+          </div>
+          <div class="row animated fadeInDown" style="width: 100%; padding: 5px;">
+                <q-input style="width: 100%;" v-model="model_joblevel"  type="text" outlined label="Enter Job Level" ></q-input>
+          </div>
+          
+          
+      </q-card-section>
+      <q-card-actions align="right">
+        <q-btn flat label="Cancel" color="grey" v-close-popup ></q-btn>
+        <q-btn flat label="save" color="red-8" v-close-popup  @click="save" ></q-btn>
+      </q-card-actions>
+    </q-card>
+  </q-dialog>
+
+
+
+  
+  <q-dialog v-model="edit_joblevel_modal" persistent>
+    <q-card style="width: 900px;">
+      <q-card-section class="row items-center" style="padding: 30px;">
+          <div class="row animated fadeInDown" style="width: 100%; padding: 5px;">
+             
+            <legend style="font-size: 25px; color:#34495E;font-weight: 900">Edit Job Level</legend>
+          </div>
+          <div class="row animated fadeInDown" style="width: 100%; padding: 5px;">
+                <q-input style="width: 100%;" v-model="model_jobleveledit"  type="text" outlined label="Enter Job Level" ></q-input>
+          </div>
+          <div class="row animated fadeInDown" style="width: 100%;  padding: 5px; ">
+              
+        </div>
+          
+      </q-card-section>
+      <q-card-actions align="right">
+        <q-btn flat label="Cancel" color="grey" v-close-popup ></q-btn>
+        <q-btn flat label="save" color="red-8" v-close-popup  @click="update_joblevel" ></q-btn>
+      </q-card-actions>
+    </q-card>
+  </q-dialog>
+
+
+
+  <q-dialog v-model="modal_modify">
+      <q-card style="width: 900px;">
+        <q-card-section class="row items-center" style="padding: 30px; max-width: 1050; width: 900;">
+            <div class="row animated fadeInDown" style="width: 100%; padding: 5px;">
+               
+              <legend style="font-size: 25px; color:#34495E;font-weight: 900">Modify Access Level</legend>
+              
+            </div>
+            
+            <div class="row animated fadeInDown" style="width: 100%; padding: 5px; border: 1px solid orange ; border-radius: 5px; ">
+                  <q-input style="width: 100%;" v-model="modify_Name"  type="text" outlined label="Enter Job Level" ></q-input>
+                  <label for="" style="font-weight: 900; font-size: 18px; color:red; padding: 10px;;">List of Modules</label>
+                  <div class="row animated fadeInDown" style="width: 100%; padding: 5px;">
+                      <q-btn color="green" icon="fiber_manual_record" flat label="True"></q-btn>
+                      <q-btn color="grey" icon="fiber_manual_record" flat label="False"></q-btn>
+                    </div>
+                  <q-toggle style="width: 100%;"  v-model="modify_EmployeePerformance" color="green" label="EmployeePerformance"></q-toggle>
+                  <q-toggle style="width: 100%;" v-model="modify_FileMaintenanceModule" color="green"  label="FileMaintenanceModule"></q-toggle>
+                  <q-toggle style="width: 100%;" v-model="modify_FileMaintenance_201File" color="green"  label="FileMaintenance_201File"></q-toggle>
+                  <q-toggle style="width: 100%;" v-model="modify_FileMaintenance_Accounts" color="green"  label="FileMaintenance_Accounts"></q-toggle>
+                  <q-toggle style="width: 100%;" v-model="modify_FileMaintenance_Departments" color="green"  label="FileMaintenance_Departments"></q-toggle>
+                  <q-toggle style="width: 100%;" v-model="modify_FileMaintenance_EvaluationGuide" color="green"  label="FileMaintenance_EvaluationGuide"></q-toggle>
+                  <q-toggle style="width: 100%;" v-model="modify_FileMaintenance_General" color="green"  label="FileMaintenance_General"></q-toggle>
+                  <q-toggle style="width: 100%;" v-model="modify_FileMaintenance_JobLevelorAccessLevel" color="green"  label="FileMaintenance_JobLevelorAccessLevel"></q-toggle>
+                  <q-toggle style="width: 100%;" v-model="modify_FileMaintenance_Offense" color="green"  label="FileMaintenance_Offense"></q-toggle>
+                  <q-toggle style="width: 100%;" v-model="modify_FileMaintenance_PlaceofAssignment" color="green"  label="FileMaintenance_PlaceofAssignment"></q-toggle>
+                  <q-toggle style="width: 100%;" v-model="modify_FileMaintenance_EvaluationSheet" color="green"  label="EvaluationSheet"></q-toggle>
+                  <q-toggle style="width: 100%;" v-model="modify_PerformanceEvaluationModule" color="green"  label="PerformanceEvaluationModule"></q-toggle>
+                
+                  
+                  <q-toggle style="width: 100%;" v-model="modify_ReportsModule" color="green"  label="ReportsModule"></q-toggle>
+                  <q-toggle style="width: 100%;" v-model="modify_SystemDashboardModule" color="green"  label="SystemDashboardModule"></q-toggle>
+                  
+                  <div style="border-radius: 5px; border: 1px red solid ; padding: 5px;">
+                      <label for="" style="font-weight: 900; font-size: 18px; color:red; padding: 10px;;">Deliberation Participant</label>
+                      <q-toggle style="width: 100%;" v-model="modify_deliberation" color="green"  label="DeliberationModule"></q-toggle>
+                  </div>
+
+
+                  
+                 
+                 
+                    <div class="row" style="border: 1px solid red ; border-radius: 5px; padding: 10px; margin-top: 10px;">
+                        <label for="" style="font-weight: 900; font-size: 18px; color:red; padding: 10px;;">Customer FeedBack Handler</label>
+                      <q-toggle style="width: 100%;" v-model="modify_CustomerConcern" disable color="green"  label="CustomerConcern"></q-toggle>
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
+                            <q-item tag="label" >
+                                <q-item-section avatar>
+                                  <q-radio v-model="modify_groups" val="Is_CallCenter" @input="eventHandler('1')" label="CallCenter" color="green" ></q-radio>
+                                </q-item-section>
+                                
+                            </q-item>
+        
+                         </div>
+                         
+                                
+        
+                               
+                               <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
+                                  <q-item tag="label" >
+                                      <q-item-section avatar>
+                                        <q-radio v-model="modify_groups" val="Is_CustomerService"  @input="eventHandler('1')" label="Customer Service" color="orange" ></q-radio>
+                                      </q-item-section>
+                                      
+                                  </q-item>
+        
+                               </div>
+                               
+        
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
+          
+            <q-item tag="label" >
+                <q-item-section avatar>
+                  <q-radio v-model="modify_groups" val="Is_LegalDepartment" label="Legal Department"  @input="eventHandler('1')"  color="red" ></q-radio>
+                </q-item-section>
+                
+            </q-item>
+        </div>
+
+
+
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
+          
+          <q-item tag="label" >
+              <q-item-section avatar>
+                <q-radio v-model="modify_groups" val="none" label="None"  @input="eventHandler('2')" color="gray" ></q-radio>
+              </q-item-section>
+              
+          </q-item>
+      </div>
+
+
+                    </div>
+
+
+
+                 
+                  
+                  <!-- hai -->
+            </div>
+            <div class="row animated fadeInDown" style="width: 100%;  padding: 5px; ">
+                
+          </div>
+            
+        </q-card-section>
+        <q-card-actions align="right">
+          <q-btn flat label="Cancel" color="grey" v-close-popup ></q-btn>
+          <q-btn  label="save" color="red-8" v-close-popup @click="updateAccessLevel()" ></q-btn>
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+  
+
+
+     <q-dialog v-model="modalrename" persistent>
+      <q-card style="width: 900px; max-width: 1020;">
+       
+     
+          <q-card-section>
+            <div class="text-h6">Rename</div>
+            
+           
+          </q-card-section>
+          <q-card-section>
+            <q-input v-model="modelraname" type="text" outlined label="Access Level Name" ></q-input>
+          </q-card-section>
+         
+      
+        <q-card-actions align="center">
+            <q-btn push  label="Close" color="grey" v-close-popup ></q-btn>
+          <q-btn push icon="save"  label="Save" v-close-popup  color="red" @click="rename_update"  ></q-btn>
+        </q-card-actions>
+      </q-card>
+    </q-dialog> 
+
+
+
+    <q-dialog v-model="modal_new_access_level" >
+      <q-card style="width: 900px; max-width: 1020;">
+       
+     
+          <q-card-section>
+            <div class="text-h6">New Access Level</div>
+            
+           
+          </q-card-section>
+          <q-card-section>
+            <q-input style="padding: 5px;" v-model="newaccesslevel" type="text" outlined label="Access Level Name" ></q-input>
+            <label for="" style="font-weight: 900; font-size: 18px; color:red; padding: 10px;;">List of Modules</label>
+            <div class="row animated fadeInDown" style="width: 100%; padding: 5px;">
+              <q-btn color="green" icon="fiber_manual_record" flat label="True"></q-btn>
+              <q-btn color="grey" icon="fiber_manual_record" flat label="False"></q-btn>
+            </div>
+          <q-toggle style="width: 100%;"  v-model="new_modify_EmployeePerformance" color="green" label="EmployeePerformance"></q-toggle>
+          <q-toggle style="width: 100%;" v-model="new_modify_FileMaintenanceModule" color="green"  label="FileMaintenanceModule"></q-toggle>
+          <q-toggle style="width: 100%;" v-model="new_modify_FileMaintenance_201File" color="green"  label="FileMaintenance_201File"></q-toggle>
+          <q-toggle style="width: 100%;" v-model="new_modify_FileMaintenance_Accounts" color="green"  label="FileMaintenance_Accounts"></q-toggle>
+          <q-toggle style="width: 100%;" v-model="new_modify_FileMaintenance_Departments" color="green"  label="FileMaintenance_Departments"></q-toggle>
+          <q-toggle style="width: 100%;" v-model="new_modify_FileMaintenance_EvaluationGuide" color="green"  label="FileMaintenance_EvaluationGuide"></q-toggle>
+          <q-toggle style="width: 100%;" v-model="new_modify_FileMaintenance_General" color="green"  label="FileMaintenance_General"></q-toggle>
+          <q-toggle style="width: 100%;" v-model="new_modify_FileMaintenance_JobLevelorAccessLevel" color="green"  label="FileMaintenance_JobLevelorAccessLevel"></q-toggle>
+          <q-toggle style="width: 100%;" v-model="new_modify_FileMaintenance_Offense" color="green"  label="FileMaintenance_Offense"></q-toggle>
+          <q-toggle style="width: 100%;" v-model="new_modify_FileMaintenance_PlaceofAssignment" color="green"  label="FileMaintenance_PlaceofAssignment"></q-toggle>
+          <q-toggle style="width: 100%;" v-model="new_modify_FileMaintenance_EvaluationSheet" color="green"  label="EvaluationSheet"></q-toggle>
+          <q-toggle style="width: 100%;" v-model="new_modify_PerformanceEvaluationModule" color="green"  label="PerformanceEvaluationModule"></q-toggle>
+          <q-toggle style="width: 100%;" v-model="new_modify_ReportsModule" color="green"  label="ReportsModule"></q-toggle>
+          <q-toggle style="width: 100%;" v-model="new_modify_SystemDashboardModule" color="green"  label="SystemDashboardModule"></q-toggle>
+
+          <div style="border-radius: 5px; border: 1px red solid ; padding: 5px;">
+              <label for="" style="font-weight: 900; font-size: 18px; color:red; padding: 10px;;">Deliberation Participant</label>
+            <q-toggle style="width: 100%;" v-model="new_modify_deliberation" color="green"  label="DeliberationModule"></q-toggle>
+          </div>
+
+          
+                <div class="row" style="border: 1px solid red ; border-radius: 5px; padding: 10px; margin-top: 5px;">
+                    <label for="" style="font-weight: 900; font-size: 18px; color:red; padding: 10px;;">Customer Feedback Handlers</label>
+                  <q-toggle style="width: 100%;" v-model="new_modify_CustomerConcern" color="green" disabled  label="CustomerConcern"></q-toggle>
+                                  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
+                                      <q-item tag="label" >
+                                          <q-item-section avatar>
+                                            <q-radio v-model="new_modify_groups" val="Is_CallCenter" @input="newhandlers('1')" label="CallCenter" color="green" ></q-radio>
+                                          </q-item-section>
+                                          
+                                      </q-item>
+                  
+                                  </div>
+                               <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
+                                  <q-item tag="label" >
+                                      <q-item-section avatar>
+                                        <q-radio v-model="new_modify_groups" val="Is_CustomerService" @input="newhandlers('1')" label="Customer Service" color="orange" ></q-radio>
+                                      </q-item-section>
+                                      
+                                  </q-item>
+        
+                               </div>
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
+                                  
+                                    <q-item tag="label" >
+                                        <q-item-section avatar>
+                                          <q-radio v-model="new_modify_groups" val="Is_LegalDepartment" @input="newhandlers('1')" label="Legal Department" color="red" ></q-radio>
+                                        </q-item-section>
+                                        
+                                    </q-item>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
+                                  
+                                  <q-item tag="label" >
+                                      <q-item-section avatar>
+                                        <q-radio v-model="new_modify_groups" val="none" label="None" color="gray"  @input="newhandlers('2')"></q-radio>
+                                      </q-item-section>
+                                      
+                                  </q-item>
+                              </div>
+
+
+                    </div>
+
+
+
+
+
+
+          </q-card-section>
+         
+      
+        <q-card-actions align="center">
+            <q-btn push  label="Close" color="grey" v-close-popup ></q-btn>
+          <q-btn push icon="save"  label="Save" v-close-popup  color="red" @click="save_new_access_level"  ></q-btn>
+        </q-card-actions>
+      </q-card>
+    </q-dialog> 
+    
+    
+
+
+
+
+
+
+{% endblock %}
+
+
+{% block script %}
+
+<script>
+new Vue({
+            el: '#app',
+            delimiters: ['${','}'],
+            data: function () {
+              return {
+
+                drawerState: false,
+                pic_user : 'http://res.heraldm.com/phpwas/restmb_jhidxmake.php?idx=5&simg=201701181539234376570_20170118154018_02.jpg',
+          
+                dash : {
+            backgroundColor : '#273746',
+           color : 'white'
+           },
+           
+           Deliberation : {
+           backgroundColor : '#273746',
+           color : 'white',
+       },
+
+       employee : {
+            backgroundColor : '#273746',
+           color : 'white'
+           },
+           performance_evaluation : {
+           backgroundColor : '#273746',
+           color : 'white',
+        
+       },
+       settings : {
+            backgroundColor : '#273746',
+           color : 'white'
+           },
+           Deliberation : {
+           backgroundColor : '#273746',
+           color : 'white',
+       },
+       report : {
+           backgroundColor : '#273746',
+           color : 'white',
+       },
+       concern : {
+           backgroundColor : '#273746',
+           color : 'white',
+       },
+
+
+       global_hostname : '',
+       token : '',
+       joblevel : [],
+       id_joblevel : 0,
+       edit_joblevel_modal : false,
+         model_jobleveledit : '',
+         showing : false,
+         new_joblevel : false,
+         model_joblevel : '',
+         modal_modify : false,
+         modify_Name : '',
+         modify_EmployeePerformance : false,
+        modify_FileMaintenanceModule : false,
+        modify_FileMaintenance_201File : false,
+               modify_FileMaintenance_Accounts : false,
+                  modify_FileMaintenance_Departments : false,
+                  modify_FileMaintenance_EvaluationGuide : false,
+                  modify_FileMaintenance_General : false,
+                  modify_FileMaintenance_JobLevelorAccessLevel : false,
+                  modify_FileMaintenance_Offense : false,
+                  modify_FileMaintenance_EvaluationSheet : false,
+                  modify_FileMaintenance_PlaceofAssignment : false,
+                  modify_PerformanceEvaluationModule : false,
+                  modify_ReportsModule : false,
+                  modify_SystemDashboardModule : false,
+                  modify_deliberation : false,
+                  
+                  UpdateGlobalIdAccessLevel : 0,
+                  globalEmpCode :'', 
+                  modify_CustomerConcern : false,
+                  modify_groups : 'Is_CallCenter',
+                  modalrename : false,
+                  modelraname : '',
+                  rename_update_data : [],
+                  rename_id : 0,
+
+
+                  //-----------------------
+                  modal_new_access_level: false,
+                  newaccesslevel : '',
+                  new_modify_EmployeePerformance : false,
+                  new_modify_FileMaintenanceModule : false,
+                  new_modify_FileMaintenance_201File : false,
+                  new_modify_FileMaintenance_Accounts : false,
+               new_modify_FileMaintenance_Departments : false,
+                  new_modify_FileMaintenance_EvaluationGuide : false,
+                  new_modify_FileMaintenance_General : false,
+                  new_modify_FileMaintenance_JobLevelorAccessLevel : false,
+                  new_modify_FileMaintenance_Offense : false,
+                  modify_FileMaintenance_EvaluationSheet : false,
+                  new_modify_FileMaintenance_PlaceofAssignment : false,
+                  new_modify_PerformanceEvaluationModule : false,
+                  new_modify_ReportsModule : false,
+                  new_modify_SystemDashboardModule : false,
+                  new_modify_deliberation : false,
+                  new_modify_deliberation  : false,
+                  new_UpdateGlobalIdAccessLevel : 0,
+                  new_globalEmpCode :'', 
+                  new_modify_CustomerConcern : false,
+                  new_modify_groups : 'none',
+                  new_modify_FileMaintenance_EvaluationSheet : false,
+
+        //  state
+         ACCESS_LEVEL : [
+                {
+                  'JobLevel' : 'Managerial' ,
+                  'Module'  : [
+                    {
+                      'ModuleName' : 'Performance Evaluation',
+                      'details' : 'Can Evaluate Subordinate Employee',
+                      'ListofJobLevel' : [
+                        {
+                          'name' : 'Supervisory'
+                        }
+                      ]
+
+                    }
+                  ]
+                },
+// -----------------------
+
+                {
+                  'JobLevel' : 'Supervisor' ,
+
+                  'Module'  : [
+                    {
+                      'ModuleName' : 'Performance Evaluation',
+                      'details' : 'Can Evaluate Subordinate Employee',
+                      'ListofJobLevel' : [
+                              {
+                                  'name' : 'Rank and File'
+                                }
+                      ]
+
+                    }
+                  ]
+                },
+
+// -------------------------
+
+                {
+                  'JobLevel' : 'Rank and File' ,
+                  'Module'  : [
+
+                            // {
+                            //   'ModuleName' : 'Performance Evaluation',
+                            //   'ListofJobLevel' : [
+                            //     {
+                            //       'name' : 'Rank and File'
+                            //     }
+                            //   ]
+
+
+                            // },
+                            {
+                              'ModuleName' : 'Performance',
+                              'details' : 'Can view Performance Evaluation Results',
+                              'ListofJobLevel' : [
+                              
+                              ]
+
+
+                            }
+                  ]
+
+
+
+                }
+
+         ]
+         ,
+         username : 'fdsfds',
+         password : 'fasdffgf',
+         isPwd: true,
+         DeliberationParticipants : [
+                      {
+                        'FullName' : 'Kharene Brylle Carulasan',
+                        'UserName' : 'kharee',
+                        'toggle' : true,
+                        
+                      },
+                      {
+                        'FullName' : 'isay',
+                        'UserName' : 'araykpofdfdfd',
+                        'toggle' : true,
+                        'Deliberation' : true
+                        
+                      }
+         ],
+         toggle : true,
+         info : 'Active',
+         AccessLeveldata : [],
+         AccessLevel : [],
+         EmployeeInformation : [],
+         UserLevelEachEmployeeData : [],
+         arrayJobLevel : [
+
+
+                    
+                {
+                    "url": "http://127.0.0.1:8000/api/AccessLevel/1/",
+                    "id": 1,
+                    "NameofUserLevel": "supervisory",
+                   
+                    "tables" : 
+                            [
+                              {
+                                    columns: [
+                                          
+                                          {
+                                          name: 'desc',
+                                          required: true,
+                                          label: 'EmpCode',
+                                          align: 'left',
+                                          field: row => row.EmpCode,
+                                          format: val => `${val}`,
+                                          sortable: true
+                                        },
+                                        { name: 'EmployeePerformance', align: 'center', label: 'EmployeePerformance', field: 'EmployeePerformance', sortable: true },
+                                        { name: 'ReportsModule', align: 'center', label: 'ReportsModule', field: 'ReportsModule', sortable: true },
+                                        { name: 'PerformanceEvaluationModule', label: 'PerformanceEvaluationModule', field: 'PerformanceEvaluationModule', sortable: true },
+                                        { name: 'SystemDashboardModule', label: 'SystemDashboardModule', field: 'SystemDashboardModule' },
+                                        { name: 'FileMaintenanceModule', label: 'FileMaintenanceModule', field: 'FileMaintenanceModule' },
+                                        { name: 'FileMaintenance_General', label: 'FileMaintenance_General', field: 'FileMaintenance_General' },
+                                        { name: 'FileMaintenance_Accounts', label: 'FileMaintenance_Accounts', field: 'FileMaintenance_Accounts' },
+                                        { name: 'FileMaintenance_EvaluationSheet', label: 'FileMaintenance_EvaluationShee', field: 'FileMaintenance_EvaluationShee', sortable: true },
+                                        { name: 'FileMaintenance_Departments', label: 'FileMaintenance_Departments', field: 'FileMaintenance_Departments', sortable: true },
+                                        { name: 'FileMaintenance_Offense', label: 'FileMaintenance_Offense', field: 'FileMaintenance_Offense', sortable: true },
+                                        { name: 'FileMaintenance_EvaluationGuide', label: 'FileMaintenance_EvaluationGuide', field: 'FileMaintenance_EvaluationGuide', sortable: true },
+                                        { name: 'FileMaintenance_PlaceofAssignment', label: 'FileMaintenance_PlaceofAssignment', field: 'FileMaintenance_PlaceofAssignment', sortable: true },
+                                        { name: 'Designation', label: 'Designation', field: 'Designation', sortable: true },
+                                        { name: 'FileMaintenance_JobLevelorAccessLevel', label: 'FileMaintenance_JobLevelorAccessLevel', field: 'FileMaintenance_JobLevelorAccessLevel', sortable: true },
+                                        { name: 'FileMaintenance_201File', label: 'FileMaintenance_201File', field: 'FileMaintenance_201File', sortable: true },
+                                        { name: 'DeliberationModule', label: 'DeliberationModule', field: 'DeliberationModule', sortable: true },
+                                        { name: 'CustomerConcern', label: 'CustomerConcern', field: 'CustomerConcern', sortable: true },
+                                        { name: 'date_updated', label: 'Date_Updated', field: 'date_updated', sortable: true },
+                                      ],
+                                      data: [
+                                            
+                                              {
+                                        "url": "http://127.0.0.1:8000/api/UserLevelEachEmployee/2/",
+                                        "id": 2,
+                                        "EmpCode": "admin",
+                                        "EmployeePerformance": 'True',
+                                        "ReportsModule": true,
+                                        "PerformanceEvaluationModule": 'False',
+                                        "SystemDashboardModule": true,
+                                        "FileMaintenanceModule": true,
+                                        "FileMaintenance_General": true,
+                                        "FileMaintenance_Accounts": true,
+                                        "FileMaintenance_EvaluationSheet": true,
+                                        "FileMaintenance_Departments": true,
+                                        "FileMaintenance_Offense": true,
+                                        "FileMaintenance_EvaluationGuide": true,
+                                        "FileMaintenance_PlaceofAssignment": true,
+                                        "FileMaintenance_JobLevelorAccessLevel": true,
+                                        "FileMaintenance_201File": true,
+                                        "DeliberationModule": true,
+                                        "CustomerConcern": true,
+                                        "date_created": "2019-10-22T22:49:58.114298Z",
+                                        "date_updated": "2019-10-22T22:49:58.114298Z"
+                                    },
+
+                                    {
+                                        "url": "http://127.0.0.1:8000/api/UserLevelEachEmployee/2/",
+                                        "id": 3,
+                                        "EmpCode": "admin",
+                                        "EmployeePerformance": 'True',
+                                        "ReportsModule": true,
+                                        "PerformanceEvaluationModule": 'False',
+                                        "SystemDashboardModule": true,
+                                        "FileMaintenanceModule": true,
+                                        "FileMaintenance_General": true,
+                                        "FileMaintenance_Accounts": true,
+                                        "FileMaintenance_EvaluationSheet": true,
+                                        "FileMaintenance_Departments": true,
+                                        "FileMaintenance_Offense": true,
+                                        "FileMaintenance_EvaluationGuide": true,
+                                        "FileMaintenance_PlaceofAssignment": true,
+                                        "FileMaintenance_JobLevelorAccessLevel": true,
+                                        "FileMaintenance_201File": true,
+                                        "DeliberationModule": true,
+                                        "CustomerConcern": true,
+                                        "date_created": "2019-10-22T22:49:58.114298Z",
+                                        "date_updated": "2019-10-22T22:49:58.114298Z"
+                                    },
+
+
+                                      ],
+                                      selecteds : [],
+
+                                    terms: ''
+
+
+                              }
+                            
+                            ],
+
+
+
+                    
+                },
+                {
+                    "url": "http://127.0.0.1:8000/api/AccessLevel/2/",
+                    "id": 2,
+                    "NameofUserLevel": "admin",
+                    
+                    "tables" : 
+                          [
+                              {
+                                    columns: [
+                                          
+                                          {
+                                          name: 'desc',
+                                          required: true,
+                                          label: 'EmpCode',
+                                          align: 'left',
+                                          field: row => row.EmpCode,
+                                          format: val => `${val}`,
+                                          sortable: true
+                                        },
+                                        { name: 'FirstName', align: 'center', label: 'First Name', field: 'FirstName', sortable: true },
+                                        { name: 'MiddleName', align: 'center', label: 'Middle Name', field: 'MiddleName', sortable: true },
+                                        { name: 'LastName', label: 'Last Name', field: 'LastName', sortable: true },
+                                        { name: 'Suffix', label: 'Suffix', field: 'Suffix' },
+                                        { name: 'NickName', label: 'NickName', field: 'NickName' },
+                                        { name: 'JobLevel', label: 'Job Level', field: 'JobLevel' },
+                                        { name: 'JobStatus', label: 'Job Status', field: 'JobStatus' },
+                                        { name: 'Department', label: 'Department', field: 'Department', sortable: true },
+                                        { name: 'Designation', label: 'Designation', field: 'Designation', sortable: true },
+                                        { name: '', label: '', field: '', sortable: true },
+                                      ],
+                                      data: [
+                                            
+                                      ],
+                                      selecteds : [],
+
+                                    terms: ''
+
+
+                              }
+                            ]
+                              
+
+
+                },
+                {
+                    "url": "http://127.0.0.1:8000/api/AccessLevel/5/",
+                    "id": 5,
+                    "NameofUserLevel": "CallCenter",
+                   
+                    "tables" : 
+                          [
+                              {
+                                    columns: [
+                                          
+                                          {
+                                          name: 'desc',
+                                          required: true,
+                                          label: 'EmpCode',
+                                          align: 'left',
+                                          field: row => row.EmpCode,
+                                          format: val => `${val}`,
+                                          sortable: true
+                                        },
+                                        { name: 'FirstName', align: 'center', label: 'First Name', field: 'FirstName', sortable: true },
+                                        { name: 'MiddleName', align: 'center', label: 'Middle Name', field: 'MiddleName', sortable: true },
+                                        { name: 'LastName', label: 'Last Name', field: 'LastName', sortable: true },
+                                        { name: 'Suffix', label: 'Suffix', field: 'Suffix' },
+                                        { name: 'NickName', label: 'NickName', field: 'NickName' },
+                                        { name: 'JobLevel', label: 'Job Level', field: 'JobLevel' },
+                                        { name: 'JobStatus', label: 'Job Status', field: 'JobStatus' },
+                                        { name: 'Department', label: 'Department', field: 'Department', sortable: true },
+                                        { name: 'Designation', label: 'Designation', field: 'Designation', sortable: true },
+                                        { name: '', label: '', field: '', sortable: true },
+                                      ],
+                                      data: [
+                                            
+                                      ],
+                                      selecteds : [],
+
+                                    terms: ''
+
+
+                              }
+                            ]
+                              
+
+
+                },
+                {
+                    "url": "http://127.0.0.1:8000/api/AccessLevel/6/",
+                    "id": 6,
+                    "NameofUserLevel": "managerial",
+                   
+                    "tables" : 
+                          [
+                              {
+                                    columns: [
+                                          
+                                          {
+                                          name: 'desc',
+                                          required: true,
+                                          label: 'EmpCode',
+                                          align: 'left',
+                                          field: row => row.EmpCode,
+                                          format: val => `${val}`,
+                                          sortable: true
+                                        },
+                                        { name: 'FirstName', align: 'center', label: 'First Name', field: 'FirstName', sortable: true },
+                                        { name: 'MiddleName', align: 'center', label: 'Middle Name', field: 'MiddleName', sortable: true },
+                                        { name: 'LastName', label: 'Last Name', field: 'LastName', sortable: true },
+                                        { name: 'Suffix', label: 'Suffix', field: 'Suffix' },
+                                        { name: 'NickName', label: 'NickName', field: 'NickName' },
+                                        { name: 'JobLevel', label: 'Job Level', field: 'JobLevel' },
+                                        { name: 'JobStatus', label: 'Job Status', field: 'JobStatus' },
+                                        { name: 'Department', label: 'Department', field: 'Department', sortable: true },
+                                        { name: 'Designation', label: 'Designation', field: 'Designation', sortable: true },
+                                        { name: '', label: '', field: '', sortable: true },
+                                      ],
+                                      data: [
+                                            
+                                      ],
+                                      selecteds : [],
+
+                                    terms: ''
+
+
+                              }
+                            ]
+                              
+
+
+                },
+                {
+                    "url": "http://127.0.0.1:8000/api/AccessLevel/9/",
+                    "id": 9,
+                    "NameofUserLevel": "rank and file",
+                  
+                    "tables" : 
+                          [
+                              {
+                                    columns: [
+                                          
+                                          {
+                                          name: 'desc',
+                                          required: true,
+                                          label: 'EmpCode',
+                                          align: 'left',
+                                          field: row => row.EmpCode,
+                                          format: val => `${val}`,
+                                          sortable: true
+                                        },
+                                        { name: 'FirstName', align: 'center', label: 'First Name', field: 'FirstName', sortable: true },
+                                        { name: 'MiddleName', align: 'center', label: 'Middle Name', field: 'MiddleName', sortable: true },
+                                        { name: 'LastName', label: 'Last Name', field: 'LastName', sortable: true },
+                                        { name: 'Suffix', label: 'Suffix', field: 'Suffix' },
+                                        { name: 'NickName', label: 'NickName', field: 'NickName' },
+                                        { name: 'JobLevel', label: 'Job Level', field: 'JobLevel' },
+                                        { name: 'JobStatus', label: 'Job Status', field: 'JobStatus' },
+                                        { name: 'Department', label: 'Department', field: 'Department', sortable: true },
+                                        { name: 'Designation', label: 'Designation', field: 'Designation', sortable: true },
+                                        { name: '', label: '', field: '', sortable: true },
+                                      ],
+                                      data: [
+                                            
+                                      ],
+                                      selecteds : [],
+
+                                    terms: ''
+
+
+                              }
+                            ]
+                              
+
+
+                }
+
+
+
+
+         ],
+
+
+        
+        //  state
+
+       
+
+
+
+
+              }
+            },
+            watch: {
+              modelraname : function(){
+                this.rename_update_data[0].NameofUserLevel = this.modelraname
+              },
+              
+            },
+            methods: {
+
+
+              logout(){
+              axios.post(`${this.global_hostname}/logout/`,{
+                  
+                   headers: {
+                               'Content-Type': 'application/json',
+                                  'X-CSRFToken': this.token
+                   }
+                  
+              })
+              .then(res => {
+                  window.location.replace(`${this.global_hostname}/login/`)
+                
+              })
+              .catch(err => {
+                  
+              })
+            },
+            newhandlers(info){
+              this.new_modify_CustomerConcern = true
+              if(info == '2'){
+                this.new_modify_CustomerConcern = false
+              }
+            },
+            eventHandler(info){
+              this.modify_CustomerConcern = true
+              if(info == '2'){
+                this.modify_CustomerConcern = false
+              }
+            },
+
+            deletejoblevel(data){
+              
+              this.$q.dialog({
+        title: 'Confirm',
+        message: `Would you like to delete Job Level ${data.NameofUserLevel}?`,
+        cancel: true,
+        persistent: true
+      }).onOk(() => {
+       
+
+            axios.delete(`${this.global_hostname}/api/AccessLevel/${data.id}/`,{
+            
+               headers: {
+                     'Content-Type': 'application/json',
+                      'X-CSRFToken': this.token
+               }
+              
+            })
+            .then(res => {
+             
+              this.$q.notify({ //put dollor sign(q)
+  message: `Successfuly Deleted!`,
+  timeout: 3000, // in milliseconds; 0 means no timeout
+
+  color: 'green',
+  textColor: 'white', // if default 'white' doesn't fit
+icon: 'check', //or  avatar: 'statics/boy-avatar.png',
+
+position: 'top', // 'top', 'left', 'bottom-left' etc.
+
+})
+this.ACCESS_LEVEL_DATA();
+
+
+            })
+            .catch(err => {
+              console.error(err); 
+            })
+
+      }).onOk(() => {
+        // console.log('>>>> second OK catcher')
+      }).onCancel(() => {
+        // console.log('>>>> Cancel')
+      }).onDismiss(() => {
+        // console.log('I am triggered on both OK and Cancel')
+})
+
+
+            },
+            save_new_access_level(){
+                
+              var group = this.new_modify_groups
+              var callcenter = false
+              if (group == 'Is_CallCenter' ){
+                callcenter=true
+              }
+              var customerservice = false
+              if(group == 'Is_CustomerService'){
+                customerservice = true
+              }
+              var legaldepartment  = false
+              if (group == 'Is_LegalDepartment') {
+                  legaldepartment = true
+              }
+            
+
+
+
+              var payload = {
+// caru
+
+                "NameofUserLevel":this.newaccesslevel,
+        "EmployeePerformance": this.new_modify_EmployeePerformance,
+        "ReportsModule": this.new_modify_ReportsModule,
+        "PerformanceEvaluationModule": this.new_modify_PerformanceEvaluationModule,
+        "SystemDashboardModule": this.new_modify_SystemDashboardModule,
+        "FileMaintenanceModule": this.new_modify_FileMaintenanceModule,
+        "FileMaintenance_General":this.new_modify_FileMaintenance_General,
+        "FileMaintenance_Accounts": this.new_modify_FileMaintenance_Accounts,
+        "FileMaintenance_EvaluationSheet": this.new_modify_FileMaintenance_EvaluationSheet,
+        "FileMaintenance_Departments": this.new_modify_FileMaintenance_Departments,
+        "FileMaintenance_Offense": this.new_modify_FileMaintenance_Offense,
+        "FileMaintenance_EvaluationGuide": this.new_modify_FileMaintenance_EvaluationGuide,
+        "FileMaintenance_PlaceofAssignment": this.new_modify_FileMaintenance_PlaceofAssignment,
+        "FileMaintenance_JobLevelorAccessLevel": this.new_modify_FileMaintenance_JobLevelorAccessLevel,
+        "FileMaintenance_201File": this.new_modify_FileMaintenance_201File,
+        "DeliberationModule": this.new_modify_deliberation,
+       "CustomerConcern": this.new_modify_CustomerConcern,
+        "Is_CallCenter":   callcenter,
+        "Is_CustomerService": customerservice,
+        "Is_LegalDepartment": legaldepartment,
+      
+
+
+              }
+              console.log(payload)
+              axios.post(`${this.global_hostname}/api/AccessLevel/`,payload,{
+                 headers: {
+                       'Content-Type': 'application/json',
+                        'X-CSRFToken': this.token
+                 }
+                
+              })
+              .then(res => {
+                console.log(res)
+
+                 this.$q.notify({ //put dollor sign(q)
+  message: `Successfully Updated!`,
+  timeout: 3000, // in milliseconds; 0 means no timeout
+
+  color: 'green',
+  textColor: 'white', // if default 'white' doesn't fit
+icon: 'check', //or  avatar: 'statics/boy-avatar.png',
+
+position: 'top', // 'top', 'left', 'bottom-left' etc.
+
+})
+this.ACCESS_LEVEL_DATA();
+
+
+              })
+              .catch(err => {
+                console.error(err); 
+              })
+            },
+
+            event_new_accesslevel(){
+              this.modal_new_access_level= true
+            },
+            rename(data){
+              console.log(data)
+              //http://127.0.0.1:8000/api/AccessLevel/
+
+             
+              this.modalrename = true
+              this.modelraname= data.NameofUserLevel
+             
+              this.rename_id = data.id
+
+               this.rename_update_data = [
+                {
+                  "NameofUserLevel": this.modelraname,
+                  "EmployeePerformance": data.EmployeePerformance,
+                  "ReportsModule": data.ReportsModule,
+                  "PerformanceEvaluationModule": data.PerformanceEvaluationModule,
+                  "SystemDashboardModule": data.SystemDashboardModule,
+                  "FileMaintenanceModule": data.FileMaintenanceModule,
+                  "FileMaintenance_General": data.FileMaintenance_General,
+                  "FileMaintenance_Accounts":data.FileMaintenance_Accounts,
+                  "FileMaintenance_EvaluationSheet": data.FileMaintenance_EvaluationSheet,
+                  "FileMaintenance_Departments": data.FileMaintenance_Departments,
+                  "FileMaintenance_Offense": data.FileMaintenance_Offense,
+                  "FileMaintenance_EvaluationGuide": data.FileMaintenance_EvaluationGuide,
+                  "FileMaintenance_PlaceofAssignment":data.FileMaintenance_PlaceofAssignment,
+                  "FileMaintenance_JobLevelorAccessLevel": data.FileMaintenance_JobLevelorAccessLevel,
+                  "FileMaintenance_201File":data.FileMaintenance_201File,
+                  "DeliberationModule": data.DeliberationModule,
+                  "CustomerConcern":data.CustomerConcern,
+                  "Is_CallCenter": data.Is_CallCenter,
+                  "Is_CustomerService": data.Is_CustomerService,
+                  "Is_LegalDepartment": data.Is_LegalDepartment,
+
+                }
+              ]
+              
+            },
+            rename_update(){
+             console.log('rename ')
+              console.log(this.rename_update_data)
+                axios.put(`${this.global_hostname}/api/AccessLevel/${this.rename_id}/`,this.rename_update_data[0],{
+                  
+                   headers: {
+                         'Content-Type': 'application/json',
+                          'X-CSRFToken': this.token
+                   }
+                  
+                })
+                .then(res => {
+                            this.$q.notify({ //put dollor sign(q)
+                        message: `Successfully Updated!`,
+                        timeout: 3000, // in milliseconds; 0 means no timeout
+
+                        color: 'green',
+                        textColor: 'white', // if default 'white' doesn't fit
+                      icon: 'check', //or  avatar: 'statics/boy-avatar.png',
+
+                      position: 'top', // 'top', 'left', 'bottom-left' etc.
+
+                    })
+
+                    this.ACCESS_LEVEL_DATA();
+
+
+                })
+                .catch(err => {
+                  console.error(err); 
+                })
+
+
+
+
+            },
+            // hai
+
+            updateAccessLevel(){
+
+       
+              var group = this.modify_groups
+              var callcenter = false
+              if (group == 'Is_CallCenter' ){
+                callcenter=true
+              }
+              var customerservice = false
+              if(group == 'Is_CustomerService'){
+                customerservice = true
+              }
+              var legaldepartment  = false
+              if (group == 'Is_LegalDepartment') {
+                  legaldepartment = true
+              }
+            
+
+
+             
+              
+        var payload = {
+                     
+                     "EmpCode":this.globalEmpCode,
+                     "EmployeePerformance": this.modify_EmployeePerformance,
+                     "ReportsModule": this.modify_ReportsModule,
+                     "PerformanceEvaluationModule": this.modify_PerformanceEvaluationModule,
+                     "SystemDashboardModule": this.modify_SystemDashboardModule,
+                     "FileMaintenanceModule": this.modify_FileMaintenanceModule,
+                     "FileMaintenance_General": this.modify_FileMaintenance_General,
+                     "FileMaintenance_Accounts": this.modify_FileMaintenance_Accounts,
+                     "FileMaintenance_EvaluationSheet": this.modify_FileMaintenance_EvaluationSheet,
+                     "FileMaintenance_Departments": this.modify_FileMaintenance_Departments,
+                     "FileMaintenance_Offense": this.modify_FileMaintenance_Offense,
+                     "FileMaintenance_EvaluationGuide": this.modify_FileMaintenance_EvaluationGuide,
+                     "FileMaintenance_PlaceofAssignment": this.modify_FileMaintenance_PlaceofAssignment,
+                     "FileMaintenance_JobLevelorAccessLevel": this.modify_FileMaintenance_JobLevelorAccessLevel,
+                     "FileMaintenance_201File": this.modify_FileMaintenance_201File,
+                     "DeliberationModule": this.modify_deliberation,
+                     "CustomerConcern": this.modify_CustomerConcern,
+                     "Is_CallCenter": callcenter,
+                    "Is_CustomerService": customerservice,
+                    "Is_LegalDepartment": legaldepartment,
+                    
+                 }
+
+                 console.log(payload)
+                 axios.put(`${this.global_hostname}/api/UserLevelEachEmployee/${this.UpdateGlobalIdAccessLevel}/`,payload,{
+                 
+                    headers: {
+                          'Content-Type': 'application/json',
+                           'X-CSRFToken': this.token
+                    }
+                   
+                 })
+                 .then(res => {
+                    this.$q.notify({ //put dollor sign(q)
+                     message: `Successfully Updated!`,
+                     timeout: 10000, // in milliseconds; 0 means no timeout
+
+                     color: 'green',
+                     textColor: 'white', // if default 'white' doesn't fit
+                   icon: 'check', //or  avatar: 'statics/boy-avatar.png',
+
+                   position: 'top', // 'top', 'left', 'bottom-left' etc.
+
+                   })
+
+                   this.ACCESS_LEVEL_DATA();
+
+
+
+
+                 })
+                 .catch(err => {
+                   console.error(err); 
+                 })
+
+
+
+
+
+
+
+              
+              
+
+
+
+              
+            },
+            event_modify(data){
+              // hai
+              console.log(data)
+              this.UpdateGlobalIdAccessLevel = data[0].id
+              this.modal_modify= true
+              this.modify_Name = data[0].name
+            
+
+              console.log(this.UserLevelEachEmployeeData)
+              this.globalEmpCode = data[0].EmpCode
+
+             
+              this.modify_EmployeePerformance = data[0].EmployeePerformance
+
+                  this.modify_FileMaintenanceModule = data[0].FileMaintenanceModule
+                  this.modify_FileMaintenance_EvaluationSheet = data[0].FileMaintenance_EvaluationSheet
+                  
+
+                  this.modify_FileMaintenance_JobLevelorAccessLevel = data[0].FileMaintenance_JobLevelorAccessLevel
+                  this.modify_FileMaintenance_201File = data[0].FileMaintenance_201File
+                  this.modify_FileMaintenance_Accounts  = data[0].FileMaintenance_Accounts
+                  this.modify_FileMaintenance_Departments = data[0].FileMaintenance_Departments
+                  this.modify_FileMaintenance_EvaluationGuide = data[0].FileMaintenance_EvaluationGuide
+                  this.modify_FileMaintenance_General = data[0].FileMaintenance_General
+                  
+                  this.modify_FileMaintenance_Offense = data[0].FileMaintenance_Offense
+                  this.modify_FileMaintenance_EvaluationSheet = data[0].FileMaintenance_EvaluationSheet
+
+                  this.modify_FileMaintenance_PlaceofAssignment  = data[0].FileMaintenance_PlaceofAssignment
+                  this.modify_PerformanceEvaluationModule = data[0].PerformanceEvaluationModule
+                  this.modify_ReportsModule = data[0].ReportsModule
+                  this.modify_SystemDashboardModule  = data[0].SystemDashboardModule
+                  this.modify_deliberation = data[0].DeliberationModule
+                  this.modify_CustomerConcern = data[0].CustomerConcern
+                  if(data[0].Is_CallCenter == false && data[0].Is_CustomerService == false && data[0].Is_LegalDepartment == false){
+                    this.modify_groups = 'none'
+                  }else{
+                    if(data[0].Is_CallCenter == true  ){
+                      this.modify_groups =  'Is_CallCenter'
+                    }
+                    if (data[0].Is_CustomerService == true) {
+                      this.modify_groups =  'Is_CustomerService'
+                    }
+                    if (data[0].Is_LegalDepartment == true) {
+                      this.modify_groups =  'Is_LegalDepartment'
+                    }
+                    
+
+                  }
+              
+                  
+                  // this.modify_CustomerConcern = data[0].
+
+
+
+            },
+            account(){
+                if(this.info == 'Active'){
+                    this.info = 'Deactivated'
+                }else{
+                  this.info = 'Active'
+                }
+            },
+
+            
+                save(){
+
+
+var paylod = {
+    "joblevel": this.model_joblevel,
+   
+}
+axios.post(`${this.global_hostname}/api/JOBLEVEL/`,paylod,{
+    
+     headers: {
+                 'Content-Type': 'application/json',
+                    'X-CSRFToken': this.token
+     }
+    
+})
+.then(res => {
+    console.log(res)
+    this.$q.notify({ //put dollor sign(q)
+          message: `Successfully saved!`,
+          timeout: 10000, // in milliseconds; 0 means no timeout
+
+          color: 'orange',
+          textColor: 'white', // if default 'white' doesn't fit
+         icon: 'check', //or  avatar: 'statics/boy-avatar.png',
+
+         position: 'top', // 'top', 'left', 'bottom-left' etc.
+
+          })
+
+
+          this.get_joblevel()
+})
+.catch(err => {
+    console.error(err); 
+
+    this.$q.notify({ //put dollor sign(q)
+          message: `Unsuccessfull!`,
+          timeout: 10000, // in milliseconds; 0 means no timeout
+
+          color: 'red',
+          textColor: 'white', // if default 'white' doesn't fit
+         icon: 'error', //or  avatar: 'statics/boy-avatar.png',
+
+         position: 'top', // 'top', 'left', 'bottom-left' etc.
+
+          })
+})
+},
+
+                update_joblevel(){
+                    var params = {
+                        "joblevel":  this.model_jobleveledit,
+                       
+   
+                    }
+                    axios.put(`${this.global_hostname}/api/JOBLEVEL/${this.id_joblevel}/`,params,{
+                       
+                         headers: {
+                                     'Content-Type': 'application/json',
+                                        'X-CSRFToken': this.token
+                         }
+                        
+                    })
+                    .then(res => {
+                        console.log(res)
+
+                        this.$q.notify({ //put dollor sign(q)
+                              message: `Successfully Updated!`,
+                              timeout: 10000, // in milliseconds; 0 means no timeout
+
+                              color: 'orange',
+                              textColor: 'white', // if default 'white' doesn't fit
+                             icon: 'check', //or  avatar: 'statics/boy-avatar.png',
+
+                             position: 'top', // 'top', 'left', 'bottom-left' etc.
+
+                              })
+
+                              this.get_joblevel()
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        this.$q.notify({ //put dollor sign(q)
+                              message: `Unsuccessfull!`,
+                              timeout: 10000, // in milliseconds; 0 means no timeout
+
+                              color: 'orange',
+                              textColor: 'white', // if default 'white' doesn't fit
+                             icon: 'check', //or  avatar: 'statics/boy-avatar.png',
+
+                             position: 'top', // 'top', 'left', 'bottom-left' etc.
+
+                              }) 
+                    })
+                },
+                edit_joblevel(id){
+                        this.id_joblevel = id
+                            this.edit_joblevel_modal = true
+
+                            var data = this.joblevel.filter(function(el){return el.id == id})
+                            this.model_jobleveledit= data[0].joblevel
+                            
+
+                },
+                delete_joblevel(id){
+                        axios.delete(`${this.global_hostname}/api/JOBLEVEL/${id}/`,{
+                           
+                             headers: {
+                                         'Content-Type': 'application/json',
+                                            'X-CSRFToken': this.token
+                             }
+                            
+                        })
+                        .then(res => {
+                            console.log(res)
+                            this.get_joblevel()
+
+                            this.$q.notify({ //put dollor sign(q)
+                              message: `Successfully Deleted!`,
+                              timeout: 10000, // in milliseconds; 0 means no timeout
+
+                              color: 'orange',
+                              textColor: 'white', // if default 'white' doesn't fit
+                             icon: 'check', //or  avatar: 'statics/boy-avatar.png',
+
+                             position: 'top', // 'top', 'left', 'bottom-left' etc.
+
+                              })
+                        })
+                        .catch(err => {
+                            console.error(err); 
+                        })
+                },
+
+                add_new_joblevel() {
+                    this.new_joblevel = true
+                },
+                get_joblevel(){
+
+
+
+                    axios.get(`${this.global_hostname}/api/JOBLEVEL/`,{
+                   
+                     headers: {
+                                 'Content-Type': 'application/json',
+                                    'X-CSRFToken': this.token
+                     }
+                    
+                    })
+                    .then(res => {
+
+                        console.log(res)
+                        this.joblevel = res.data
+
+
+                    })
+                    .catch(err => {
+                        console.error(err); 
+                    })
+                },
+
+                get_access_level(array){
+
+                  var arr = array
+
+
+
+
+
+                    
+
+                            axios.get(`${this.global_hostname}/api/SystemUser/`,{
+                          
+                          headers: {
+                                'Content-Type': 'application/json',
+                                  'X-CSRFToken': this.token
+                          }
+                          
+                        })
+                        .then(res => {
+                          var data =  res.data
+                          
+
+                          for (let index = 0; index < arr.length - 1 ; index++) {
+                            const element = arr[index];
+
+                            
+
+                               var a = data.filter(
+                                 (e)=>{
+                                   return element.toLowerCase() == e.AccessLevel.toLowerCase()
+                                 }
+                               )
+                               console.log('===================================== access = level')
+                                  console.log(a)
+
+
+                             
+                              if( index == arr.length - 1  ){
+
+                                console.log('===================================== access = level')
+
+
+                                    var finalinfo =temp
+
+                                  console.log('fdfafdfdsg==================================')
+                                    
+                              }
+                            
+                          }
+
+
+
+
+
+
+                          })
+                          .catch(err => {
+                            console.error(err); 
+                          })
+
+
+
+
+                },
+                getaccount_Deliberation(){
+
+
+                  axios.get(`${this.global_hostname}/api/AccessLevel/`,{
+                   
+                     headers: {
+                           'Content-Type': 'application/json',
+                            'X-CSRFToken': this.token
+                     }
+                    
+                  })
+                  .then(res => {
+                    
+                    // step1
+                    var data = res.data
+                    var temp = []
+                    for (let index = 0; index < data.length; index++) {
+                            const element = data[index];
+                            if(element.NameofUserLevel != 'admin'){
+                              temp.push(element.NameofUserLevel)
+                            }
+                      
+                              if(index == data.length -1 ){
+                                var info= temp
+                                console.log(info)
+                                this.get_access_level(info)  
+                              }
+                      
+                    }
+                    
+
+
+                  })
+                  .catch(err => {
+                    console.error(err); 
+                  })
+                  
+                },
+                filterAcessLevel(){
+                  var data =  this.AccessLeveldata
+                  var admin  = 'admin'
+                  var filterd = data.filter(
+                    (element)=>{
+                      return element.NameofUserLevel.toLowerCase() != admin
+
+                    }
+                  )
+                  console.log('not admin')
+                  console.log(filterd)
+                  this.arrayJobLevel = filterd
+                  this.GetEmployees()
+                },
+                GetEmployees(){
+                  axios.get(`${this.global_hostname}/api/Employee/`,{
+                   
+                     headers: {
+                           'Content-Type': 'application/json',
+                            'X-CSRFToken': this.token
+                     }
+                    
+                  })
+                  .then(res => {
+                    console.log(res)
+                      this.EmployeeInformation = res.data
+                    var accesslevel = this.arrayJobLevel
+
+                    this.GETUserLevelEachEmployee()
+                    
+                    // dito
+
+
+                  })
+                  .catch(err => {
+                    console.error(err); 
+                  })
+                },
+                GETUserLevelEachEmployee(){
+                  axios.get(`${this.global_hostname}/api/UserLevelEachEmployee/`,{
+                   
+                     headers: {
+                           'Content-Type': 'application/json',
+                            'X-CSRFToken': this.token
+                     }
+                    
+                  })
+                  .then(res => {
+
+
+                    
+                    this.UserLevelEachEmployeeData= res.data
+                   
+                    this.Sortna()
+
+                  })
+                  .catch(err => {
+                    console.error(err); 
+                  })
+                },
+                Sortna(){
+                  var c = this.UserLevelEachEmployeeData
+                    var b = this.EmployeeInformation 
+                  var a = this.arrayJobLevel
+
+                  console.log('3 idiots')
+                  console.log(a)
+                  console.log(b)
+                  console.log(c)
+                  var tempdata = []
+                  for (let index = 0; index < a.length; index++) {
+                    const element = a[index];
+
+                    var obj = 
+                     
+                                
+                                  {
+                                            "url": element.url,
+                                            "id": element.id,
+                                            "NameofUserLevel": element.NameofUserLevel,
+                                            "EmployeePerformance" : element.EmployeePerformance,
+                                              "ReportsModule": element.ReportsModule,
+                                              "PerformanceEvaluationModule": element.PerformanceEvaluationModule,
+                                              "SystemDashboardModule": element.SystemDashboardModule,
+                                              "FileMaintenanceModule": element.FileMaintenanceModule,
+                                              "FileMaintenance_General": element.FileMaintenance_General,
+                                              "FileMaintenance_Accounts": element.FileMaintenance_Accounts,
+                                              "FileMaintenance_EvaluationSheet": element.FileMaintenance_EvaluationSheet,
+                                              "FileMaintenance_Departments": element.FileMaintenance_Departments,
+                                              "FileMaintenance_Offense": element.FileMaintenance_Offense,
+                                              "FileMaintenance_EvaluationGuide": element.FileMaintenance_EvaluationGuide,
+                                              "FileMaintenance_PlaceofAssignment": element.FileMaintenance_PlaceofAssignment,
+                                              "FileMaintenance_JobLevelorAccessLevel":element.FileMaintenance_JobLevelorAccessLevel,
+                                              "FileMaintenance_201File": element.FileMaintenance_201File,
+                                              "DeliberationModule": element.DeliberationModule,
+                                              "CustomerConcern": element.CustomerConcern,
+                                              "Is_CallCenter": element.Is_CallCenter,
+                                              "Is_CustomerService": element.Is_CustomerService,
+                                              "Is_LegalDepartment": element.Is_LegalDepartment,
+
+                                            "tables" : 
+                                              
+                                                {
+                                                      columns: [
+                                                            
+                                                            {
+                                                            name: 'desc',
+                                                            required: true,
+                                                            label: 'EmpCode',
+                                                            align: 'left',
+                                                            field: row => row.EmpCode,
+                                                            format: val => `${val}`,
+                                                            sortable: true
+                                                          },
+                                                          { name: 'name', align: 'center', label: 'Employee', field: 'name', sortable: true },
+                                                          // { name: 'EmployeePerformance', align: 'center', label: 'EmployeePerformance', field: 'EmployeePerformance', sortable: true },
+                                                          // { name: 'ReportsModule', align: 'center', label: 'ReportsModule', field: 'ReportsModule', sortable: true },
+                                                          // { name: 'PerformanceEvaluationModule', label: 'PerformanceEvaluationModule', field: 'PerformanceEvaluationModule', sortable: true },
+                                                          // { name: 'SystemDashboardModule', label: 'SystemDashboardModule', field: 'SystemDashboardModule' },
+                                                          // { name: 'FileMaintenanceModule', label: 'FileMaintenanceModule', field: 'FileMaintenanceModule' },
+                                                          // { name: 'FileMaintenance_General', label: 'FileMaintenance_General', field: 'FileMaintenance_General' },
+                                                          // { name: 'FileMaintenance_Accounts', label: 'FileMaintenance_Accounts', field: 'FileMaintenance_Accounts' },
+                                                          // { name: 'FileMaintenance_EvaluationSheet', label: 'FileMaintenance_EvaluationSheet', field: 'FileMaintenance_EvaluationSheet', sortable: true },
+                                                          // { name: 'FileMaintenance_Departments', label: 'FileMaintenance_Departments', field: 'FileMaintenance_Departments', sortable: true },
+                                                          // { name: 'FileMaintenance_Offense', label: 'FileMaintenance_Offense', field: 'FileMaintenance_Offense', sortable: true },
+                                                          // { name: 'FileMaintenance_EvaluationGuide', label: 'FileMaintenance_EvaluationGuide', field: 'FileMaintenance_EvaluationGuide', sortable: true },
+                                                          // { name: 'FileMaintenance_PlaceofAssignment', label: 'FileMaintenance_PlaceofAssignment', field: 'FileMaintenance_PlaceofAssignment', sortable: true },
+                      
+                                                          // { name: 'FileMaintenance_JobLevelorAccessLevel', label: 'FileMaintenance_JobLevelorAccessLevel', field: 'FileMaintenance_JobLevelorAccessLevel', sortable: true },
+                                                          // { name: 'FileMaintenance_201File', label: 'FileMaintenance_201File', field: 'FileMaintenance_201File', sortable: true },
+                                                          // { name: 'DeliberationModule', label: 'DeliberationModule', field: 'DeliberationModule', sortable: true },
+                                                          // { name: 'CustomerConcern', label: 'CustomerConcern', field: 'CustomerConcern', sortable: true },
+                                                          // { name: 'Is_CallCenter', label: 'Group(CallCenter)', field: 'Is_CallCenter', sortable: true },
+                                                          // { name: 'Is_CustomerService', label: 'Group(CustomerService)', field: 'Is_CustomerService', sortable: true },
+                                                          // { name: 'Is_LegalDepartment', label: 'Group(Legal Department)', field: 'Is_LegalDepartment', sortable: true },
+                                                          // { name: 'date_updated', label: 'Date_Updated', field: 'date_updated', sortable: true },
+                                                        ],
+                                                        data: this.EmployeeAccessLevel(element.NameofUserLevel),//supervisor
+                                                        selecteds : [],
+
+                                                        terms: ''
+
+
+                                                }
+                            
+                                           
+
+
+
+                    
+                           }
+                           tempdata.push(obj)
+                           if(index == a.length -1){
+                              console.log('ito ba')
+                              console.log(tempdata)
+                              this.AccessLevel = tempdata
+                              //hai
+                           }
+
+
+
+                    
+                    
+                  }
+
+
+                },
+
+                EmployeeAccessLevel(NameofUserLevel){
+                  //alert(NameofUserLevel) //supervisory
+
+                  // last
+                  var data = [{
+                    "url": "http://127.0.0.1:8000/api/UserLevelEachEmployee/4/",
+                    "id": 4,
+                    "EmpCode": "qwert12",
+                    "EmployeePerformance": true,
+                    "ReportsModule": false,
+                    "PerformanceEvaluationModule": false,
+                    "SystemDashboardModule": false,
+                    "FileMaintenanceModule": false,
+                    "FileMaintenance_General": false,
+                    "FileMaintenance_Accounts": false,
+                    "FileMaintenance_EvaluationSheet": false,
+                    "FileMaintenance_Departments": false,
+                    "FileMaintenance_Offense": false,
+                    "FileMaintenance_EvaluationGuide": false,
+                    "FileMaintenance_PlaceofAssignment": false,
+                    "FileMaintenance_JobLevelorAccessLevel": false,
+                    "FileMaintenance_201File": false,
+                    "DeliberationModule": false,
+                    "CustomerConcern": false,
+                    "date_created": "2019-10-22T15:32:26.173211Z",
+                    "date_updated": "2019-10-22T15:42:11.714935Z"
+              },]
+              
+              var b = this.EmployeeInformation 
+              var joblevel = NameofUserLevel
+              var datafilter = b.filter(
+                (element)=>{
+                  return element.JobLevel.toLowerCase() == joblevel.toLowerCase()
+                }
+              )
+              // return datafilter
+              var templevel = []
+              for (let index = 0; index < datafilter.length; index++) {
+                        const element = datafilter[index];
+                        console.log('mga empcode')
+                        console.log(element.EmpCode)
+                        var accesslevel = this.GETACCESSLEVELEACHEMPLOYEE(element.EmpCode)
+                        accesslevel[0].name = `${element.FirstName} ${element.MiddleName} ${element.LastName}`
+                        templevel.push(accesslevel[0])
+                        // console.log('access level empyee')
+                        // console.log(accesslevel)
+                        // templevel = accesslevel
+                        if(index == datafilter.length - 1){
+                          console.log('carualfasdfadsfsdfsadofds')
+                          console.log(templevel)
+                          return templevel
+                          
+                        }
+                        
+                
+                
+              }
+            
+                
+
+
+         
+                },
+
+                GETACCESSLEVELEACHEMPLOYEE(empcode){
+                  var c = this.UserLevelEachEmployeeData
+                 
+                        var empcodeemployee = empcode
+                        var accesslevefilter = c.filter(
+                          (element)=>{
+                            return element.EmpCode == empcodeemployee
+                          }
+                        )
+                        return accesslevefilter
+                },
+
+                ACCESS_LEVEL_DATA(){
+                  axios.get(`${this.global_hostname}/api/AccessLevel/`,{
+                            
+                              headers: {
+                                    'Content-Type': 'application/json',
+                                      'X-CSRFToken': this.token
+                              }
+                              
+                            })
+                            .then(res => {
+                              this.AccessLeveldata = res.data
+                              this.filterAcessLevel()
+                            })
+                            .catch(err => {
+                              console.error(err); 
+                            })
+                
+            }
+          },
+            mounted () {
+               this.ACCESS_LEVEL_DATA();
+            },
+
+            beforeMount () {
+                      var hostname = window.location.hostname;
+                      var port = window.location.port
+                      if(port != '' ){
+
+                           hostname = hostname+':8000'
+                      }
+                      else{
+                          hostname = hostname
+                      }
+
+                    this.global_hostname = `${window.location.protocol}//${hostname}`;
+                
+                    var csrftoken = Cookies.get('csrftoken');
+                    this.token = csrftoken
+
+                this.get_joblevel()
+
+              this.getaccount_Deliberation()
+              
+             
+            }
+          
+
+})
+</script>
+{% endblock %}

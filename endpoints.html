@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+        
+            <!-- "PassingGrade": "http://127.0.0.1:8000/api/PassingGrade/",
+            "PLACE_OF_ASSIGNMENT_CATEGORY": "http://127.0.0.1:8000/api/PLACE_OF_ASSIGNMENT_CATEGORY/",
+            "GET_PLACE_OF_ASSIGNMENT_LOCATION": "http://127.0.0.1:8000/api/POST_PLACE_OF_ASSIGNMENT_LOCATION/",
+            "POST_PLACE_OF_ASSIGNMENT_LOCATION": "http://127.0.0.1:8000/api/POST_PLACE_OF_ASSIGNMENT_LOCATION/",
+            "DEPARTMENT": "http://127.0.0.1:8000/api/DEPARTMENT/",
+            "MINOR_OR_GRAVE": "http://127.0.0.1:8000/api/MINOR_OR_GRAVE/",
+            "POST_Violation_Per_Department_Per_Criteria": "http://127.0.0.1:8000/api/GET_Violation_Per_Department_Per_Criteria/",
+            "GET_Violation_Per_Department_Per_Criteria": "http://127.0.0.1:8000/api/GET_Violation_Per_Department_Per_Criteria/",
+            "POST_VIOLATIONS": "http://127.0.0.1:8000/api/Get_VIOLATIONS/",
+            "Get_VIOLATIONS": "http://127.0.0.1:8000/api/Get_VIOLATIONS/",
+            "Employee": "http://127.0.0.1:8000/api/Employee/",
+            "TVR": "http://127.0.0.1:8000/api/TVR/",
+            "DISPATCH": "http://127.0.0.1:8000/api/DISPATCH/",
+            "TIMEKEEPING": "http://127.0.0.1:8000/api/TIMEKEEPING/",
+            "EvaluationSheet_Kind": "http://127.0.0.1:8000/api/EvaluationSheet_Kind/",
+            "POST_EvaluationSheet_Criteria": "http://127.0.0.1:8000/api/get/Get_EvaluationSheet_Criteria/",
+            "POST_EvaluationScore": "http://127.0.0.1:8000/api/get/GET_EvaluationScore/",
+            "Evaluation_Period": "http://127.0.0.1:8000/api/Evaluation_Period/",
+            "Evaluation_content": "http://127.0.0.1:8000/api/get/Get_Evaluation_content/" -->
+
+
+
+
+            
+        
+</body>
+<script >
+
+// setup
+new Vue({
+            el: '#app',
+            delimiters: ['${','}'],
+            data: function () {
+              return {
+                drawerState: true,
+                pic_user : 'http://res.heraldm.com/phpwas/restmb_jhidxmake.php?idx=5&simg=201701181539234376570_20170118154018_02.jpg',
+                left : false,
+                dash : {
+            backgroundColor : '#34495E',
+           color : 'white'
+           },
+           
+           Deliberation : {
+           backgroundColor : '#34495E',
+           color : 'white',
+       },
+
+       employee : {
+            backgroundColor : '#34495E',
+           color : 'white'
+           },
+           performance_evaluation : {
+           backgroundColor : '#34495E',
+           color : 'white',
+       },
+       settings : {
+            backgroundColor : '#34495E',
+           color : 'white'
+           },
+           Deliberation : {
+           backgroundColor : '#34495E',
+           color : 'white',
+       },
+       report : {
+           backgroundColor : '#34495E',
+           color : 'white',
+       },
+       concern : {
+           backgroundColor : '#34495E',
+           color : 'white',
+       },
+
+
+       global_hostname : '',
+       token : '',
+
+
+
+       
+        
+               
+              }
+            },beforeMount () {
+              if(innerWidth < 1017){
+                    this.drawerState = false
+                }
+            },
+          methods: {
+            logout(){
+              axios.post(`${this.global_hostname}/logout/`,{
+                  
+                   headers: {
+                               'Content-Type': 'application/json',
+                                  'X-CSRFToken': this.token
+                   }
+                  
+              })
+              .then(res => {
+                  window.location.replace(`${this.global_hostname}/login/`)
+                
+              })
+              .catch(err => {
+                  
+              })
+
+              
+        },
+
+
+          },
+          mounted () {
+            
+            var hostname = window.location.hostname;
+        if(hostname == '127.0.0.1' || hostname == 'localhost'){
+
+            hostname = hostname+':8000'
+        }
+        else{
+            hostname = hostname
+        }
+
+        this.global_hostname = `${window.location.protocol}//${hostname}`;
+        var csrftoken = Cookies.get('csrftoken');
+        this.token = csrftoken
+        
+        
+        
+        
+          },
+        })
+
+
+        // loading
+        this.$q.loading.show({
+        message: 'Some important <b>process</b> is in progress.<br/><span class="text-primary">Hang on...</span>'
+      })
+
+      // hiding in 3s
+      this.timer = setTimeout(() => {
+        this.$q.loading.hide()
+        this.timer = void 0
+      }, 3000)
+        
+
+
+</script>
+</html>
+
+
+<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                                                
+    <div class="row animated fadeInDown" style="overflow-x: scroll; height: 1020px;">
+
+                    <q-card class="my-card">
+                           
+                            <q-card-section>
+                                            <!-- <q-timeline :layout="layout" color="secondary">
+                                                            <q-timeline-entry heading>
+                                                              Timeline heading
+                                                              <br>
+                                                             
+                                                            </q-timeline-entry>
+                                                      
+                                                            <q-timeline-entry
+                                                              title="Event Title"
+                                                              subtitle="February 22, 1986"
+                                                              side="left"
+                                                            >
+                                                              <div>
+                                                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                                                              </div>
+                                                            </q-timeline-entry>
+                                                      
+                                                            <q-timeline-entry
+                                                              title="Event Title"
+                                                              subtitle="February 21, 1986"
+                                                              side="right"
+                                                              icon="delete"
+                                                            >
+                                                              <div>
+                                                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                                                              </div>
+                                                            </q-timeline-entry>
+                                                      
+                                                            <q-timeline-entry heading>November, 2017</q-timeline-entry>
+                                                      
+                                                            <q-timeline-entry
+                                                              title="Event Title"
+                                                              subtitle="February 22, 1986"
+                                                              side="left"
+                                                            >
+                                                              <div>
+                                                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                                                              </div>
+                                                            </q-timeline-entry>
+                                                      
+                                                            <q-timeline-entry
+                                                              title="Event Title"
+                                                              subtitle="February 22, 1986"
+                                                              side="right"
+                                                            >
+                                                              <div>
+                                                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                                                              </div>
+                                                            </q-timeline-entry>
+                                                      
+                                                            <q-timeline-entry
+                                                              title="Event Title"
+                                                              subtitle="February 22, 1986"
+                                                              side="left"
+                                                              color="#34495E "
+                                                              icon="done_all"
+                                                            >
+                                                              <div>
+                                                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                                                              </div>
+                                                            </q-timeline-entry>
+                                                      
+                                                            <q-timeline-entry
+                                                              title="Event Title"
+                                                              subtitle="February 22, 1986"
+                                                              side="right"
+                                                            >
+                                                              <div>
+                                                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                                                              </div>
+                                                            </q-timeline-entry>
+                                                      
+                                                            <q-timeline-entry
+                                                              title="Event Title"
+                                                              subtitle="February 22, 1986"
+                                                              side="left"
+                                                            >
+                                                              <div>
+                                                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                                                              </div>
+                                                            </q-timeline-entry>
+                                                          </q-timeline> -->
+                            </q-card-section>
+                    </q-card>
+    </div>
+  </div>

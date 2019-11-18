@@ -1,0 +1,1290 @@
+{% extends "myapp/layout.html" %}
+
+{% block content %}
+        
+ 
+<q-breadcrumbs style="color: red; cursor: pointer">
+    <q-breadcrumbs-el label="File Maintenance /" onclick="window.location.href='{% url 'settings_panel' %}' " icon="settings" />
+    <q-breadcrumbs-el label="Bus " icon="insert_chart_outlined" />
+   
+    <q-breadcrumbs-el label=" /"  />
+    {{ JobLevel }}
+</q-breadcrumbs>
+
+
+
+
+
+
+<div class="row" style="width:100%;margin-top: 20px; margin-left: -13px;; ">
+  <q-list   >
+      <q-item style=" border-radius: 5px;"
+     >
+          <q-item-section>
+            <q-item-label style="font-size: 20px; font-weight: 900; color: #34495E ">Bus Type</q-item-label>
+            <q-item-label caption lines="2"></q-item-label>
+            <q-item-label style="color: #34495E"> </q-item-label>
+          </q-item-section>
+        
+          <q-item-section side top>
+            <q-item-label caption>
+
+              
+            </q-item-label>
+            
+          </q-item-section>
+        </q-item>
+  </q-list>
+
+</div>
+
+
+
+
+<div class="row" style="width:100%;margin-top: 20px;  ">
+  <q-btn color="red-8" icon="add" label="add Bus Type" @click="event_newCategory" ></q-btn>
+  <!-- @click="event_newCategory" -->
+</div>
+<div class="row" style="width:100%;margin-top: 20px; ">
+   
+    
+
+          
+
+      <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" v-for="item in BusType" >
+
+        <q-list  style="padding: 5px;" >
+
+            <q-item clickable style="width: 100% ; border-radius: 5px; -webkit-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12);
+            -moz-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12);
+            box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12); background-color:  #273746; ">
+           
+                <q-item-section>
+                  <q-item-label style="font-size: 18px; color:white;font-weight: 900">
+                    <span>${item.BusCategoryName} </span>
+                    </q-item-label>
+                  
+                                            
+                  </q-item-label>
+                  
+                </q-item-section>
+
+               
+        
+                <q-item-section side top>
+                  <q-item-label style="color: white;">
+                    <!-- ${ item.Type } -->
+                    <q-btn icon="delete" flat color="red" @click="eventDeleteCategory(item.id)"  ></q-btn>
+                                             <q-btn icon="edit" flat color="white" @click="event_CategoryBus(item.BusCategoryName,item.id)" ></q-btn>
+                                            
+                  </q-item-label>
+
+                  <q-icon name="commute" color="red" />
+                </q-item-section>
+              </q-item>
+        </q-list>
+
+
+      </div>
+
+
+  </div>
+
+
+
+
+
+
+
+<!-- 
+<div class="row" style="width:100%;margin-top: 20px; margin-left: -13px;; ">
+    <q-list   >
+        <q-item style=" border-radius: 5px;"
+       >
+            <q-item-section>
+              <q-item-label style="font-size: 20px; font-weight: 900; color: #34495E ">Busses</q-item-label>
+              <q-item-label caption lines="2">Bus Information, You can get Qrcode for Passenger Concerns</q-item-label>
+              <q-item-label style="color: #34495E"> </q-item-label>
+            </q-item-section>
+          
+            <q-item-section side top>
+              <q-item-label caption>
+
+                
+              </q-item-label>
+              
+            </q-item-section>
+          </q-item>
+    </q-list>
+
+</div>
+ -->
+
+
+
+<!-- 
+
+<div class="row" style="width:100%; ">
+
+    
+    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+        
+
+        <q-input outlined label="Search"  v-model="search"  @input="searchBus">
+            <template v-slot:append>
+              <q-icon name="search" ></q-icon>
+            </template>
+          </q-input>
+    
+
+    </div>
+
+    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+        <div class="row">
+          
+          <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2" style="padding: 20px;; color: gray; font-size: 15px;;">
+             Filter
+           <q-icon name="filter_list" style="font-size: 20px;;"></q-icon>
+            
+          </div>
+          
+          <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+           
+             <q-select v-model="modelFilterBus_data" outlined :options="Filter_OptionBusType" label="Select Bus Type"  ></q-select>
+          </div>
+          
+          
+        </div>
+      </div>
+    
+   
+</div> -->
+
+<div class="row" style="width:100%;margin-top: 20px;  ">
+  <q-btn color="red-8" icon="add" label="add Bus" @click="new_bus" ></q-btn>
+  <!-- hai -->
+  
+
+</div>
+
+<div class="row" style="width:100%;margin-top: 20px; ">
+
+     <q-table
+
+     
+    style="width: 100%"
+    :data="Busses"
+    :columns="columns"
+    row-key="id"
+    selection="single"
+    :selected.sync="selected"
+     :filter="terms"
+      
+        title="Busses "
+    
+    >
+    <!-- hai -->
+    
+    <template  slot="top-selection" >
+        <q-btn-group class="animated fadeInDown">
+            <q-btn label="Get QR Code" icon="nfc" style="color: white ; background-color: #34495E ;"  @click="getCode(selected)"  ></q-btn>
+            <q-btn label="edit" color="orange" icon="edit" @click="EditBus(selected)"  ></q-btn>
+            <q-btn label="delete" icon="delete"  color="red"  @click="DeleteBus(selected)"  ></q-btn>
+          </q-btn-group>
+         
+
+         
+    </template>
+    
+    
+    
+         <template v-slot:top-right>
+      
+          
+                <!-- hai -->
+                 <q-select v-model="modelFilterBus_data" dense debounce="300" outlined :options="Filter_OptionBusType" style="width: 200px;" label="Select Bus Type"  ></q-select>
+    
+
+
+          <q-input outlined  style="width: 200px;padding: 10px;"  v-model="terms" filled  dense debounce="300"  placeholder="Search">
+            <template v-slot:append>
+              <q-icon name="search" ></q-icon>
+            </template>
+        </q-input>
+      
+      
+      
+      
+     
+    
+    
+           
+    
+    
+     
+      </template>
+    
+    
+    
+    
+    </q-table>
+
+    
+
+
+
+
+
+   
+    <q-linear-progress indeterminate v-if="loadingOffense"  color="grey"></q-linear-progress>
+<!-- 
+          
+
+      <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" v-for="item in Busses" >
+
+        <q-list  style="padding: 5px;" >
+
+            <q-item clickable style="width: 100% ; border-radius: 5px; -webkit-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12);
+            -moz-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12);
+            box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12); background-color:  #273746; ">
+           
+                <q-item-section>
+                  <q-item-label style="font-size: 18px; color:white;font-weight: 900">
+                    <span>Bus No. : </span>
+                    ${ item.BusNo }</q-item-label>
+                  <q-item-label style="font-size: 15px; color:white;font-weight: 900">
+                    <span>Bus Type : </span>
+                    ${ item.Type}</q-item-label>
+                  <q-item-label style="font-size: 15px; color:white;">
+                    <span>Location : </span>
+                    ${ item.PlaceOfAssignment}</q-item-label>
+                  <q-item-label caption lines="2">
+                                            <q-btn icon="delete" flat color="red"  @click="DeleteBus(item.id)" ></q-btn>
+                                             <q-btn icon="edit" flat color="white" @click="EditBus(item.id,item) " ></q-btn>
+                                             <div>
+                                                 <q-tooltip >
+                                                     Get QR Code
+                                                 </q-tooltip>
+                                                 <q-btn icon="nfc" flat color="orange" label="Get QRCode" @click="getCode(item.id)" ></q-btn>
+                                             </div>
+                  </q-item-label>
+                </q-item-section>
+               
+        
+                <q-item-section side top>
+                  <q-item-label style="color: white;">
+                    ${ item.Type } 
+                  </q-item-label>
+
+                  <q-icon name="commute" color="red" />
+                </q-item-section>
+              </q-item>
+        </q-list>
+
+
+      </div>
+
+
+            
+        </div>
+</div> -->
+
+
+<q-dialog v-model="modal_qrcode" persistent>
+  <q-card style="width: 900px; max-width: 1020;">
+    <div id="printMe">
+        <q-card-section  class="row items-center" style="padding: 30px; width: 100%;">
+       
+            <img width="150px;"  style="margin-left: auto;margin-right: auto;width: 50%" :src="qr" alt="QR" srcset="">
+    
+              <!-- buru -->
+              
+          </q-card-section>
+          <q-item-label style="width: 100%; text-align: center; font-weight: bold;">
+             ${ web_info_qr }
+    
+          </q-item-label>
+    
+      
+    
+    
+
+    </div>
+  
+    <q-card-actions align ="center">
+        <q-btn push  label="Close" color="grey" v-close-popup ></q-btn>
+      <q-btn push icon="print" @click="printna"  label="Print" color="red-8"  ></q-btn>
+    </q-card-actions>
+  </q-card>
+</q-dialog>
+
+
+<q-dialog v-model="modal_newbus" >
+  <q-card style="width: 900px; max-width: 1020; padding: 20px;;">
+   
+    <div class="text-h6" style="margin-left: 10px;">New Bus</div>
+    <!-- khariza -->
+    <q-input style="padding: 5px;" outlined v-model="modelBusno" ref="modelBusno" :rules="[ val => val !== null && val !== '' || 'Please Enter Bus Number']" type="number" label="Bus Number" ></q-input>
+    
+
+    <q-select style="padding: 5px;" v-model="modelType" ref="modelType" :rules="[ val => val && val.length > 0 || 'Please Select Bus Type']" :options="optionsBusType" label="Select Bus Type" outlined ></q-select>
+
+    <q-select style="padding: 5px;" v-model="model" ref="model" :rules="[ val => val && val.length > 0 || 'Please Select Bus Type']"  :options="stringOptions" label="Select Location" outlined ></q-select>
+    
+    
+    <q-card-actions align="right">
+        
+      <q-btn push icon="save" @click="save_newbus"  label="Save" color="red-8"  ></q-btn>
+    </q-card-actions>
+  </q-card>
+</q-dialog>
+
+
+
+
+
+<q-dialog v-model="modalBusEdit" persistent>
+  <q-card style="width: 900px; max-width: 1020;">
+   
+     
+        <q-card-section>
+          <div class="text-h6">Edit Bus Information</div>
+          
+        </q-card-section>
+        <q-card-section>
+         <q-input   style="width: 100%; padding-bottom: 10px" outlined v-model="modelEditBusNumber" type="text" label="Bus Number" ></q-input>
+         <!-- <q-input  style="width: 100%; padding-bottom:  10px"  outlined v-model="modelEditBusType" type="text" label="Type" ></q-input> -->
+         <q-select style="padding-bottom: 10px"  v-model="modelEditBusType" :options="optionsBusType" label="Select Bus Type" outlined ></q-select>
+
+         <q-select
+         style=" width: 100%;"
+         outlined
+          
+           v-model="modelEditBusLocation"
+           use-input
+           hide-selected
+           fill-input
+           input-debounce="0"
+           :options="stringOptions"
+           @filter="filterFn"
+           hint="Type Info"
+          
+         >
+           <template v-slot:no-option>
+             <q-item>
+               <q-item-section class="text-grey">
+                 No results
+               </q-item-section>
+             </q-item>
+           </template>
+         </q-select>
+          
+        </q-card-section>
+ 
+  
+    <q-card-actions align="right">
+        <q-btn push  label="Close" color="grey" v-close-popup ></q-btn>
+      <q-btn push icon="save" @click="submitna"  label="Save" color="red-8"  ></q-btn>
+    </q-card-actions>
+  </q-card>
+</q-dialog>
+
+
+
+
+
+<q-dialog v-model="modalNewCategoy" persistent>
+  <q-card style="width: 900px; max-width: 1020;">
+   
+       
+            <q-card-section>
+              <div class="text-h6">Enter New Bus Type</div>
+              <div class="text-subtitle2">Ex. Deluxe</div>
+              <q-input v-model="modelNewCategory"
+              style="padding: 10px;" outlined  type="text" label="Bus Type Here" ></q-input>
+
+            </q-card-section>
+     
+        
+    
+      
+    
+    
+
+    
+  
+    <q-card-actions align="right">
+        <q-btn push  label="Close" color="grey" v-close-popup ></q-btn>
+      <q-btn push icon="save" @click="eventSaveNewCategory"  label="Save" color="red-8"  ></q-btn>
+    </q-card-actions>
+  </q-card>
+</q-dialog>
+
+
+
+
+<q-dialog v-model="modalNewCategoyEdit" persistent>
+  <q-card style="width: 900px; max-width: 1020;">
+   
+       
+            <q-card-section>
+              <div class="text-h6">Enter New Bus Type</div>
+              <div class="text-subtitle2">Ex. Deluxe</div>
+              <q-input v-model="modelNewCategory"
+              style="padding: 10px;" outlined  type="text" label="Bus Type Here" ></q-input>
+
+            </q-card-section>
+     
+        
+    
+      
+    
+    
+
+    
+  
+    <q-card-actions align="right">
+        <q-btn push  label="Close" color="grey" v-close-popup ></q-btn>
+      <q-btn push icon="save" @click="eventSaveNewCategoryUpdate"  label="Save" color="red-8"  ></q-btn>
+    </q-card-actions>
+  </q-card>
+</q-dialog>
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% endblock %}
+
+{% block script %}
+
+<script >
+
+    // setup
+    new Vue({
+                el: '#app',
+                delimiters: ['${','}'],
+                data: function () {
+                  return {
+                    drawerState: false,
+                    pic_user : 'http://res.heraldm.com/phpwas/restmb_jhidxmake.php?idx=5&simg=201701181539234376570_20170118154018_02.jpg',
+                    left : false,
+                  
+
+                    dash : {
+            backgroundColor : '#273746',
+           color : 'white'
+           },
+           
+           Deliberation : {
+           backgroundColor : '#273746',
+           color : 'white',
+       },
+
+       employee : {
+            backgroundColor : '#273746',
+           color : 'white'
+           },
+           performance_evaluation : {
+           backgroundColor : '#273746',
+           color : 'white',
+       },
+       settings : {
+            backgroundColor : '#273746',
+           color : 'white'
+           },
+           Deliberation : {
+           backgroundColor : '#273746',
+           color : 'white',
+       },
+       report : {
+           backgroundColor : '#273746',
+           color : 'white',
+       },
+       concern : {
+           backgroundColor : '#273746',
+           color : 'white',
+       },
+
+
+
+
+           global_hostname : '',
+           token : '',
+           Busses : [
+             
+           ],
+           search : '',
+    
+           BussesRawCopy : [],
+           modal_qrcode : false,
+           web_info_qr : '',
+           qr : '',
+           url : '',
+           info : '',
+           modal_newbus  : false,
+           modelBusno : '',
+           modelType : '',
+           stringOptions : [
+            'Google', 'Facebook', 'Twitter', 'Apple', 'Oracle'
+            ,
+            ]
+            ,model: null,
+            modalBusEdit  : false,
+            modelEditBusLocation : '',
+            modelEditBusNumber : '',
+            modelEditBusType : '', 
+            global_id : 0,
+            BusType : [],
+            optionsBusType : [],
+            modalNewCategoy : false,
+            modelNewCategory : '',
+            modalNewCategoyEdit : false,
+            modelNewCategoryEdit : '',
+            global_id : 0,
+
+            loadingOffense : true,
+            Filter_OptionBusType: [],
+            modelFilterBus_data: '',
+            
+columns: [
+          
+          {
+          name: 'desc',
+          required: true,
+          label: 'BusNo',
+          align: 'left',
+          field: row => row.BusNo,
+          format: val => `${val}`, 
+          sortable: true
+        },
+        { name: 'PlaceOfAssignment', align: 'center', label: 'Place Of Assignment', field: 'PlaceOfAssignment', sortable: true },
+        { name: 'Type', align: 'center', label: 'Type', field: 'Type', sortable: true },
+        
+      ],
+      data: [
+               
+      ],
+selected : [],
+
+terms: ''
+
+            // state
+            
+    
+    
+           
+            
+                   
+                  }
+                },beforeMount () {
+                  if(innerWidth < 1017){
+                        this.drawerState = false
+                    }
+                },
+                
+                watch: {
+                  modelFilterBus_data : function(){
+                    this.loadingOffense = true
+                    var datas =  this.BussesRawCopy
+                    if(this.modelFilterBus_data == 'No Filter'){
+                      
+                      this.Busses = datas
+                      // this.modelFilterBus_data = ''
+                      setTimeout(() => {
+                          this.loadingOffense = false
+                      }, 2000);
+                      console.log(this.Busses)
+                      
+                     
+                    }else{
+
+                      if(this.modelFilterBus_data != ''){
+                        var filter = datas.filter(
+                          (element)=>{
+                            return element.Type == this.modelFilterBus_data
+                          }
+                        )
+                      }
+                      this.Busses = filter
+                      setTimeout(() => {
+                          this.loadingOffense = false
+                      }, 2000);
+                    }
+                  },
+                },
+              methods: {
+                logout(){
+                  axios.post(`${this.global_hostname}/logout/`,{
+                      
+                       headers: {
+                                   'Content-Type': 'application/json',
+                                      'X-CSRFToken': this.token
+                       }
+                      
+                  })
+                  .then(res => {
+                      window.location.replace(`${this.global_hostname}/login/`)
+                    
+                  })
+                  .catch(err => {
+                      
+                  })
+    
+                  
+            },
+            eventSaveNewCategoryUpdate(){
+
+               if(this.modelNewCategory.length <=0 ){
+                 alert('New Category must be Filled')
+                return
+               }
+              var obj = {
+                "BusCategoryName": this.modelNewCategory
+              }
+
+              axios.put(`${this.global_hostname}/api/BusCategory/${this.global_id}/`,obj,{
+              
+              headers: {
+                    'Content-Type': 'application/json',
+                     'X-CSRFToken': this.token
+              }
+             
+           })
+           .then(res => {
+
+             
+             this.$q.notify({ //put dollor sign(q)
+             message: `Successfully Updated!`,
+             timeout: 3000, // in milliseconds; 0 means no timeout
+
+             color: 'green',
+             textColor: 'white', // if default 'white' doesn't fit
+           icon: 'check', //or  avatar: 'statics/boy-avatar.png',
+
+           position: 'top', // 'top', 'left', 'bottom-left' etc.
+
+           })
+
+
+           this.modalNewCategoyEdit = false
+           this.getType()
+
+         
+            
+           })
+           .catch(err => {
+             console.error(err); 
+           })
+           //hai
+         
+
+
+
+
+
+            },
+            event_CategoryBus(info,id){
+              this.modalNewCategoyEdit = true
+              this.global_id = id
+              this.modelNewCategory = info
+            },
+            event_newCategory(){
+              this.modalNewCategoy = true
+            },
+            eventSaveNewCategory(){
+              var data = this.modelNewCategory
+              if( data.length <= 0 ){
+                alert('New Category must be Filled')
+                return
+              }
+              var obj = {
+                "BusCategoryName": data
+              }
+              
+              axios.post(`${this.global_hostname}/api/BusCategory/`,obj,{
+              
+                 headers: {
+                       'Content-Type': 'application/json',
+                        'X-CSRFToken': this.token
+                 }
+                
+              })
+              .then(res => {
+
+                
+                this.$q.notify({ //put dollor sign(q)
+                message: `Successfully Saved!`,
+                timeout: 3000, // in milliseconds; 0 means no timeout
+
+                color: 'green',
+                textColor: 'white', // if default 'white' doesn't fit
+              icon: 'check', //or  avatar: 'statics/boy-avatar.png',
+
+              position: 'top', // 'top', 'left', 'bottom-left' etc.
+
+              })
+
+
+              this.modalNewCategoy = false
+              this.getType()
+
+            
+               
+              })
+              .catch(err => {
+                console.error(err); 
+              })
+              //hai
+            },
+            eventDeleteCategory(id){
+
+              this.$q.dialog({
+        title: 'Confirm',
+        message: 'Would you like to Delete This File?',
+        cancel: true,
+        persistent: true
+      }).onOk(() => {
+       
+
+        axios.delete(`${this.global_hostname}/api/BusCategory/${id}/`,{
+         
+           headers: {
+                 'Content-Type': 'application/json',
+                  'X-CSRFToken': this.token
+           }
+          
+        })
+        .then(res => {
+          
+                        this.$q.notify({ //put dollor sign(q)
+                message: `Successfully Deleted!`,
+                timeout: 3000, // in milliseconds; 0 means no timeout
+
+                color: 'green',
+                textColor: 'white', // if default 'white' doesn't fit
+              icon: 'check', //or  avatar: 'statics/boy-avatar.png',
+
+              position: 'top', // 'top', 'left', 'bottom-left' etc.
+
+              })
+              this.getType()
+
+                //hai
+
+
+        })
+        .catch(err => {
+          console.error(err); 
+        })
+      }).onOk(() => {
+        // console.log('>>>> second OK catcher')
+      }).onCancel(() => {
+        // console.log('>>>> Cancel')
+      }).onDismiss(() => {
+        // console.log('I am triggered on both OK and Cancel')
+})
+
+            },
+            submitna(){
+
+
+
+    
+   
+  
+              var BusType_data = this.modelEditBusType
+              var BusCategoryid = this.BusType.filter(
+                (element)=>{
+                  return element.BusCategoryName ==  BusType_data
+
+                }
+              )
+             
+              // khariza
+              var payload = {
+                "BusNo": this.modelEditBusNumber,
+                "Type": `${this.global_hostname}/api/BusCategory/${BusCategoryid[0].id}/`,
+                "PlaceOfAssignment": this.modelEditBusLocation,
+
+
+              }
+              axios.put(`${this.global_hostname}/api/Busses/${this.global_id}/`,payload,{
+            
+                 headers: {
+                       'Content-Type': 'application/json',
+                        'X-CSRFToken': this.token
+                 }
+                
+              })
+              .then(res => {
+                console.log(res)
+                this.$q.notify({ //put dollor sign(q)
+                                    message: `Successfully Updated!`,
+                                    timeout: 3000, // in milliseconds; 0 means no timeout
+                                  
+                                    color: 'green',
+                                    textColor: 'white', // if default 'white' doesn't fit
+                                  icon: 'check', //or  avatar: 'statics/boy-avatar.png',
+                                  
+                                  position: 'top', // 'top', 'left', 'bottom-left' etc.
+                                  
+                                    })
+                                    this.GetBusses()
+
+                                    this.modalBusEdit = false
+              })
+              .catch(err => {
+               
+                
+
+
+              })
+            },
+            EditBus(data){
+              console.log(data)
+              this.modelEditBusLocation = data[0].PlaceOfAssignment
+              this.modelEditBusNumber = data[0].BusNo
+              this.modelEditBusType = data[0].Type
+              this.modalBusEdit = true
+              this.global_id=data[0].id
+            },
+            filterFn (val, update, abort) {
+            update(() => {
+              const needle = val.toLowerCase()
+              this.stringOptions = this.stringOptions.filter(v => v.toLowerCase().indexOf(needle) > -1)
+            })
+    },
+
+            new_bus (){
+              this.modal_newbus = true
+              this.getType()
+            },
+            save_newbus(){
+
+              this.$refs.model.validate()
+    this.$refs.modelType.validate()
+    this.$refs.modelBusno.validate()
+            if (this.$refs.model.hasError ||  this.$refs.modelType.hasError || this.$refs.modelBusno.hasError ) {
+          this.formHasError = true
+          return
+     }
+  
+            
+              var type = this.modelType
+                var BusCategoryid = this.BusType.filter(
+                  (element)=>{
+                    return element.BusCategoryName == type
+                  }
+                )
+            var obj = {
+              "BusNo": this.modelBusno,
+              "PlaceOfAssignment" : this.model,
+              "Type":`${this.global_hostname}/api/BusCategory/${BusCategoryid[0].id}/` ,
+            }
+            console.log(obj)
+            axios.post(`${this.global_hostname}/api/Busses/`,obj,{
+          
+                    headers: {
+                          'Content-Type': 'application/json',
+                            'X-CSRFToken': this.token
+                    }
+            
+            })
+            .then(res => {
+              console.log(res)
+
+              this.$q.notify({ //put dollor sign(q)
+                                    message: `Successfuly Saved!`,
+                                    timeout: 3000, // in milliseconds; 0 means no timeout
+                                  
+                                    color: 'green',
+                                    textColor: 'white', // if default 'white' doesn't fit
+                                  icon: 'check', //or  avatar: 'statics/boy-avatar.png',
+                                  
+                                  position: 'top', // 'top', 'left', 'bottom-left' etc.
+                                  
+                          })
+              this.GetBusses()
+              this.modal_newbus = false
+            })
+            .catch(err => {
+              console.error(err); 
+              this.$q.notify({ //put dollor sign(q)
+                                    message: `Network Error \n Check your Internet Connection..!`,
+                                    timeout: 3000, // in milliseconds; 0 means no timeout
+                                  
+                                    color: 'red',
+                                    textColor: 'white', // if default 'white' doesn't fit
+                                  icon: 'error', //or  avatar: 'statics/boy-avatar.png',
+                                  
+                                  position: 'top', // 'top', 'left', 'bottom-left' etc.
+                                  
+                                    })
+                                    this.modal_newbus = false
+
+
+
+
+            })
+            },
+            DeleteBus(data){
+              var id = data[0].id
+              this.$q.dialog({
+        title: 'Confirm',
+        message: 'Would you Like to Delete This File?',
+        cancel: true,
+        persistent: true
+      }).onOk(() => {
+        // console.log('>>>> OK')
+
+        axios.delete(`${this.global_hostname}/api/Busses/${id}/`,{
+                              
+                              headers: {
+                                    'Content-Type': 'application/json',
+                                      'X-CSRFToken': this.token
+                              }
+                              
+                            })
+                            .then(res => {
+                                this.$q.notify({ //put dollor sign(q)
+                                  message: `Delete Successfull!`,
+                                  timeout: 3000, // in milliseconds; 0 means no timeout
+                                
+                                  color: 'green',
+                                  textColor: 'white', // if default 'white' doesn't fit
+                                icon: 'check', //or  avatar: 'statics/boy-avatar.png',
+                                
+                                position: 'top', // 'top', 'left', 'bottom-left' etc.
+                                
+                                  })
+                                  this.GetBusses()
+                                
+                                
+                            })
+                            .catch(err => {
+                              console.error(err); 
+                            })
+
+
+      }).onOk(() => {
+        // console.log('>>>> second OK catcher')
+      }).onCancel(() => {
+        // console.log('>>>> Cancel')
+      }).onDismiss(() => {
+        // console.log('I am triggered on both OK and Cancel')
+})
+
+
+
+                
+               
+              
+              
+              
+              
+              
+              
+            },
+            printna(){
+              axios.get(`${this.global_hostname}/api/QRBusses/`,{
+               
+                 headers: {
+                       'Content-Type': 'application/json',
+                        'X-CSRFToken': this.token
+                 }
+                
+              })
+              .then(res => {
+                console.log(res)
+                // this.web_info_qr  = res.data
+                //end 
+              })
+              .catch(err => {
+                console.error(err); 
+              })
+              var url = this.qr
+       var info = this.web_info_qr
+        
+       
+      
+        var divToPrint = document.getElementById('printME');
+           var popupWin = window.open('', '_blank', 'width=300,height=300');
+           popupWin.document.open();
+           popupWin.document.write('<html><body onload="window.print()">' 
+            + 
+           `  
+           <div style="margin: auto;width : 50%">
+           <img width="200px;"  style="margin:auto:width:50%" src="${url}" alt="QR" srcset=""> 
+           
+           <label style="margin: auto;width : 50% text-align:center ; margin-left:-60px" > ${info} </label>
+         
+    
+          </div>
+      
+          `
+
+    
+            
+            + '</html>');
+            popupWin.document.close();
+      
+
+            },
+            searchBus(){
+              this.loadingOffense = true
+                var info   = this.search.toLowerCase()
+                var data = this.BussesRawCopy.filter(
+                  (element)=>{
+                    return element.BusNo.toLowerCase().includes(info) || element.Type.toLowerCase().includes('info')
+                  }
+                )
+
+                this.Busses = data
+                setTimeout(() => {
+                  this.loadingOffense = false
+                }, 2000);
+
+
+            },
+            getCode(data){
+              
+
+              var id = data[0].id
+
+              this.modal_qrcode = true
+              var busid = id
+          var empcode = this.empcode
+          var hostname = `${this.global_hostname}/`
+
+
+          axios.get(`${this.global_hostname}/api/QRBusses/`,{
+            
+             headers: {
+                   'Content-Type': 'application/json',
+                    'X-CSRFToken': this.token
+             }
+            
+          })
+          .then(res => {
+            console.log(res)
+
+            var data = res.data
+                var info = data.filter(
+                  (e)=>{
+                    return e.BusID == busid
+                  }
+                )
+
+                if(info.length > 0){  
+
+                  axios.delete(`${this.global_hostname}/api/QRBusses/${info[0].id}/`,{
+                 
+                     headers: {
+                           'Content-Type': 'application/json',
+                            'X-CSRFToken': this.token
+                     }
+                    
+                  })
+                  .then(res => {
+                    
+                              let formadata = new FormData()
+                              formadata.append('busid',busid )
+                              formadata.append('hostname',hostname )
+                              
+                              console.log(formadata)
+                              axios.post(`${this.global_hostname}/PasengerConcern/Bus/`,formadata,{
+                              
+                                headers: {
+                                      'Content-Type': 'application/json',
+                                        'X-CSRFToken': this.token
+                                }
+                                
+                              })
+                              .then(res => {
+                                console.log(res)
+                                this.qr = `${this.global_hostname}/${res.data.url}`
+                                this.web_info_qr = res.data.info
+                                
+                                
+                              })
+                              .catch(err => {
+                                console.error(err); 
+                              })
+
+
+                  })
+                  .catch(err => {
+                    console.error(err); 
+                  })
+
+                }else{
+                        let formadata = new FormData()
+                                    formadata.append('busid',busid)
+                                    formadata.append('hostname',hostname )
+                                    
+                                    console.log(formadata)
+                                    axios.post(`${this.global_hostname}/PasengerConcern/Bus/`,formadata,{
+                                    
+                                      headers: {
+                                            'Content-Type': 'application/json',
+                                              'X-CSRFToken': this.token
+                                      }
+                                      
+                                    })
+                                    .then(res => {
+                                      console.log(res)
+                                      this.qr = `${this.global_hostname}/${res.data.url}`
+                                      this.web_info_qr = res.data.info
+                                      
+                                    })
+                                    .catch(err => {
+                                      console.error(err); 
+                                    })
+
+
+
+                }
+          })
+          .catch(err => {
+            console.error(err); 
+          })
+
+
+          
+
+            },
+            GetBusses(){
+              axios.get(`${this.global_hostname}/api/GET_Busses/`,{
+               
+                 headers: {
+                       'Content-Type': 'application/json',
+                        'X-CSRFToken': this.token
+                 }
+                
+              })
+              .then(res => {
+                console.log(res)
+                this.Busses = res.data
+                this.BussesRawCopy = res.data
+                setTimeout(() => {
+                  this.loadingOffense =false
+                }, 2000);
+
+              })
+              .catch(err => {
+                console.error(err); 
+              })
+            },
+            getType(){
+            axios.get(`${this.global_hostname}/api/BusCategory/`,{
+            
+               headers: {
+                     'Content-Type': 'application/json',
+                      'X-CSRFToken': this.token
+               }
+              
+            })
+            .then(res => {
+              console.log(res)
+              this.BusType = res.data
+              var temp = []
+              for (let index = 0; index < res.data.length; index++) {
+                const element = res.data[index];
+                temp.push(element.BusCategoryName)
+                if(index == res.data.length - 1){
+                  this.optionsBusType = temp
+                  var temp2 = temp
+                 
+                
+                }
+              }
+              var temp2 = []
+              for (let index = 0; index < res.data.length; index++) {
+                const element = res.data[index];
+                temp2.push(element.BusCategoryName)
+                if(index == res.data.length - 1){
+                 
+                  
+                  temp2.push('No Filter')
+                  this.Filter_OptionBusType = temp2
+                  // hai
+                }
+              }
+
+
+              
+              
+              //hai
+            })
+            .catch(err => {
+              console.error(err); 
+            })
+            },
+    
+            getlocations(){
+              axios.get(`${this.global_hostname}/api/GET_PLACE_OF_ASSIGNMENT_LOCATION/`,{
+              
+                 headers: {
+                       'Content-Type': 'application/json',
+                        'X-CSRFToken': this.token
+                 }
+                
+              })
+              .then(res => {
+                
+                  var data = res.data
+                  var temp = []
+                for (let index = 0; index < data.length; index++) {
+                  const element = data[index];
+                    var  concat = element.location +' '+ element.category
+                    temp.push(concat)
+                    if(index == data.length - 1){
+                      this.stringOptions = temp
+                    }
+                  
+                }
+                  
+              })
+              .catch(err => {
+                console.error(err); 
+              })
+            },
+              },
+              mounted () {
+                
+                var hostname = window.location.hostname;
+                var port = window.location.port
+              if(port != ''){
+
+                  hostname = hostname+':8000'
+                  }
+            else{
+                hostname = hostname
+            }
+    
+            this.global_hostname = `${window.location.protocol}//${hostname}`;
+            var csrftoken = Cookies.get('csrftoken');
+            this.token = csrftoken
+          this.getType()
+            this.GetBusses()
+            this.getlocations()
+
+            
+            
+              },
+            })
+    
+    
+</script>
+
+
+{% endblock %}

@@ -1,0 +1,707 @@
+{% extends "myapp/layout.html" %}
+
+{% block content %}
+
+<q-breadcrumbs style="color: red; cursor: pointer">
+    <q-breadcrumbs-el label="File Maintenance /" onclick="window.location.href='{% url 'settings_panel' %}' " icon="settings" />
+    <q-breadcrumbs-el label="General " icon="all_inbox" />
+    <q-breadcrumbs-el label=" /"  />
+</q-breadcrumbs>
+
+<div class="row animated fadeInDown" style="padding: 10px;">
+    <div style="width: 100% ">
+         <legend style="font-size: 25px; color:#34495E;font-weight: 900">Employee Job Status</legend>
+    </div>
+    <div class="row animated fadeInDown">
+         <span style="color: #34495E">
+                <small>Click to Create new Job Status.</small>
+         </span>
+    </div>
+</div>
+
+
+<div class="row animated fadeInDown" style="padding: 10px; width: 100%;">
+  <q-btn color="red-8" outlined icon="add" label="Create new" @click="create_new"  ></q-btn>
+</div>
+
+<div class="row animated fadeInDown" style="padding: 20px; margin-left: 30px; width: 100%;" v-for="item in evaluation_period" :key="item.id">
+
+    <div class="row animated fadeInDown" style=" width: 100%;">
+        
+          
+
+                
+                <div class="col-xs-12 col-sm-8 col-md-8 col-lg-4">
+                        <q-list   >
+                                <q-item style=" border-radius: 5px;"
+                               >
+                                    <q-item-section>
+                                      <q-item-label style="font-size: 20px; font-weight: 900; color: #34495E ">${item.for_employee_status}</q-item-label>
+                                      <q-item-label caption lines="2">${item.description}</q-item-label>
+                                      <q-item-label style="color: #5D6D7E">Evaluation Period : ${item.month_period} Months</q-item-label>
+                                    </q-item-section>
+                                  
+                                    <q-item-section side top>
+                                      <q-item-label caption>
+        
+                                        <q-btn color="orange" flat icon="edit" @click="edit(item.id)"></q-btn>
+                                        <q-btn color="grey" flat icon="delete" @click="deletes(item.id)" ></q-btn>
+                                      </q-item-label>
+                                      
+                                    </q-item-section>
+                                  </q-item>
+                            </q-list>
+                </div>
+                
+  
+         
+         
+
+        
+    </div>
+</div>
+
+<q-dialog v-model="modal_create_new" >
+    <q-card style="width: 900px;">
+      <q-card-section class="row items-center" style="padding: 30px;">
+          <div class="row animated fadeInDown" style="width: 100%; padding: 5px;">
+              <p style="font-weight: 900; color:#34495E;">Please fill up the fields, then click save.</p>
+           
+          </div>
+          <div class="row animated fadeInDown" style="width: 100%; padding: 5px;">
+                <q-input style="width: 100%;" v-model="jobstatus" type="text" ref="jobstatus"  :rules="[ val => val && val.length > 0 || 'Please type something']"  outlined label="Employee Job Status" ></q-input>
+          </div>
+          <div class="row animated fadeInDown" style="width: 100%;  padding: 5px; ">
+              <q-input style="width: 100%;" ref="jobdescription"  :rules="[ val => val && val.length > 0 || 'Please type something']"  v-model="jobdescription" type="text" outlined label="Description" ></q-input>
+        </div>
+        
+          <div class="row animated fadeInDown" style="width: 100%;  padding: 5px;">
+              <!-- kharene -->
+              
+          </div>
+          <div class="row animated fadeInDown"  style="width: 100%;">
+              <small style="margin-left: 5px;">Adjust range to edit.</small>
+          </div>
+              <div class="row animated fadeInDown" style="width: 100%; margin-top: 20px;">
+                        <q-slider v-model="value_percentage"  :label-value="value_percentage+ 'Months'"
+                        label-always :min="0" color="red" :max="6" label-always
+                        />
+                </div>
+      </q-card-section>
+      <q-card-actions align="right">
+        <q-btn flat label="Cancel" color="grey" v-close-popup ></q-btn>
+        <q-btn flat label="save" color="red-8"  @click="create"></q-btn>
+      </q-card-actions>
+    </q-card>
+  </q-dialog>
+
+<q-dialog v-model="modal" persistent>
+    <q-card style="width: 900px;">
+      <q-card-section class="row items-center" style="padding: 30px;">
+          <div class="row animated fadeInDown" style="width: 100%; padding: 5px;">
+              <q-icon color="orange"  style="font-size: 30px ; text-align: center; width: 100%"  flat name="edit"   />
+          </div>
+          <div class="row animated fadeInDown" style="width: 100%; padding: 5px;">
+                <q-input style="width: 100%;" v-model="status" type="text" outlined label="Employee" ></q-input>
+          </div>
+          <div class="row animated fadeInDown" style="width: 100%;  padding: 5px; ">
+              <q-input style="width: 100%;"  v-model="description" type="text" outlined label="Description" ></q-input>
+        </div>
+          <div class="row animated fadeInDown" style="width: 100%;  padding: 5px;">
+              Evaluation Period
+            
+              
+          </div>
+          <div class="row animated fadeInDown"  style="width: 100%;">
+              <small style="margin-left: 5px;">Adjust range to edit.</small>
+          </div>
+              <div class="row animated fadeInDown" style="width: 100%; margin-top: 20px;">
+                        <q-slider v-model="value"  :label-value="value+ 'Months'"
+                        label-always :min="0" color="red" :max="6" label-always
+                        />
+                </div>
+      </q-card-section>
+      <q-card-actions align="right">
+        <q-btn flat label="Cancel" color="grey" v-close-popup ></q-btn>
+        <q-btn flat label="save" color="red-8" v-close-popup  @click="save"></q-btn>
+      </q-card-actions>
+    </q-card>
+  </q-dialog>
+
+
+  <!-- current -->
+  <div class="row animated fadeInDown" style="padding: 10px;">
+      <div style="width: 100% ">
+           <legend style="font-size: 25px; color:#34495E;font-weight: 900">Passing Score</legend>
+      </div>
+      <div class="row animated fadeInDown" style="width: 50%;">
+           <span style="color: #34495E">
+                  <small>
+                    To update please adjust the range or click this 
+                     <q-btn color="orange" icon="edit"   label="" flat @click="SHOWMODAL_RANGE" ></q-btn></small>
+           </span>
+           
+      </div>
+      <div class="row" style="width: 100%">
+        
+              <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                  <q-slider
+                
+                  v-model="passing_grade"
+                  :min="0"
+                  :max="100"
+                  @change="pass"
+                  label
+                  :label-value="passing_grade + '%'"
+                  label-always
+                  color="orange"
+                ></q-slider>
+                  <div v-if="check">
+                      <span style="color: red;">
+                            Updating......
+                         </span>
+                  </div>
+                  <div v-else>
+                       <q-icon name="check" color="grey"></q-icon>  Updated
+                  </div>
+        </div>
+        
+      </div>
+      
+  </div>
+  
+
+  
+<q-dialog v-model="modal_range" >
+    <q-card style="width: 900px;">
+      <q-card-section class="row items-center" style="padding: 30px;">
+          <div class="row animated fadeInDown" style="width: 100%; padding: 5px;">
+              <legend style="font-size: 20px; color:#34495E;font-weight: 900">Enter New Passing Score</legend>
+          </div>
+          <div class="row animated fadeInDown" style="width: 100%; padding: 5px;">
+                <q-input style="width: 100%;" v-model="passing_grade" type="number" outlined label="Type Here" ></q-input>
+          </div>
+          <!-- current -->
+      </q-card-section>
+      <q-card-actions align="right">
+        <q-btn flat label="Cancel" color="grey" v-close-popup ></q-btn>
+        <q-btn flat label="save" color="red-8"  @click="pass"></q-btn>
+      </q-card-actions>
+    </q-card>
+  </q-dialog>
+  
+
+
+{% endblock %}
+
+
+
+{% block script%}
+
+<script>
+
+
+
+
+
+        new Vue({
+            el: '#app',
+            delimiters: ['${','}'],
+            data: function () {
+              
+              return {
+                drawerState: false,
+                check : false,
+                pic_user : 'http://res.heraldm.com/phpwas/restmb_jhidxmake.php?idx=5&simg=201701181539234376570_20170118154018_02.jpg',
+      
+                dash : {
+            backgroundColor : '#273746',
+           color : 'white'
+           },
+           
+           Deliberation : {
+           backgroundColor : '#273746',
+           color : 'white',
+       },
+
+       employee : {
+            backgroundColor : '#273746',
+           color : 'white'
+           },
+           performance_evaluation : {
+           backgroundColor : '#273746',
+           color : 'white',
+        
+       },
+       settings : {
+            backgroundColor : '#273746',
+           color : 'white'
+           },
+           Deliberation : {
+           backgroundColor : '#273746',
+           color : 'white',
+       },
+       report : {
+           backgroundColor : '#273746',
+           color : 'white',
+       },
+       concern : {
+           backgroundColor : '#273746',
+           color : 'white',
+       },
+           global_hostname : '',
+                evaluation_period : [],
+                modal : false,
+                value : '',
+                status : '',
+                description : '',
+                id : 0,
+                modal_create_new : false,
+                jobstatus : '',
+                jobdescription : '',
+                value_percentage : 1,
+                  token : '',
+                  passing_grade : '',
+                  modal_range : false,
+                  Existingjostatus : []
+              }
+            },
+            watch: {
+             
+            
+            },
+            beforeMount () {
+              if(innerWidth < 1017){
+                    this.drawerState = false
+                }
+            },
+
+            methods: {
+
+              logout(){
+              axios.post(`${this.global_hostname}/logout/`,{
+                  
+                   headers: {
+                               'Content-Type': 'application/json',
+                                  'X-CSRFToken': this.token
+                   }
+                  
+              })
+              .then(res => {
+                  window.location.replace(`${this.global_hostname}/login/`)
+                
+              })
+              .catch(err => {
+                  
+              })
+            },
+
+            SHOWMODAL_RANGE(){
+              this.modal_range = true
+            },
+            
+              get_passing_grade(){
+                axios.get(`${this.global_hostname}/api/PassingGrade/1/`)
+                .then(res => {
+                  this.passing_grade = res.data.passing_grades
+                })
+                .catch(err => {
+                  console.error(err); 
+                })
+              },
+              pass(){
+                    this.check = true
+                   setTimeout(() => {
+                      this.check = false
+
+                      axios.put(`${this.global_hostname}/api/PassingGrade/1/`,{
+
+                        passing_grades : this.passing_grade
+                      },{
+                       
+                         headers: {
+                               'Content-Type': 'application/json',
+                                'X-CSRFToken': this.token
+                         }
+                        
+                      })
+                      .then(res => {
+                        console.log(res)
+                        this.check = false
+
+                        this.$q.notify({ //put dollor sign(q)
+                                  message: `Passing Grade Successfully Updated!`,
+                                  timeout: 10000, // in milliseconds; 0 means no timeout
+                                
+                                  color: 'orange',
+                                  textColor: 'white', // if default 'white' doesn't fit
+                                icon: 'check', //or  avatar: 'statics/boy-avatar.png',
+                                
+                                position: 'top', // 'top', 'left', 'bottom-left' etc.
+                                
+                        })
+
+                      })
+                      .catch(err => {
+                        console.error(err); 
+
+                        this.$q.notify({ //put dollor sign(q)
+                      message: `Unsuccessfull!`,
+                      timeout: 10000, // in milliseconds; 0 means no timeout
+                    
+                      color: 'red',
+                      textColor: 'white', // if default 'white' doesn't fit
+                    icon: 'error', //or  avatar: 'statics/boy-avatar.png',
+                     
+                    position: 'top', // 'top', 'left', 'bottom-left' etc.
+                     
+                  })
+                      })
+                   }, 3000);
+              },
+              deletes(id){
+               
+                axios.delete(`${this.global_hostname}/api/JOBSTATUS/${id}/`,{
+            headers: {
+                                        'Content-Type': 'application/json',
+                                        'X-CSRFToken': this.token
+                    }
+                
+                })
+                .then(res => {
+                  console.log(res)
+
+                  this.$q.notify({ //put dollor sign(q)
+                            message: `Successfully Deleted`,
+                            timeout: 10000, // in milliseconds; 0 means no timeout
+                          
+                            color: 'orange',
+                            textColor: 'white', // if default 'white' doesn't fit
+                          icon: 'check', //or  avatar: 'statics/boy-avatar.png',
+                          
+                          position: 'top', // 'top', 'left', 'bottom-left' etc.
+                          
+                        })
+
+                        this.get_evaluation_period()
+
+
+                })
+
+                .catch(err => {
+                  console.error(err); 
+
+                  this.$q.notify({ //put dollor sign(q)
+                      message: `Unsuccessfull!`,
+                      timeout: 10000, // in milliseconds; 0 means no timeout
+                    
+                      color: 'red',
+                      textColor: 'white', // if default 'white' doesn't fit
+                    icon: 'error', //or  avatar: 'statics/boy-avatar.png',
+                     
+                    position: 'top', // 'top', 'left', 'bottom-left' etc.
+                     
+                  })
+                })
+              },
+              create(){
+
+               
+                // kharene
+                
+             
+                this.$refs.jobstatus.validate()
+                this.$refs.jobdescription.validate()
+                   if (this.$refs.jobstatus.hasError || this.$refs.jobdescription.hasError ) {
+                    this.formHasError = true
+                        return
+                 }else{
+                  
+                      var re = /^[A-Za-z]+$/;
+                      if (re.test(this.jobstatus) && re.test(this.jobdescription)) {
+                      
+
+                      
+            
+
+                      }else{
+                        
+                        this.$q.notify({ //put dollor sign(q)
+                                    message: `Numbers Not Allowed`,
+                                    timeout: 3000, // in milliseconds; 0 means no timeout
+
+                                    color: 'red',
+                                    textColor: 'white', // if default 'white' doesn't fit
+                                  icon: 'error', //or  avatar: 'statics/boy-avatar.png',
+
+                                  position: 'top', // 'top', 'left', 'bottom-left' etc.
+
+                                  })
+
+                  
+                          return
+
+                      }
+
+
+                 }
+               
+                // if(this.jobstatus.length <= 0 || this.description.length <= 0 ){
+                //                 this.$q.notify({ //put dollor sign(q)
+                //               message: `Name of JobStatus and Description must be filled! and  Passing Score must be 0(zero)`,
+                //               timeout: 3000, // in milliseconds; 0 means no timeout
+
+                //               color: 'red',
+                //               textColor: 'white', // if default 'white' doesn't fit
+                //             icon: 'error', //or  avatar: 'statics/boy-avatar.png',
+
+                //             position: 'top', // 'top', 'left', 'bottom-left' etc.
+
+                //             })
+
+             
+                //     return
+
+
+                // }
+               
+
+
+
+                
+
+
+
+
+                var check = this.Existingjostatus.filter(
+                    (element)=>{
+                      return element.toLowerCase() == this.jobstatus.toLowerCase()
+                    }
+                  )
+                  if(check.length > 0){
+                                  this.$q.notify({ //put dollor sign(q)
+                message: `Oops! Already Exits Please Try Again`,
+                timeout: 3000, // in milliseconds; 0 means no timeout
+
+                color: 'red',
+                textColor: 'white', // if default 'white' doesn't fit
+              icon: 'pan_tool', //or  avatar: 'statics/boy-avatar.png',
+
+              position: 'top', // 'top', 'left', 'bottom-left' etc.
+
+              })
+              
+
+                    return
+                  }
+
+
+
+                var payload = {
+                      "for_employee_status": this.jobstatus,
+                    "month_period": this.value_percentage,
+                    "description": this.jobdescription 
+                }
+                axios.post(`${this.global_hostname}/api/JOBSTATUS/`,payload,{
+            headers: {
+                                        'Content-Type': 'application/json',
+                                        'X-CSRFToken': this.token
+                    }
+                
+                })
+                .then(res => {
+                  console.log(res)
+                        this.$q.notify({ //put dollor sign(q)
+                            message: `Success... New Employee Job Status is successfully saved`,
+                            timeout: 10000, // in milliseconds; 0 means no timeout
+                          
+                            color: 'orange',
+                            textColor: 'white', // if default 'white' doesn't fit
+                          icon: 'check', //or  avatar: 'statics/boy-avatar.png',
+                          
+                          position: 'top', // 'top', 'left', 'bottom-left' etc.
+                          
+                        })
+
+                        this.get_evaluation_period()
+                })
+                .catch(err => {
+                  console.error(err); 
+                  this.$q.notify({ //put dollor sign(q)
+                      message: `Unsuccessfull!`,
+                      timeout: 10000, // in milliseconds; 0 means no timeout
+                    
+                      color: 'red',
+                      textColor: 'white', // if default 'white' doesn't fit
+                    icon: 'error', //or  avatar: 'statics/boy-avatar.png',
+                     
+                    position: 'top', // 'top', 'left', 'bottom-left' etc.
+                     
+                  })
+                })
+              },
+              create_new(){
+                this.modal_create_new = true;
+              },
+
+              save(){
+                
+                if(this.status.length <= 0 || this.description.length <= 0 || this.value == 0 ){
+                        this.$q.notify({ //put dollor sign(q)
+                      message: `Name of JobStatus and Description must be filled! Passing Score must be 0(zero)`,
+                      timeout: 3000, // in milliseconds; 0 means no timeout
+
+                      color: 'red',
+                      textColor: 'white', // if default 'white' doesn't fit
+                    icon: 'error', //or  avatar: 'statics/boy-avatar.png',
+
+                    position: 'top', // 'top', 'left', 'bottom-left' etc.
+
+              })
+
+              return
+
+
+                }
+
+                // kharene
+                 
+                var check = this.Existingjostatus.filter(
+                    (element)=>{
+                      return element.toLowerCase() == this.status.toLowerCase()
+                    }
+                  )
+                  if(check.length > 0){
+                                  this.$q.notify({ //put dollor sign(q)
+                message: `Oops! Already Exits Please Try Again`,
+                timeout: 3000, // in milliseconds; 0 means no timeout
+
+                color: 'red',
+                textColor: 'white', // if default 'white' doesn't fit
+              icon: 'pan_tool', //or  avatar: 'statics/boy-avatar.png',
+
+              position: 'top', // 'top', 'left', 'bottom-left' etc.
+
+              })
+
+                    return
+                  }
+
+
+                var payload = {
+                      "for_employee_status": this.status,
+                    "month_period": this.value,
+                    "description": this.description,
+                }
+                axios.put(`${this.global_hostname}/api/JOBSTATUS/${this.id}/`,payload,{
+            headers: {
+                                        'Content-Type': 'application/json',
+                                        'X-CSRFToken': this.token
+                    }
+                
+                })
+                .then(res => {
+                  console.log(res)
+                this.$q.notify({ //put dollor sign(q)
+                      message: `Success... Performance Evaluation Period for ${this.status} Employees is now updated!`,
+                      timeout: 10000, // in milliseconds; 0 means no timeout
+                    
+                      color: 'orange',
+                      textColor: 'white', // if default 'white' doesn't fit
+                    icon: 'check', //or  avatar: 'statics/boy-avatar.png',
+                     
+                    position: 'top', // 'top', 'left', 'bottom-left' etc.
+                     
+                  })
+
+                  this.get_evaluation_period()
+                
+                
+                })
+                .catch(err => {
+                  console.error(err); 
+
+                  this.$q.notify({ //put dollor sign(q)
+                      message: `Unsuccessfull!`,
+                      timeout: 10000, // in milliseconds; 0 means no timeout
+                    
+                      color: 'red',
+                      textColor: 'white', // if default 'white' doesn't fit
+                    icon: 'error', //or  avatar: 'statics/boy-avatar.png',
+                     
+                    position: 'top', // 'top', 'left', 'bottom-left' etc.
+                     
+                  })
+
+                })
+
+              },
+                edit(id){
+                    
+                  this.modal = true
+                  this.id = id
+
+                  var data = this.evaluation_period.filter(
+                    function(element){
+
+                        return element.id == id
+                    }
+                  )
+                  this.status = data[0].for_employee_status
+                  this.description = data[0].description
+                  this.value = data[0].month_period
+
+
+                    
+                },
+
+                get_evaluation_period() {
+                        axios.get(`${this.global_hostname}/api/JOBSTATUS/`,{
+            headers: {
+                                        'Content-Type': 'application/json',
+                                        'X-CSRFToken': this.token
+                    }
+                
+                })
+                        .then(res => {
+                            
+                            this.evaluation_period =  res.data
+                            console.log(res.data)
+                            var temp = []
+                            for (let index = 0; index < res.data.length; index++) {
+                              const element = res.data[index];
+                              temp.push(element.for_employee_status)
+                              if(index == res.data.length - 1){
+                                  this.Existingjostatus = temp
+                              }
+                            }
+                        })
+                        .catch(err => {
+                            console.error(err); 
+                        })
+                }
+            },
+            mounted () {
+                var hostname = window.location.hostname;
+                var port = window.location.port
+        if(port != '' ){
+
+            hostname = hostname+':8000'
+                    }
+                    else{
+                        hostname = hostname
+                    }
+        
+                    this.global_hostname = `${window.location.protocol}//${hostname}`;
+                 var csrftoken = Cookies.get('csrftoken');
+                this.token = csrftoken
+                    this.get_evaluation_period();
+                    this.get_passing_grade()
+            },
+            
+        })
+        
+</script><script>
+
+</script>
+{% endblock%}

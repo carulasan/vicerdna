@@ -1,0 +1,298 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+      <link rel="icon" href="{% static 'img/logo.png' %}">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no,initial-scale=1,maximum-scale=1,minimum-scale=1,width=device-width">
+
+    <title>Victory Liner </title>
+
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons" rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/npm/animate.css@^3.5.2/animate.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/quasar@^1.1.0/dist/quasar.min.css" rel="stylesheet" type="text/css">
+
+    
+    <link rel="stylesheet" href="{% static 'css/animate_v2.css' %}">
+    <link rel="stylesheet" href="{% static 'css/performance_evaluation.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/dashboard.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/employee.css' %}" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    
+    <!-- <script src="{% static 'js/quasar_minifiedjs.js' %}"></script> -->
+    <script src="{% static 'js/vue.js' %}"></script>
+    <!-- <script src="{% static 'js/quasar_min.js' %}"></script> -->
+
+
+    <!-- <link href="{% static 'css/material.css' %}" rel="stylesheet" type="text/css"> -->
+    <!-- <link href="{% static 'css/animate.css'%}" rel="stylesheet"> -->
+<!--   
+    <link href="{% static 'css/quasar.css' %}" rel="stylesheet" type="text/css">
+    -->  
+  </head>
+  <body style="background-color:  #EBF5FB ">
+    <div  id="app" >
+      {% csrf_token %} 
+      <q-layout   view="hHh lpR fFf"   >
+        <q-header elevated  class="bg-red-8" >
+
+          <q-toolbar >
+            <q-btn
+              flat
+              dense
+              round
+              @click="drawerState = !drawerState"
+              aria-label="Menu"
+              icon="menu"
+              style="background-color: #34495E" 
+            ></q-btn>
+            <q-toolbar-title>
+             
+            </q-toolbar-title >
+
+            
+
+            <!-- <div class="animated fadeIn delay-4s"> 
+              <q-tooltip>
+                
+                Deliberation Results
+
+              </q-tooltip>
+              <q-btn dense style="color: maroon" round  flat icon="file_copy">
+                <q-badge color="orange" floating  style="font-size: 15px;">
+                 0
+                </q-badge>
+            </div>
+
+
+
+            <div class=""> 
+              <q-tooltip>
+                
+                Representative Submit Schedule 
+
+              </q-tooltip>
+              <q-btn dense style="color: maroon" round  flat icon="how_to_reg">
+                <q-badge color="orange" floating  style="font-size: 15px;">
+                 0
+                </q-badge>
+            </div>
+
+
+            <div class="">
+              <q-tooltip>
+                Supervisor submit performance evaluation score of probationary employees. 
+              </q-tooltip>
+              <q-btn dense style="color: maroon" round  flat icon="feedback">
+                <q-badge color="orange" floating  style="font-size: 15px;">
+                 0
+                </q-badge>
+            </div> -->
+
+
+             
+            <!-- <div class=""> 
+              <q-tooltip>
+                System Notification : New accounts has been created for new hired employees.
+              </q-tooltip>
+              <q-btn dense style="color: maroon" round  flat icon="notification_important">
+                <q-badge color="orange" floating  style="font-size: 15px;">
+                 0
+                </q-badge>
+            </div> -->
+
+   
+            <div class=""  > 
+              
+             
+              <q-list  >
+                  <q-item clickable v-ripple>
+                    <q-item-section avatar>
+                     <img width="35" height="35" style="border-radius: 50%" src="data:image/jpeg;base64,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" alt="" srcset="">
+                      
+                    </q-item-section>
+            
+                    <q-item-section>{{ FullName }}
+                      <q-item-label caption line="2" style="color: white">
+                        {{ JobLevel }}
+                      </q-item-label>
+
+                    </q-item-section>
+                    
+                  </q-item>
+              </q-list>
+
+            </div>
+
+            
+
+
+
+             
+            </q-btn>
+              <div class="" >
+                <q-tooltip >
+                  Logout
+                </q-tooltip>
+               <q-btn flat @click="logout"  icon="logout" ></q-btn>
+              </div>
+          </q-toolbar>
+        </q-header>
+        <q-drawer 
+       
+                v-model="drawerState" 
+              
+                
+      >
+    
+      <!-- -->
+        <q-list  style="background-color:  #273746;height: 100%"   >
+          <div>
+            <q-item >
+              <div style="width: 100%;">
+                  <!-- <img :src="url" width="60" alt="logo"> -->
+                  <div style="padding:10px; width: 100%;" id="logos">
+                      <img style="padding : 20px; margin-left: 50px;" height="150" width="150" src="{% static 'img/logongvictory_final.PNG' %}" alt="">
+                    </div>
+                </div>       
+          </q-item>
+          </div>
+         
+         
+            <q-item-label header>Menu</q-item-label>
+
+            {% if UserLevel.SystemDashboardModule == True %}
+                <q-item  :style="dash" clickable tag="a" onclick="location.replace('{% url 'dashboard_panel' %}')"   >
+                
+                  <q-item-section avatar>
+                    <q-icon   name="dashboard"></q-icon>
+                  </q-item-section>
+                  <q-item-section>
+                    <q-item-label>Dashboard</q-item-label>
+                    
+                  </q-item-section>
+                </q-item>
+
+            {% endif %}
+
+            {% if UserLevel.EmployeePerformance == True %}
+                <q-item  :style="dash" clickable tag="a" onclick="location.replace('{% url 'EmployeePerformance' %}')"   >
+                
+                  <q-item-section avatar>
+                    <q-icon   name="assignment"></q-icon>
+                  </q-item-section>
+                  <q-item-section>
+                    <q-item-label>Employee Performance</q-item-label>
+                    
+                  </q-item-section>
+                </q-item>
+
+            {% endif %}
+
+            
+            {% if UserLevel.PerformanceEvaluationModule == True %}
+            <q-item :style="performance_evaluation" clickable tag="a"  onclick="location.replace('{% url 'performance_evaluation_panel' %}')"  >
+                <q-item-section avatar>
+                  <q-icon name="insert_chart_outlined"></q-icon>
+                </q-item-section>
+                <q-item-section>
+                  <q-item-label>Performance Evaluation</q-item-label>           
+                </q-item-section>
+              </q-item>
+
+              {% endif %}
+              {% if UserLevel.DeliberationModule == True %}
+               <q-item  :style="Deliberation" clickable tag="a"  onclick="location.replace('{% url 'deliberation_panel' %}')"  >
+                <q-item-section avatar>
+                  <q-icon name="how_to_vote"></q-icon>
+                </q-item-section>
+                <q-item-section>
+                  <q-item-label>Deliberation </q-item-label>
+                  <!-- <q-badge color="red" style="margin-right:20px;" floating>4</q-badge>  -->
+                 
+                </q-item-section>
+
+                
+                
+              </q-item>
+                    
+              {% endif %}
+              
+              {% if UserLevel.CustomerConcern == True %}              
+                  <q-item  :style="concern" clickable tag="a"  onclick="location.replace('{% url 'concern' %}')"  >
+                      <q-item-section avatar>
+                        <q-icon name="local_library"></q-icon>
+                      </q-item-section>
+                      <q-item-section>
+                        <q-item-label> Customer FeedBack</q-item-label>
+                        <!-- <q-badge color="red" style="margin-right:20px;" floating>4</q-badge>  -->
+                      
+                      </q-item-section>
+      
+                      
+                      
+                    </q-item>
+
+              {% endif %}
+            
+              
+                {% if UserLevel.ReportsModule == True %}
+              <q-item  :style="report" clickable tag="a"  onclick="location.replace('{% url 'report_panel' %}')"  >
+                <q-item-section avatar>
+                  <q-icon name="assessment"></q-icon>
+                </q-item-section>
+                <q-item-section>
+                  <q-item-label>Reports </q-item-label>
+                  <!-- <q-badge color="red" style="margin-right:20px;" floating>6</q-badge> -->
+                 
+                </q-item-section>
+ 
+                 
+               </q-item>
+               {% endif %}
+ 
+              
+              {% if UserLevel.FileMaintenanceModule == True  %}
+              <q-item :style="settings" clickable tag="a"  onclick="location.replace('{% url 'settings_panel' %}')"  >
+                  <q-item-section avatar>
+                    <q-icon name="settings"></q-icon>
+                  </q-item-section>
+                  <q-item-section>
+                    <q-item-label>File Maintenance</q-item-label>          
+                  </q-item-section>
+                </q-item>
+
+                {% endif %}
+        </q-list>
+        </q-drawer>
+        <q-page-container  style="width: 100%; background-color: #EBF5FB ; "  >     
+            <div style="padding : 20px; height: 1080px; overflow: scroll; "  >
+
+              {% block content %}
+              {% endblock %}
+              <script src="https://cdn.jsdelivr.net/npm/quasar@^1.1.0/dist/quasar.ie.polyfills.umd.min.js"></script>
+              <script src="https://cdn.jsdelivr.net/npm/vue@latest/dist/vue.min.js"></script>
+              <script src="https://cdn.jsdelivr.net/npm/quasar@^1.1.0/dist/quasar.umd.min.js"></script>
+              <script src="{% static 'js/axios.js' %}"></script>
+              <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+           
+
+              {% block script %}              
+              {% endblock %}
+             
+            </div>
+            <div>      
+            </div>
+        </q-page-container>
+      </q-layout>
+    </div>
+  </div>
+    <!-- <script src="{% static 'js/quasar_minifiedjs.js' %}"></script>  
+    <script src="{% static 'js/quasar_min.js' %}"></script> --> 
+   
+  </body>
+</html>

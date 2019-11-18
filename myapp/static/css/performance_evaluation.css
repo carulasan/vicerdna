@@ -1,0 +1,16 @@
+.mytable{
+     margin-top: 20px;
+     margin-left: auto;
+     margin-right: auto;
+     width: 100%;
+}
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+td, th {
+    
+    text-align: left;
+    padding: 8px;
+}

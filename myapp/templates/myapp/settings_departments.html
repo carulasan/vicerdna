@@ -1,0 +1,440 @@
+{% extends "myapp/layout.html" %}
+
+{% block content %}
+
+<q-breadcrumbs style="color: red; cursor: pointer">
+        <q-breadcrumbs-el label="File Maintenance /" onclick="window.location.href='{% url 'settings_panel' %}' " icon="settings" />
+        <q-breadcrumbs-el label="Departments " icon="all_inbox" />
+        <q-breadcrumbs-el label=" /"  />
+    </q-breadcrumbs>
+    
+    <div class="row animated fadeInDown" style="padding: 10px;">
+        <div style="width: 100% ">
+             <legend style="font-size: 25px; color:#34495E;font-weight: 900"> List of Department </legend>
+        </div>
+        <div class="row animated fadeInDown">
+             <span style="color: #34495E">
+                    <small></small>
+             </span>
+        </div>
+    </div>
+   
+
+    
+
+    
+<div class="row" style="width:100%; ">
+   <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+    <!-- @input="searchBus"  -->
+    <!-- v-model="search" -->
+      <q-input outlined label="Search"  v-model="search" @input="SearchDepartment"  >
+          <template v-slot:append>
+            <q-icon name="search" ></q-icon>
+          </template>
+        </q-input>
+  
+
+  </div>
+</div>
+
+<div class="row" style="width:100%;margin-top: 20px;  ">
+  <!-- @click="new_bus" -->
+  <q-btn color="red-8" icon="add" label="add Department"  @click="new_department_event" ></q-btn>
+
+</div>
+      
+
+    <div class="row animated fadeInDown" style=" width: 100%;  margin-top : 20px;">
+            
+            
+
+
+      <div class="col-xs-12 col-sm-4 col-md-4 col-lg-3" v-for="item in department" style="">
+
+        <q-list style="padding: 5px;"  >
+
+            <q-item clickable style="width: 100% ; border-radius: 5px; -webkit-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12);
+            -moz-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12);
+            box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12) ;background-color:  #273746; ">
+                <q-item-section>
+                  <q-item-label style="font-size: 18px; color:white;font-weight: 900">${ item.department }</q-item-label>
+                  <q-item-label caption lines="2">
+                                            <q-btn icon="delete" flat color="red" @click="delete_department(item.id)" ></q-btn>
+                                             <q-btn icon="edit" flat color="white" @click="edit_department(item.id)"></q-btn>
+                  </q-item-label>
+                </q-item-section>
+               
+        
+                <q-item-section side top>
+                  <q-item-label>
+                    <!-- ${ item.descritption } -->
+                  </q-item-label>
+
+                  <q-icon name="location_city" color="red" />
+                </q-item-section>
+              </q-item>
+        </q-list>
+
+
+      </div>
+
+
+
+
+
+
+
+      
+
+            
+        
+            
+        </div>
+
+
+
+        <q-dialog v-model="new_department" persistent>
+                <q-card style="width: 900px;">
+                  <q-card-section class="row items-center" style="padding: 30px;">
+                      <div class="row animated fadeInDown" style="width: 100%; padding: 5px;">
+                         
+                        <legend style="font-size: 25px; color:#34495E;font-weight: 900">New Department</legend>
+                      </div>
+                      <div class="row animated fadeInDown" style="width: 100%; padding: 5px;">
+                            <q-input style="width: 100%;" v-model="model_department"  type="text" outlined label="Enter Department" ></q-input>
+                      </div>
+                      
+                      
+                  </q-card-section>
+                  <q-card-actions align="right">
+                    <q-btn flat label="Cancel" color="grey" v-close-popup ></q-btn>
+                    <q-btn flat label="save" color="red-8" v-close-popup  @click="save" ></q-btn>
+                  </q-card-actions>
+                </q-card>
+              </q-dialog>
+
+
+
+
+
+              <q-dialog v-model="edit_department_modal" persistent>
+                    <q-card style="width: 900px;">
+                      <q-card-section class="row items-center" style="padding: 30px;">
+                          <div class="row animated fadeInDown" style="width: 100%; padding: 5px;">
+                             
+                            <legend style="font-size: 25px; color:#34495E;font-weight: 900">Edit Department</legend>
+                          </div>
+                          <div class="row animated fadeInDown" style="width: 100%; padding: 5px;">
+                                <q-input style="width: 100%;" v-model="model_department_edit"  type="text" outlined label="Enter Department" ></q-input>
+                          </div>
+                          <div class="row animated fadeInDown" style="width: 100%;  padding: 5px; ">
+                              
+                        </div>
+                          
+                      </q-card-section>
+                      <q-card-actions align="right">
+                        <q-btn flat label="Cancel" color="grey" v-close-popup ></q-btn>
+                        <q-btn flat label="save" color="red-8" v-close-popup  @click="updated_department" ></q-btn>
+                      </q-card-actions>
+                    </q-card>
+                  </q-dialog>
+
+
+{% endblock %}
+
+{% block script %}
+
+<script>
+new Vue({
+            el: '#app',
+            delimiters: ['${','}'],
+            data: function () {
+              return {
+                drawerState: false,
+                pic_user : 'http://res.heraldm.com/phpwas/restmb_jhidxmake.php?idx=5&simg=201701181539234376570_20170118154018_02.jpg',
+                edit_department_modal :false,
+                showing : false,
+                department : [],
+                dash : {
+            backgroundColor : '#273746',
+           color : 'white'
+           },
+           
+           Deliberation : {
+           backgroundColor : '#273746',
+           color : 'white',
+       },
+
+       employee : {
+            backgroundColor : '#273746',
+           color : 'white'
+           },
+           performance_evaluation : {
+           backgroundColor : '#273746',
+           color : 'white',
+        
+       },
+       settings : {
+            backgroundColor : '#273746',
+           color : 'white'
+           },
+           Deliberation : {
+           backgroundColor : '#273746',
+           color : 'white',
+       },
+       report : {
+           backgroundColor : '#273746',
+           color : 'white',
+       },
+       concern : {
+           backgroundColor : '#273746',
+           color : 'white',
+       },
+
+
+
+
+      global_hostname : '',
+      token : '',
+
+
+
+
+       
+        
+               
+                new_department : false,
+              
+                model_department : '',
+                model_department_edit : '',
+              
+                id_department : 0,
+search : '',
+rawDepartment : [],
+
+              }
+            }
+            ,
+            methods: {
+              logout(){
+              axios.post(`${this.global_hostname}/logout/`,{
+                  
+                   headers: {
+                               'Content-Type': 'application/json',
+                                  'X-CSRFToken': this.token
+                   }
+                  
+              })
+              .then(res => {
+                  window.location.replace(`${this.global_hostname}/login/`)
+                
+              })
+              .catch(err => {
+                  
+              })
+            },
+            
+            SearchDepartment (){
+             
+                var info = this.search.toLowerCase()
+              
+                var  dep  = this.rawDepartment.filter(
+                  (element)=>{
+                      return element.department.toLowerCase().includes(info)
+                  }
+                )
+
+                this.department = dep
+              
+            },
+                updated_department(){
+                    var params = {
+                        "department":  this.model_department_edit  ,
+                       
+   
+                    }
+                    axios.put(`${this.global_hostname}/api/DEPARTMENT/${this.id_department}/`,params,{
+                     
+                       headers: {
+                             'Content-Type': 'application/json',
+                              'X-CSRFToken': this.token
+                       }
+                      
+                    })
+                    .then(res => {
+                        console.log(res)
+
+                        this.$q.notify({ //put dollor sign(q)
+                              message: `Successfully Updated!`,
+                              timeout: 10000, // in milliseconds; 0 means no timeout
+
+                              color: 'orange',
+                              textColor: 'white', // if default 'white' doesn't fit
+                             icon: 'check', //or  avatar: 'statics/boy-avatar.png',
+
+                             position: 'top', // 'top', 'left', 'bottom-left' etc.
+
+                              })
+
+                              this.get_department()
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        this.$q.notify({ //put dollor sign(q)
+                              message: `Unsuccessfull!`,
+                              timeout: 10000, // in milliseconds; 0 means no timeout
+
+                              color: 'orange',
+                              textColor: 'white', // if default 'white' doesn't fit
+                             icon: 'check', //or  avatar: 'statics/boy-avatar.png',
+
+                             position: 'top', // 'top', 'left', 'bottom-left' etc.
+
+                              }) 
+                    })
+                },
+                edit_department(id){
+                        this.id_department = id
+                            this.edit_department_modal = true
+
+                            var data = this.department.filter(function(el){return el.id == id})
+                            this.model_department_edit= data[0].department
+                            
+
+                },
+                delete_department(id){
+                        axios.delete(`${this.global_hostname}/api/DEPARTMENT/${id}/`,{
+                           
+                             headers: {
+                                         'Content-Type': 'application/json',
+                                            'X-CSRFToken': this.token
+                             }
+                            
+                        })
+                        .then(res => {
+                            console.log(res)
+                            this.get_department()
+
+                            this.$q.notify({ //put dollor sign(q)
+                              message: `Successfully Deleted!`,
+                              timeout: 10000, // in milliseconds; 0 means no timeout
+
+                              color: 'orange',
+                              textColor: 'white', // if default 'white' doesn't fit
+                             icon: 'check', //or  avatar: 'statics/boy-avatar.png',
+
+                             position: 'top', // 'top', 'left', 'bottom-left' etc.
+
+                              })
+                        })
+                        .catch(err => {
+                            console.error(err); 
+                        })
+                },
+                save(){
+
+
+                    var paylod = {
+                        "department": this.model_department,
+                       
+                    }
+                    axios.post(`${this.global_hostname}/api/DEPARTMENT/`,paylod,{
+                        
+                         headers: {
+                                     'Content-Type': 'application/json',
+                                        'X-CSRFToken': this.token
+                         }
+                        
+                    })
+                    .then(res => {
+                        console.log(res)
+                        this.$q.notify({ //put dollor sign(q)
+                              message: `Successfully saved!`,
+                              timeout: 10000, // in milliseconds; 0 means no timeout
+
+                              color: 'orange',
+                              textColor: 'white', // if default 'white' doesn't fit
+                             icon: 'check', //or  avatar: 'statics/boy-avatar.png',
+
+                             position: 'top', // 'top', 'left', 'bottom-left' etc.
+
+                              })
+
+
+                              this.get_department()
+                    })
+                    .catch(err => {
+                        console.error(err); 
+
+                        this.$q.notify({ //put dollor sign(q)
+                              message: `Unsuccessfull!`,
+                              timeout: 10000, // in milliseconds; 0 means no timeout
+
+                              color: 'red',
+                              textColor: 'white', // if default 'white' doesn't fit
+                             icon: 'error', //or  avatar: 'statics/boy-avatar.png',
+
+                             position: 'top', // 'top', 'left', 'bottom-left' etc.
+
+                              })
+                    })
+                },
+
+                new_department_event (){
+                    this.new_department = true
+                },
+
+                get_department(){
+
+
+                        axios.get(`${this.global_hostname}/api/DEPARTMENT/`,{
+                          
+                             headers: {
+                                         'Content-Type': 'application/json',
+                                            'X-CSRFToken': this.token
+                             }
+                            
+                        })
+                        .then(res => {
+                            console.log(res)
+
+                            this.department = res.data
+                            this.rawDepartment = res.data
+
+
+
+                        })
+
+
+                        .catch(err => {
+                            console.error(err); 
+                        })
+                },
+            },
+            mounted() {
+                var hostname = window.location.hostname;
+                var port = window.location.port
+        if(port != ''){
+
+            hostname = hostname+':8000'
+                }
+                else{
+                    hostname = hostname
+                }
+
+                    this.global_hostname = `${window.location.protocol}//${hostname}`;
+                
+                    var csrftoken = Cookies.get('csrftoken');
+                    this.token = csrftoken
+
+                this.get_department()
+            },beforeMount () {
+              if(innerWidth < 1017){
+                    this.drawerState = false
+                }
+            },
+        })
+
+</script>
+
+{% endblock %}

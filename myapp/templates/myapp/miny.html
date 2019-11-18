@@ -1,0 +1,319 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no,initial-scale=1,maximum-scale=1,minimum-scale=1,width=device-width">
+
+    <title>Victory Liner</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons" rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/npm/animate.css@^3.5.2/animate.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/quasar@^1.1.0/dist/quasar.min.css" rel="stylesheet" type="text/css">
+
+    
+    <link rel="stylesheet" href="{% static 'css/animate_v2.css' %}">
+    <link rel="stylesheet" href="{% static 'css/performance_evaluation.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/dashboard.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/employee.css' %}" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <!-- <script src="{% static 'js/quasar_minifiedjs.js' %}"></script> -->
+    <script src="{% static 'js/vue.js' %}"></script>
+    <!-- <script src="{% static 'js/quasar_min.js' %}"></script> -->
+
+
+    <!-- <link href="{% static 'css/material.css' %}" rel="stylesheet" type="text/css"> -->
+    <!-- <link href="{% static 'css/animate.css'%}" rel="stylesheet"> -->
+<!--   
+    <link href="{% static 'css/quasar.css' %}" rel="stylesheet" type="text/css">
+    -->
+
+   
+    
+    <style type="text/css">
+     
+   
+
+      
+    </style>
+  </head>
+  <body style="background-color:  #F8F9F9">
+
+    
+
+      
+    <div id="app"   >
+      {% csrf_token %}
+      <q-layout view="lHh Lpr fff"  >
+        <q-header elevated style="background-color: red;">
+          <q-toolbar>
+            <q-btn
+              flat
+              dense
+              round
+              @click="drawerState = !drawerState"
+              aria-label="Menu"
+              icon="menu"
+            ></q-btn>
+
+            <q-toolbar-title>
+              Performance Evaluation
+            </q-toolbar-title>
+
+            <q-btn dense round flat icon="notification_important">
+                <q-badge color="orange" floating  style="font-size: 15px;">
+                  4
+                </q-badge>
+              </q-btn>
+
+             
+              
+
+              <div>
+                <q-tooltip >
+                  Logout
+                </q-tooltip>
+                <q-btn color="white" flat icon="exit_to_app" label=""  />
+              </div>
+
+
+          </q-toolbar>
+        </q-header>
+
+        <q-drawer
+       
+          v-model="drawerState"
+        
+          content-class="bg-white"
+
+        >
+        <q-list >
+          <q-item >
+              <div style="width: 100%;">
+                  <!-- <img :src="url" width="60" alt="logo"> -->
+
+                  <div style="padding:10px; width: 100%;" id="logos">
+                      <img style="border-radius: 50%; margin-left: 50px;" width="100" src="https://content-static.upwork.com/uploads/2014/10/01073427/profilephoto1.jpg" alt="">
+                    </div>
+
+                </div>
+                
+               
+          </q-item>
+          <q-item>
+
+              <div class="row">
+
+                  <div style=" width: 100%;;font-weight: 900; cursor: pointer; font-size: 20px;">
+                      Cyrene brylle Carualsan
+                      <br>
+                      <small>Supervisor | Cubao Terminal</small>
+                    </div>
+              </div>
+          </q-item>
+         
+            <q-item-label header>Menu</q-item-label>
+
+            <q-item :style="dash" clickable tag="a" onclick="location.href='{% url 'dashboard_panel' %}'"   >
+            
+              <q-item-section avatar>
+                <q-icon name="school"></q-icon>
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>Dashboard</q-item-label>
+                
+              </q-item-section>
+            </q-item>
+
+
+            <q-item :style="employee" clickable tag="a"  onclick="location.href='{% url 'employee_panel' %}'"  >
+              <q-item-section avatar>
+                <q-icon name="person"></q-icon>
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>Employees</q-item-label>
+               
+              </q-item-section>
+            </q-item>
+
+            <q-item :style="performance_evaluation" clickable tag="a"  onclick="location.href='{% url 'performance_evaluation_panel' %}'"  >
+                <q-item-section avatar>
+                  <q-icon name="insert_chart_outlined"></q-icon>
+                </q-item-section>
+                <q-item-section>
+                  <q-item-label>Performance Evaluation</q-item-label>
+                 
+                </q-item-section>
+              </q-item>
+
+          
+               <q-item  :style="Deliberation" clickable tag="a"  onclick="location.href='{% url 'deliberation_panel' %}'"  >
+                <q-item-section avatar>
+                  <q-icon name="how_to_vote"></q-icon>
+                </q-item-section>
+                <q-item-section>
+                  <q-item-label>Deliberation <q-badge color="red" style="margin-right:20px;" floating>4</q-badge> </q-item-label>
+                 
+                </q-item-section>
+              </q-item>
+
+
+              <q-item :style="settings" clickable tag="a"  onclick="location.href='{% url 'settings_panel' %}'"  >
+                  <q-item-section avatar>
+                    <q-icon name="settings"></q-icon>
+                  </q-item-section>
+                  <q-item-section>
+                    <q-item-label>Settings</q-item-label>
+                   
+                  </q-item-section>
+                </q-item>
+
+
+        </q-list>
+<!-- 
+          <q-list>
+            <q-item-label header>Essential Links</q-item-label>
+            <q-item clickable tag="a" target="_blank" href="https://quasar.dev">
+              <q-item-section avatar>
+                <q-icon name="school"></q-icon>
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>Docs</q-item-label>
+                <q-item-label caption>quasar.dev</q-item-label>
+              </q-item-section>
+            </q-item>
+            <q-item clickable tag="a" target="_blank" href="https://github.com/quasarframework/">
+              <q-item-section avatar>
+                <q-icon name="code"></q-icon>
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>Github</q-item-label>
+                <q-item-label caption>github.com/quasarframework</q-item-label>
+              </q-item-section>
+            </q-item>
+            <q-item clickable tag="a" target="_blank" href="https://chat.quasar.dev">
+              <q-item-section avatar>
+                <q-icon name="chat"></q-icon>
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>Discord Chat Channel</q-item-label>
+                <q-item-label caption>chat.quasar.dev</q-item-label>
+              </q-item-section>
+            </q-item>
+            <q-item clickable tag="a" target="_blank" href="https://forum.quasar.dev">
+              <q-item-section avatar>
+                <q-icon name="forum"></q-icon>
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>Forum</q-item-label>
+                <q-item-label caption>forum.quasar.dev</q-item-label>
+              </q-item-section>
+            </q-item>
+            <q-item clickable tag="a" target="_blank" href="https://twitter.com/quasarframework">
+              <q-item-section avatar>
+                <q-icon name="rss_feed"></q-icon>
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>Twitter</q-item-label>
+                <q-item-label caption>@quasarframework</q-item-label>
+              </q-item-section>
+            </q-item>
+          </q-list> -->
+        </q-drawer>
+
+        <q-page-container  >
+           
+            <div style="padding : 20px;" >
+              {% block content %}
+              {% endblock %}
+            </div>
+            <div>
+             
+            </div>
+          
+            
+            
+         
+
+        </q-page-container>
+      </q-layout>
+      
+
+    </div>
+    
+
+    <!-- <script src="{% static 'js/quasar_minifiedjs.js' %}"></script>
+    
+    <script src="{% static 'js/quasar_min.js' %}"></script> -->
+
+    <script src="https://cdn.jsdelivr.net/npm/quasar@^1.1.0/dist/quasar.ie.polyfills.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@latest/dist/vue.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/quasar@^1.1.0/dist/quasar.umd.min.js"></script>
+
+
+    <script src="{% static 'js/axios.js' %}"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+    
+    <script>
+
+    new Vue({
+      el: '#logos',
+      delimiters: ['${','}'],
+      data: function () {
+        return {
+          
+          url : '',
+          global_hostname : '',
+
+        }
+      },mounted(){
+        var hostname = window.location.hostname;
+          if(hostname == '127.0.0.1' || hostname == 'localhost'){
+  
+              hostname = hostname+':8000'
+          }
+          else{
+              hostname = hostname
+          }
+  
+          this.global_hostname = `${window.location.protocol}//${hostname}`;
+        
+        this.url = `${this.global_hostname}/media/media/logongvictory_final.PNG`
+       
+      },
+        methods : {
+        
+        
+      
+      },
+      beforeMount () {
+        
+      },
+    })
+      </script>
+
+
+   
+
+    
+    
+
+
+    {% block script %}
+                
+    {% endblock %}
+   
+   
+    
+    
+    
+
+   
+
+   
+  </body>
+</html>

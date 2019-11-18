@@ -1,0 +1,1339 @@
+{% extends "myapp/layout.html" %}
+
+<style>
+
+
+
+
+</style>
+
+{% block content %}
+  
+
+
+<!-- 
+<q-breadcrumbs style="color: red; cursor: pointer">
+    <q-breadcrumbs-el label="File Maintenance /" onclick="window.location.href='{% url 'settings_panel' %}' " icon="settings" />
+    <q-breadcrumbs-el label="201 File " icon="all_inbox" />
+    <q-breadcrumbs-el label=" /"  />
+    {{ empcode }}
+</q-breadcrumbs>
+
+  <div class="row" style="width:100%;margin-top: 20px; ">
+      <q-list   >
+          <q-item style=" border-radius: 5px;"
+         >
+              <q-item-section>
+                <q-item-label style="font-size: 20px; font-weight: 900; color: #34495E ">List of Employees</q-item-label>
+                <q-item-label caption lines="2">Click one row and click view information</q-item-label>
+                <q-item-label style="color: #34495E"> </q-item-label>
+              </q-item-section>
+            
+              <q-item-section side top>
+                <q-item-label caption>
+
+                  
+                </q-item-label>
+                
+              </q-item-section>
+            </q-item>
+      </q-list>
+
+  </div> -->
+
+
+ 
+  <!-- <div class="row animated fadeInDown" style="margin-top : 10px;"> -->
+    <!-- table -->
+<!--       
+    <q-table
+               style="width: 100%;"  
+    :filter="model_search"
+
+:data="data"
+:columns="columns"
+row-key="id"
+
+:loading="loading_department"
+selection="single"
+:selected.sync="employee_selected"
+>
+ tabledepartment -->
+<!-- 
+<template  slot="top-selection" >
+
+ <div>
+   <q-tooltip >
+    See more information
+   </q-tooltip>
+     <q-btn push dense color="red-8" class="animated fadeInDown" label="see more"  @click="show_modal"  icon="visibility"  ></q-btn>
+    
+    
+    
+     
+</div>
+
+
+
+
+</template>
+
+
+<template v-slot:top-right> -->
+<!-- <div style="padding : 20px;">
+   <q-tooltip >
+  
+ Add New Department
+</q-tooltip>
+<q-btn  push outline dense color="secondary"  icon="add" @click="add_employee"></q-btn>
+
+</div> -->
+
+<!-- <div style="width: 200px">
+    <q-select outlined  v-model="model_terminal" :value="model_terminal"  @input="event_filter_terminal" :options="options_terminal" label="Place of Asignment" ></q-select>
+</div>
+
+<div style="width: 200px">
+    <q-select outlined v-model="model_department" :options="options_department" label="Department" ></q-select>
+</div>
+
+
+
+
+
+<q-input style="padding-left: 50px;" borderless dense debounce="300"  v-on:keyup="clear" v-model="model_search" color="primary" placeholder="search">
+<template v-slot:append>
+ <q-icon name="search" ></q-icon>
+</template>
+</q-input>
+</template>
+
+</q-table> -->
+
+
+
+    
+    <!-- table -->
+  <!-- </div> -->
+
+  <q-dialog v-model="dialog_newemployee">
+    <q-card  style="padding: 20px; width: 800px;" >
+      
+      <div class="row">
+        New Employee
+      </div>
+      
+      
+      <q-card-main style="padding: 10px;">
+       <div class="row" style="padding: 10px;">
+         <q-input outlined color="#34495E-8" v-model="fullname" label="Full Name" type="text" style="width : 100%" ></q-input>
+       </div>
+       <div class="row" style="padding: 10px;" >
+        <q-input outlined color="#34495E-8" v-model="fullname" label="Department" type="text" style="width : 100%" ></q-input>
+      </div>
+      <div class="row" style="padding: 10px;">
+        <q-input outlined color="#34495E-8" v-model="fullname" label="Position" type="text" style="width : 100%" ></q-input>
+      </div>
+      <div class="row" style="padding: 10px;">
+        <q-input outlined color="#34495E-8" v-model="fullname" label="Job Location" type="text" style="width : 100%" ></q-input>
+      </div>
+
+      <div class="row" style="padding: 10px;">
+        <q-input outlined color="#34495E-8" v-model="fullname" label="Job Status" type="text" style="width : 100%" ></q-input>
+      </div>
+      <div class="row" style="padding: 10px;">
+        <q-input outlined color="#34495E-8" v-model="fullname" label="Date HIred" type="text" style="width : 100%" ></q-input>
+      </div>
+      
+      <div class="row" style="padding: 10px;">
+        <q-btn color="red-8" push icon="save" label="Submit"  ></q-btn>
+      </div>
+      
+
+      </q-card-main>
+
+    </q-card>
+</q-dialog>
+  
+
+
+
+
+<q-dialog
+v-model="modal_employee"
+persistent
+:maximized="maximizedToggle"
+transition-show="slide-up"
+transition-hide="slide-down"
+>
+<q-card class="text-gray" style="background-color: #EBF5FB;" >
+  <q-bar>
+  
+       
+ <div style="width: 100%;">
+     
+ </div>
+  </q-bar>
+
+  <div class="row animated fadeInDown" style="padding: 10px; background-color: #EBF5FB;">
+      <div style="width: 100% ">
+           <legend style="font-size: 25px; color: #34495E ;font-weight: 900">Employee 201 File</legend>
+      </div>
+      <div class="row animated fadeInDown">
+           <span style="color: #5D6D7E ;">
+                  <small> The 201 file contains employee personal details and government identification numbers such as: Full name
+                      Date of birth
+                      Address
+                      Contact information and etc.
+                     </small>
+      </div>
+</div>
+
+
+  <q-card-section class="" style="background-color:  #EBF5FB;">
+    
+   
+   <div style="width: 100%" class="row">
+
+        
+          <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4" style=" padding: 10px; background-color: white;
+            -webkit-box-shadow: 0px 0px 15px 0px rgba(209,198,209,1);
+-moz-box-shadow: 0px 0px 15px 0px rgba(209,198,209,1);
+box-shadow: 0px 0px 15px 0px rgba(209,198,209,1);
+
+border-radius: 5px
+          ">
+            <div class="row animated fadeInUp">
+                
+                
+                <div style="padding:10px; width: 100%;" id="logos">
+                    <img style="border-radius: 50%; margin-left: 50px;" width="150" src="data:image/png;base64,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" alt="">
+                  </div>
+                
+          </div>
+
+
+
+          <div class="row animated fadeInUp">
+            <span style="color: #34495E">
+                 Employee Code
+            </span>
+                     
+      </div>
+        <div style="width: 100%" class="row">
+              <legend style="font-size: 20px; color:#34495E;font-weight: 900"> ${ empcode}</legend>
+        </div>
+
+
+
+                    <div class="row animated fadeInUp">
+                          <span style="color: #34495E">
+                                Full Name
+                          </span>
+                                   
+                    </div>
+                      <div style="width: 100%" class="row">
+                            <legend style="font-size: 20px; color:#34495E;font-weight: 900">${firstname} ${middlename} ${lastname} ${suffix}</legend>
+                      </div>
+
+
+                      <div class="row animated fadeInUp">
+                          <span style="color: #34495E">
+                               Nick Name
+                          </span>
+                                   
+                    </div>
+                      <div style="width: 100%" class="row">
+                            <legend style="font-size: 20px; color:#34495E;font-weight: 900">${nickname}</legend>
+                      </div>
+
+
+
+                      <div class="row animated fadeInUp">
+                          <span style="color: #34495E">
+                                Job Status
+                          </span>
+                                   
+                    </div>
+                      <div style="width: 100%" class="row">
+                            <legend style="font-size: 20px; color:#34495E;font-weight: 900">${jobstatus}</legend>
+                      </div>
+
+                      <div class="row animated fadeInUp">
+                          <span style="color: #34495E">
+                                Job Level
+                          </span>
+                                   
+                    </div>
+                      <div style="width: 100%" class="row">
+                            <legend style="font-size: 20px; color:#34495E;font-weight: 900">${joblevel}</legend>
+                      </div>
+
+                      <div class="row animated fadeInUp">
+                          <span style="color: #34495E">
+                               Designation
+                          </span>
+                                   
+                    </div>
+                      <div style="width: 100%" class="row">
+                            <legend style="font-size: 20px; color:#34495E;font-weight: 900">${designation}</legend>
+                      </div>
+
+                      <div class="row animated fadeInUp">
+                          <span style="color: #34495E">
+                               Department
+                          </span>
+                                   
+                    </div>
+
+                    
+                      <div style="width: 100%" class="row">
+                            <legend style="font-size: 20px; color:#34495E;font-weight: 900">${department}</legend>
+                      </div>
+
+
+
+
+                      <div class="row animated fadeInUp">
+                        <span style="color: #34495E">
+                             Place of Assignment
+                        </span>
+                                 
+                  </div>
+
+                  
+                    <div style="width: 100%" class="row">
+                          <legend style="font-size: 20px; color:#34495E;font-weight: 900">${placeofassignment}</legend>
+                    </div>
+
+
+                      
+                      <div class="row animated fadeInUp">
+                          <span style="color: #34495E">
+                              Contact Number
+                          </span>
+                                   
+                    </div>
+                      <div style="width: 100%" class="row">
+                            <legend style="font-size: 20px; color:#34495E;font-weight: 900">${contactnumber}</legend>
+                      </div>
+                      
+                      <div class="row animated fadeInUp">
+                          <span style="color: #34495E">
+                              Email
+                          </span>
+                                   
+                    </div>
+                      <div style="width: 100%" class="row">
+                            <legend style="font-size: 20px; color:#34495E;font-weight: 900">${email}</legend>
+                          
+                      </div>
+                      
+                        
+            
+          </div>
+          <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+           
+             
+              <!-- //new docs -->
+
+              
+<q-card>
+  <q-tabs
+    v-model="panel"
+    dense
+    class="text-grey"
+    active-color="primary"
+    indicator-color="primary"
+    align="justify"
+    narrow-indicator
+  >
+    <q-tab v-for="item in option_tab"  @click="add_docs(0)" :name="item.label" :label="item.label" >
+       
+
+
+    </q-tab>
+    
+    <!-- <div>
+      <q-tooltip >
+        Add new Category
+      </q-tooltip>
+      <q-btn flat color="red" icon="add" @click="newtab"  ></q-btn>
+    </div>
+    <div>
+        <q-tooltip >
+         Modify Category
+        </q-tooltip>
+        <q-btn flat color="#34495E" icon="edit" @click="modify"  ></q-btn>
+      </div>
+     -->
+  </q-tabs>
+
+  <q-separator ></q-separator>
+
+  <q-tab-panels v-model="panel" animated>
+    <q-tab-panel :name="item.category" v-for="item in content_tab">
+        
+      <!-- <div class="text-h6" style="color:  #34495E "><span>${item.category} <span style="color: gray; border-radius: 5px; font-size: medium; padding: 5px; ">${ item.content_employee.length } <span v-if="item.content_employee.length == 0 || item.content_employee.length == 1 ">file</span> <span v-else>files</span> </span></span></div> -->
+      
+
+    <!-- <div class="row" >
+      <div>
+        <q-tooltip >
+          Add Document
+        </q-tooltip>
+        <q-btn push color="red" icon="add" @click="add_docs(item.id)"  ></q-btn>
+      </div>
+    </div> -->
+
+
+
+
+      <q-card  class="animated fadeInDown" style="width: 100%"  v-if="newdoc">
+        <q-card-section class="row items-center" style="padding: 30px;">
+
+          <div class="row animated fadeInDown" style="width: 100%; padding: 5px;">
+               
+            <legend style="font-size: 15px; color:#34495E;font-weight: 900">Title of Document</legend>
+          </div>
+          <div class="row animated fadeInDown" style="width: 100%; padding: 5px;">
+                <q-input style="width: 100%;"  v-model="title_of_document" type="text" outlined  ></q-input>
+          </div>
+
+            <div class="row animated fadeInDown" style="width: 100%; padding: 5px;">
+               
+              <legend style="font-size: 15px; color:#34495E;font-weight: 900">Description(optional)</legend>
+            </div>
+            <div class="row animated fadeInDown" style="width: 100%; padding: 5px;">
+                  <q-input style="width: 100%;"  v-model="description" type="text" outlined  ></q-input>
+            </div>
+            <div class="row animated fadeInDown" style="width: 100%; padding: 5px;">
+                <q-input style="width: 100%;" id="file" ref="file" @change="onFileChange(event)"  type="file" outlined  ></q-input>
+          </div>
+            <div class="row animated fadeInDown" style="width: 100%;  padding: 5px; ">
+                
+          </div>
+            
+        </q-card-section>
+        <q-card-actions align="right">
+          <q-btn flat label="done" color="grey" @click="add_docs(0)" ></q-btn>
+          <q-btn push  label="save" color="red"  @click="submit_info"  ></q-btn>
+        </q-card-actions>
+      </q-card>
+
+      <div class="row animated fadeIn" style="width: 100%">
+        
+
+        
+       
+          
+          
+            <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3 animated fadeIn delay-1s"  style="padding: 5px;" v-for="item2 in item.content_employee">
+                <q-card class="my-card" style="width: 100%; ">
+                   
+                   
+                   <div v-if="item2.icon == 'pdf'">
+                      <q-parallax
+                      src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAA+VBMVEX////DCxWFCA7o5ub8DxrAAAD8AADlDhh/CA3txsh/AAD8Cxfq6urMs7Tz8vL/7u/z2Nnp1tjrDhnaDRfFCxX/2Nngw8T+w8X9dnn8Eh+aCRCDAAD8AA79mZ3jn6F9AACMCA//9/j9VlzCAAn+r7Lgk5XmvL3+0NHGFyDWb3LOQkjKLTTIJCvRVlrSXWHVZ2vchYjos7TYen3nra/KNjzxz9H34+TIKS/OS1Dbvr/mvr+0dnioXmD8REr+tLbjzc68hYecQUXToKGSAADIo6SMGx+cTE6lXmD+paj9i478MDj9ZWmwb3H9fYGXOj3+lpr8PEORKS29kJEYRA6LAAALbklEQVR4nN3de0PayBoG8NTjcGqoBrux6oaK2XgJKCgXqa6lpz0V11Z70e//YTY3IPd53yGTmfD800Ir4efchwEUhXdMs3EyPDge9Dqjs3PbfmXb52ejTm9wfDA8aZgm9+vzjDbuX150dOLHsnRdf+XG+dOygnv1zsVlf6yJfqoMafTb17YH81VZ0T2q3Wn3G6KfMiKNg65NtyWcdvegCkqtP3CrJRwXYro/N+hLXWPHwx6jLqzsDceiIekx+11rOd4caXX78vWxV21Uw6MgnV9V+0o0KRztYFRE6UWQhIwOZGmSY6dvsQrl+bGcfkeGFtnoFV18izgF2RM9gFx1+PkCY0dkg7zqcqme0VikK8ro1k/uPjeC6qo5KMnnGwelD5AHJfp840Gpvo0R1/4lLToZbZTmM9sldDDJWKRdUlU9KbmCLkLISQk+7aL0CrqITi64z+Q2bFEF6IfYnFvjpZAWGI5FLjn6xiOxBeiHjLjNx08s0QXox7I4dTjHAruYaHRyzMFndqUBusRu4UOj9kGGJrgI+VDwsHEleJBIhtiFrqlOhA8SyVhFTnCGEjXBRXQyLAp4IFsNnaWoFdWxrECHWMiocSkv0CEWMIVLAxI+YWnsyxPTqigZNtjz97us9NmIS1bU1E6GLLOA2XqTFeVvNuJS3c0wtQ0uJ/xPVrZYiUsMGifpnQw3ISuReei/yrgeP6HzO2Ug6oRxAqfZGVM1jkI2omUzTcPNzNUETyFbRSUfWBZT3cyRnquQrRRJF/9McuZqfIWMRPSwmHcZzkKmiqpjO9Rx3qkD3kI2ooXbgRvlrXi5C5kqqjXCPI389QR/IRMRMwnfyF8wlSBkqqjw55U51JcoZCHCB/4Lypq3FCFLRSUXsOeQMd8uW8hSirAhw6Q+cElCBqJOILO3NnVfpiwhQ0UlbfozoPSjpQpZiPTnljvWly3EV1T6uA/Z/S1RiCfStm3o3UzJQnRFpXU2A8j2b6lCNJEM8i7fAO1vlytEV1SSd8yvJ6MQSyS97KtfwV6iKFuIrag5W2/ZWzNihchSzN60ARahACGWmFWIHeBL2QKEuIpqddIfBNaRChLiiBndKawjFSVEVdT07nQMfgQxQgxRJ2kbb6DpjEghpqKmTWw0Hf7jfIRvtihR/g8uBF1PbtkgjpRwElLzZvMrvBSSSwzAulC8sPUnlJhcJ0JHe7FC9TWYmBj16bszUgjXwMT4jg1o5SuDEEyMr4T7mINPQoVgIulHrtvFnK4UK4QSrcgKI/flQtmEQGL0BcX0k0GyCoHEyEki8KRbDiGMGJ5+a8hdAuFCEFEni5kbqieVQggihnpT+LJCGiGEGFpgwJcV8ggBRF2fXRS8fSGVEECcb2Zgz+JLIqQT50so4DapdEIqcb5xamNfwJJFSCPqtn9NbDOUSEgjBg0RORpKJaQQgxERs/iVTphPDJbB19j3pUklzCVa1+4lNWxHI5kwj6h758DG6Pc1SSbMI3p73+iORjphDtHravDvTZNOmE30zpzSTiJWQZhJ9E4rQl8XlVqYRXRfKzWRSydJhRlEXTcVE/8WUSmFGURi4melsgrTic7MlHoiuDLCVCI5QW6VSi1MI5Ihy5vtpRWmEJ1lPsO77eUVJonkGLuTKLkwQSQDpYf/TA+ZhXGi1WOY0sgtjBGdSc2I5/uLRAijRH2knK2cMELUz5Tz1ROGifq5YqOB8gvDRHs1hSGireCBVRCGiCtahguivZI9TYjo9DSrNx5GiM5o0VlZoUd0Rnz0nn51hC7RmbWt2sw7RrS6+FeeqiRce/21t2rrw3jUjywfOFclofGyWvs0KWV4x/DSU7WEm5B3p1dZ2HqnaCsu3MadYa+gcEtRPqy0cE1BHmKvmtC4V9CHSysmvFVYPkS3QkL1s7ISZzFyhJvKKpynyRNuO5c00fsYFRJOvTc/oTvT6gi9rpThyNCSwswPEqYGL7z1romemZKhxp7xNnvusEKvo8G8TX2Wt+v7zFnPSuq/7Ef++OM1tgy3/YqDPn75ti4maOFa0DRw7+vyylBI0ELjYyBEL/OrInQW+ErQEFdU2Nqe9eDYMb8qwsP5GIUdESsiDEZDN5iPG6iQsHUzF5rI8aIiQiP0aSnIrf1qCI1/QpNF5BqxGsL5WOGNF7ij0NUQGpGPqMGtoCohnE9oWKppJYTqTUSooNYXOcJ6LZxmfXZ/5O5aPfQTzVo89ZTHZRDGPuUTNehnC+v7jZ1ZTneP9taDp1t7CN396dv3BaP5uBPL7noGESU0nqJA3Nw0Txh73KP9pifcjV3uR7MZCPdiP6FohQgXc9JZMCcWEEJFmzRThIrSmNR4Co2f8YdFndnHCBXTrZBJoaI81jgKI4Nh8EQQMze6UNM0c9bSj2pzoelmfkmvdAOhOd/IMXeKEB6mfL4d4vULqnDH6xMnu/NCDIQT9+7vezvBr8Et3UD4UGxf6u3mx9OADxgAofv3Zu3Uu/VXcyZ0/rZedwaUB/+Sv2pz4VEt8zFZhEbqF5bA34gIEzp184d360ctLHT/V3BTc8ZLLsLYfGYW+IABFTYn6cJ5c3VucxEmhwo/4D03cBn6z36vGRfObjvVdC6kNkO40PiSDoS/UQ8orC9cCeE37/anuVA7nWd/6Z6m9b8MIbglAvvSdb9DMRejxVzYfPRun9ZSxsOlhRmt0C9EWHdKFZpuWewEI9/7NKHv2uUiVDOLENwSUXMaLTSnWdTSX97tIx7CnCIEt0SM0PwdmpfGe5pvC6E5z7LCrI7UD2xigxDuRtYWM2Hzt/+vk2bKnGbJvlS9VfICe+86aF6qjcenvyaz9WFsxPcnOzs85jQG5ct0QEsMyGixv+8u92O18q9a00mtHqw0HpvFC1vJRUUs1wAiQOi+3Be6PxDu/Z5MJo9HwW/51FUVLDSeaUDQiAGd0ySEkYy9GlywMG+kmAXQ2RQi3PnuVeFihZRuxg/gOGYRwoegjRYrpHUzfuifsrC0UHuYbcKtN/0V1qdChK2bhCY11HqaJ3x47+RHM3Z/c+/9LL++7YU2E9frE+/ex/hPsAjV+A5iVswzyr4bfUc4cX9437dZT/4EAEgVGlPwtwJnfV01QMgzNKH6DgqknjmVU5i6+5SZ/HFfSmHKHnBe8j/gW0ahmr69lp3c7wORUggcKBbJOygloVB9wQJzTy/IJ1Tv8UBF6WQSpRMaz+CRMBzzQ9bAL5vQmEK/6jiWRlaHKp0QsGRKT9b5aMmE0Pl2WobpY4ZcQvq+BZ74NnM7TIAw5dVeJDFF+Md/xURPEbYYBsJoUkZ+/dXaazFJAX5eFugSExVVf3WY3qmVniKAUhNZ5mqVIi7fBmfpy0lcbpiI5kpPTOCEEw0DsWlBz/gs0aUKJhprzFO19JgjuYjqM3JJD0gv0RgFEtW813mZc0zijVEYsahRIp4NO15TxRANY4nFRH60brymiiCqP4tvgoskamrpRKOYiVp2rs6JUKI65VZDZzEvYjW1VGLrifrNzwVkw4oayyOq/LqYWC4JEUA01CemPUOmNK4jxVgKsfWz4GkaJUMSNvInqkaBCwlYzHbYyJloqLeMe75LZdwONUeeREP9mHsYj2MaISM3otG6L7cBxozdeV3lQxTsixo5EFXjXlT9DGd8fO7PVgsmGuraZxl8bsz+tVeQRRKN1vNdGTM0cBoD4iCLIhqq+iS6+SVj9nu2g1yeaDitb7O8+Rkq2knbJl+X47WMf+54rnCXjrkx+NpSDYaPcHQLr3V4eyNp6UWyffc0daoahun8Z2Pt/k6WrhOS8c3t/dRwStOg21R1en+7WSXdLOb43cvtF6PVaqmONFKm7m1H1mod/nx6uRmLmFYXF3Nr/G7z7uXp4/2Xn8/T6dradPr8/OXj7cvd3c32Fv9W9y/CQx6PYG8AkwAAAABJRU5ErkJggg=="
+                      :height="150"
+                    ></q-parallax>
+                   </div>
+
+                   <div  v-if="item2.icon == 'lsx'" >
+                      <q-parallax
+                      src="http://www.iconarchive.com/download/i77903/carlosjj/microsoft-office-2013/Excel.ico"
+                      :height="150"
+                    ></q-parallax>
+                   </div> 
+                   
+                   <div  v-if="item2.icon == 'ocx'" >
+                      <q-parallax
+                      src="https://s1.mzstatic.com/us/r30/Purple/v4/8b/4a/1b/8b4a1b43-c07a-6312-6894-8467a35ce365/mzl.frajvwny.png"
+                      :height="150"
+                    ></q-parallax>
+                   </div> 
+
+                    <div v-if="item2.icon == 'peg'">
+                      <q-parallax
+                      :src="item2.files"
+                      :height="150"
+                    ></q-parallax>
+                   </div>
+                   <div v-if="item2.icon == 'png'">
+                      <q-parallax
+                      :src="item2.files"
+                      :height="150"
+                    ></q-parallax>
+                   </div>
+                   <div v-if="item2.icon == 'PNG'">
+                      <q-parallax
+                      :src="item2.files"
+                      :height="150"
+                    ></q-parallax>
+                   </div>
+                   <div v-if="item2.icon == 'PEG'">
+                      <q-parallax
+                      :src="item2.files"
+                      :height="150"
+                    ></q-parallax>
+                   </div>
+                   <div v-if="item2.icon == 'JPG'">
+                      <q-parallax
+                      :src="item2.files"
+                      :height="150"
+                    ></q-parallax>
+                   </div>
+                   <div v-if="item2.icon == 'jpg'">
+                      <q-parallax
+                      :src="item2.files"
+                      :height="150"
+                    ></q-parallax>
+                   </div>
+
+                   
+            
+                    <q-card-section right  style="width: 100%;">
+                      <div class="text-h6">${ item2.classification }  </div>
+                      <div style="font-size: 13px;">${item2.Description}</div>
+                      <div class="text-subtitle2" >
+                        
+                        <div class="row" style="width: 100%">
+                          <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                              <div>
+                                  <q-tooltip >
+                                    Open
+                                  </q-tooltip>
+                                  <q-btn color="#34495E" flat icon="fullscreen" @click="linkfile(item2.files)" ></q-btn>
+                                  
+                                </div>
+                          </div>
+                          <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                              <div >
+                                  <q-tooltip >
+                                    Are you sure do you want to delete this file?
+                                  </q-tooltip>
+                                  <q-btn color="grey" flat  icon="delete" @click="deletfile(item2.id)" ></q-btn>
+                                </div>
+                            </div>
+                           
+                         
+                        </div>
+                        
+                        
+                        
+                        
+                       
+                      </div>
+                    </q-card-section>
+                  </q-card>
+              
+            </div>
+
+           
+       
+      
+        
+         
+
+
+      </div>
+
+
+    </q-tab-panel>
+
+   
+  </q-tab-panels>
+</q-card>
+
+
+
+
+
+
+
+          </div>
+          
+   </div>
+   
+       
+  </q-card-section>
+
+
+</q-card>
+</q-dialog>
+
+
+
+
+
+
+<q-dialog v-model="modal_new_tab" persistent>
+    <q-card style="width: 900px;">
+      <q-card-section class="row items-center" style="padding: 30px;">
+          <div class="row animated fadeInDown" style="width: 100%; padding: 5px;">
+             
+            <legend style="font-size: 25px; color:#34495E;font-weight: 900">New Category</legend>
+          </div>
+          <div class="row animated fadeInDown" style="width: 100%; padding: 5px;">
+                <q-input style="width: 100%;" v-model="model_new_tab" type="text" outlined label="Enter Name of category here" ></q-input>
+          </div>
+          
+          
+      </q-card-section>
+      <q-card-actions align="right">
+        <q-btn flat label="Cancel" color="grey" v-close-popup ></q-btn>
+        <q-btn push label="save" color="red-8" v-close-popup  @click="save_tab"></q-btn>
+      </q-card-actions>
+    </q-card>
+  </q-dialog>
+
+
+  <q-dialog v-model="modal_modify" >
+    <q-card style="width: 900px;">
+      <q-card-section class="row items-center" style="padding: 30px;">
+          <div class="row animated fadeInDown" style="width: 100%; padding: 5px;">
+             
+            <legend style="font-size: 25px; width : 100% ;color:#34495E;font-weight: 900">Modify</legend>
+            <small>After you edit the name of category please click <span style="color: red"> save changes button.</span></small>
+          </div>
+          <div class="row animated fadeInDown" style="width: 100%;  padding: 10px;" v-for="item in column_category">
+                <q-input style="width: 100%;" v-model="item.category" type="text" outlined label="Name of Category" ></q-input>
+                <q-btn color="#34495E" flat  label="save changes" @click="savechange(item.id, item.category)" > </q-btn>
+                <q-btn color="grey" flat  label="Remove" @click="remove(item.id)" > </q-btn>
+          </div>
+          
+          
+      </q-card-section>
+      <q-card-actions align="right">
+        <q-btn push  label="Close" color="grey" v-close-popup ></q-btn>
+      </q-card-actions>
+    </q-card>
+  </q-dialog>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+{% endblock %}
+{% block script %}
+<script >
+new Vue({
+    el: '#app',
+    delimiters: ['${','}'],
+    data: function () {
+      return {
+        drawerState: false,
+        tab: 'mails',
+        pic_user : 'http://res.heraldm.com/phpwas/restmb_jhidxmake.php?idx=5&simg=201701181539234376570_20170118154018_02.jpg',
+        left: false,
+        dash : {
+            backgroundColor : '#34495E',
+           color : 'white'
+           },
+           
+           Deliberation : {
+           backgroundColor : '#34495E',
+           color : 'white',
+       },
+
+       employee : {
+            backgroundColor : '#34495E',
+           color : 'white'
+           },
+           performance_evaluation : {
+           backgroundColor : '#34495E',
+           color : 'white',
+       },
+       settings : {
+            backgroundColor : '#34495E',
+           color : 'white'
+           },
+           Deliberation : {
+           backgroundColor : '#34495E',
+           color : 'white',
+       },
+       report : {
+           backgroundColor : '#34495E',
+           color : 'white',
+       },
+       concern : {
+           backgroundColor : '#34495E',
+           color : 'white',
+       },
+      columns: [
+      {
+          name: 'EmpCode',
+          required: true,
+          label: 'EmpCode',
+          align: 'left',
+          field: row => row.EmpCode,
+          format: val => `${val}`,
+          sortable: true
+        },
+          {
+          name: 'FirstName',
+          required: true,
+          label: 'First Name',
+          align: 'left',
+          field: row => row.FirstName,
+          format: val => `${val}`,
+          sortable: true
+        },
+        { name: 'MiddleName', align: 'center', label: 'Middle Name', field: 'MiddleName', sortable: true },
+        { name: 'LastName', align: 'center', label: 'Last Name', field: 'LastName', sortable: true },
+        { name: 'Suffix', label: 'Suffix', field: 'Suffix', sortable: true },
+        { name: 'Designation', label: 'Designation', field: 'Designation' },
+        { name: 'StatusCode', label: 'Job Status', field: 'StatusCode' },
+        { name: 'JobLevel', label: 'Job Level', field: 'JobLevel' },
+        { name: 'PlaceOfAssignment', label: 'Place of Assignment', field: 'PlaceOfAssignment' },
+        { name: 'Department', label: 'Department', field: 'Department', sortable: true },
+        { name: 'ContactNumber', label: 'ContactNumber', field: 'ContactNumber', sortable: true },
+        { name: 'email', label: 'Email', field: 'Email', sortable: true }
+      ],
+      data: [
+        
+      ],
+        
+        
+       
+        name : 'carulasan',
+        loadingState_search : false,
+        search : '',
+        model_terminal : '',
+        options_terminal : [
+        
+          'Cubao', 'Caloocan', 'Baguio','--no-filter--'
+         
+            
+          
+          
+        ],
+        model_department : '',
+        options_department : [
+        
+          'HR', 'Operation', 'Legal','Audit','Maintainance','Purchasing','--no-filter--'
+          
+          
+        ],
+        model_position : '',
+        
+       
+       
+        
+        employee_selected : [],
+        loading_department : false,
+        model_search : '',
+        dialog_newemployee : false,
+        fullname : '',
+        global_hostname : '',
+        maximizedToggle: true, 
+        modal_employee : false,
+        panel: '',
+        option_tab : [],
+        token : '',
+        content_tab : [
+    
+        ],
+        newdoc : false,
+        global_doc : 0,
+        file : '',
+        description : '',
+        category : 0,
+        firstname : '',
+        middlename : '',
+        lastname : '',
+        suffix: '',
+        email : '',
+        contactnumber : '',
+        department : '',
+        designation : '',
+        joblevel : '',
+        jobstatus : '',
+        nickname : '',
+        placeofassignment : '',
+        empcode : '',
+        content : [],
+        modal_new_tab : false,
+        model_new_tab : '',
+        after_delete : '',
+        modal_modify : false,
+        column_category : [],
+        title_of_document : '',
+
+        
+      
+      }
+    },mounted () {
+
+
+
+      var hostname = window.location.hostname;
+      var port = window.location.port
+        if(port != '' ){
+
+            hostname = hostname+':8000'
+        }
+        else{
+            hostname = hostname
+        }
+
+        this.global_hostname = `${window.location.protocol}//${hostname}`;
+        var csrftoken = Cookies.get('csrftoken');
+        this.token = csrftoken
+        
+        
+        
+      
+    },methods: {
+      logout(){
+              axios.post(`${this.global_hostname}/logout/`,{
+                  
+                   headers: {
+                               'Content-Type': 'application/json',
+                                  'X-CSRFToken': this.token
+                   }
+                  
+              })
+              .then(res => {
+                  window.location.replace(`${this.global_hostname}/login/`)
+                
+              })
+              .catch(err => {
+                  
+              })
+            },
+
+
+      remove(id){
+        axios.delete(`${this.global_hostname}/api/DOCUMENT_201_COLUMN/${id}/`,{
+         
+           headers: {
+                 'Content-Type': 'application/json',
+                  'X-CSRFToken': this.token
+           }
+          
+        })
+        .then(res => {
+          console.log(res)
+          this.$q.notify({ //put dollor sign(q)
+                              message: `Successfully Deleted!`,
+                              timeout: 10000, // in milliseconds; 0 means no timeout
+
+                              color: '#34495E',
+                              textColor: 'white', // if default 'white' doesn't fit
+                             icon: 'check', //or  avatar: 'statics/boy-avatar.png',
+
+                             position: 'top', // 'top', 'left', 'bottom-left' etc.
+
+                              })
+
+                             
+
+
+          this.get_column_document()
+
+
+        })
+        .catch(err => {
+          console.error(err); 
+        })
+      },
+
+      savechange(id,category){
+       
+        var paylod = {
+          "category": category,
+
+        }
+        axios.put(`${this.global_hostname}/api/DOCUMENT_201_COLUMN/${id}/`,paylod,{
+        
+           headers: {
+                 'Content-Type': 'application/json',
+                  'X-CSRFToken': this.token
+           }
+          
+        })
+        .then(res => {
+          console.log(res)
+          this.$q.notify({ //put dollor sign(q)
+                              message: `Successfully Updated!`,
+                              timeout: 10000, // in milliseconds; 0 means no timeout
+
+                              color: '#34495E',
+                              textColor: 'white', // if default 'white' doesn't fit
+                             icon: 'check', //or  avatar: 'statics/boy-avatar.png',
+
+                             position: 'top', // 'top', 'left', 'bottom-left' etc.
+
+                              })
+
+                             
+
+
+          this.get_column_document()
+        })
+        .catch(err => {
+          console.error(err); 
+        })
+      },
+
+      modify(){
+        this.modal_modify = true
+      },
+
+      deletfile(id){
+
+        var data = this.panel
+        this.after_delete = data
+
+        var id = id
+            axios.delete(`${this.global_hostname}/api/GET_DOCUMENT_201_CONTENT/${id}/`,{
+             
+               headers: {
+                     'Content-Type': 'application/json',
+                      'X-CSRFToken': this.token
+               }
+              
+            })
+            .then(res => {
+              console.log(res)
+              
+          this.$q.notify({ //put dollor sign(q)
+                              message: `Successfully Deleted!`,
+                              timeout: 10000, // in milliseconds; 0 means no timeout
+
+                              color: '#34495E',
+                              textColor: 'white', // if default 'white' doesn't fit
+                             icon: 'check', //or  avatar: 'statics/boy-avatar.png',
+
+                             position: 'top', // 'top', 'left', 'bottom-left' etc.
+
+                              })
+
+                              this.get_column_document()
+            })
+            .catch(err => {
+              console.error(err); 
+            })
+      },
+      save_tab(){
+        var payload = {
+          "category": this.model_new_tab,
+        }
+
+        axios.post(`${this.global_hostname}/api/DOCUMENT_201_COLUMN/`,payload,{
+         
+           headers: {
+                 'Content-Type': 'application/json',
+                  'X-CSRFToken': this.token
+           }
+          
+        })
+        .then(res => {
+          console.log(res)
+
+          this.$q.notify({ //put dollor sign(q)
+                              message: `New Category ${this.model_new_tab} is Successfully Saved!`,
+                              timeout: 10000, // in milliseconds; 0 means no timeout
+
+                              color: '#34495E',
+                              textColor: 'white', // if default 'white' doesn't fit
+                             icon: 'check', //or  avatar: 'statics/boy-avatar.png',
+
+                             position: 'top', // 'top', 'left', 'bottom-left' etc.
+
+                              })
+
+                          
+                
+                
+                this.get_column_document()
+          
+        
+        })
+        .catch(err => {
+          console.error(err); 
+        })
+
+      },
+      newtab(){
+        this.modal_new_tab = true
+      },
+
+      linkfile(link){
+       
+        window.open(`${link}`);
+      },
+      submit_info(){
+        var data = this.panel
+        this.after_delete = data
+        let formData = new FormData();
+        var empcode = this.empcode
+        var des = this.description
+        console.log(des)
+        console.log(this.category)
+        console.log(this.file)
+
+        formData.append('category',`${this.global_hostname}/api/DOCUMENT_201_COLUMN/${this.category}/`)
+        formData.append('empcode', empcode)
+        formData.append('classification', this.title_of_document)
+        
+        formData.append('Description', des)
+        formData.append('files', this.file,this.file.name);
+        console.log(`formata`)
+        console.log(formData)
+        axios.post(`${this.global_hostname}/api/DOCUMENT_201_CONTENT/`,formData,{
+         
+           headers: {
+                  'Content-Type': 'multipart/form-data',
+                  'X-CSRFToken': this.token
+           }
+          
+        })
+        .then(res => {
+          console.log(res)
+
+          this.$q.notify({ //put dollor sign(q)
+                              message: `New Document ${des} is Successfully Saved!`,
+                              timeout: 10000, // in milliseconds; 0 means no timeout
+
+                              color: '#34495E',
+                              textColor: 'white', // if default 'white' doesn't fit
+                             icon: 'check', //or  avatar: 'statics/boy-avatar.png',
+
+                             position: 'top', // 'top', 'left', 'bottom-left' etc.
+
+                              })
+
+                          
+                
+                
+                this.get_column_document()
+        })
+        .catch(err => {
+          console.error(err); 
+        })
+
+      
+      },
+      onFileChange(event) {
+        // this.file = this.$refs.file.files[0];
+        // console.log(this.$refs.file.files[0])
+
+
+      //   var output = document.getElementById('output');
+      // output.src = URL.createObjectURL(event.target.files[0]);
+      this.file = event.target.files[0];
+      console.log()
+ 
+    },
+    
+
+      add_docs(id){
+        
+        this.global_doc = id
+        this.category = id
+
+        if(this.newdoc == false){
+          this.newdoc = true
+        }else{
+          this.newdoc = false
+        }
+
+
+        if(id == 0){
+          this.newdoc = false
+          this.description = '',
+          this.file = ''
+        }
+      },
+
+      content_sorter(category,empcode_em){
+
+          var cat = category
+         var emp =  empcode_em
+        
+       
+        console.log('aiza')
+        console.log(emp)
+          // alert(cat + ' ' + emp)
+
+          var array = []
+          for (let index = 0; index < this.content.length; index++) {
+            const element = this.content[index];
+
+              if(element.category == cat && element.empcode == emp){
+                var str = element.files
+                var res = str.charAt(str.length-3);
+                res += str.charAt(str.length-2);
+                res += str.charAt(str.length-1);
+
+                var obj = {
+                  "Description": element.Description,
+                  "category": element.category,
+                  "classification": element.classification,
+                  "empcode": element.empcode,
+                  "files": element.files,
+                  "id": element.id,
+                  "url": element.url,
+                  "icon" : res
+                }
+
+                array.push(obj)
+              }
+
+              if(index == this.content.length - 1){
+                console.log('bry')
+                console.log(array)
+
+                return array
+
+              }
+            
+          }
+          
+         
+         
+      },
+
+      sort_content(){
+        var data = this.content_tab
+        
+        var empcode_em = this.empcode 
+        var empcode_em = '{{empcode}}'
+      
+        var array = []
+        for (let index = 0; index < data.length; index++) {
+          const element = data[index];
+              var obj = {
+                   "id": element.id,
+                  "category": element.category,
+                  "content_employee" : this.content_sorter(element.category,empcode_em)
+              }
+
+              array.push(obj)
+              
+              if(index == data.length -1){
+
+                  this.content_tab = array
+                  console.log('ayan')
+                 
+                  console.log(this.content_tab)
+                  
+              }
+          
+        }
+
+      },
+      get_column_document(){
+        axios.get(`${this.global_hostname}/api/DOCUMENT_201_COLUMN/`,{
+           headers: {
+                 'Content-Type': 'application/json',
+                  'X-CSRFToken': this.token
+           }
+          
+        })
+        .then(res => {
+              var data = res.data
+              this.column_category = res.data
+              var arr = []
+              for (let index = 0; index < data.length; index++) {
+                    const element = data[index];
+                    if(index == 0){
+                      this.panel = element.category
+
+                    }
+                    var obj = {
+                        'label' : element.category,
+                        'value' :  element.category,
+                        'info' : element.Description
+                    }
+                    arr.push(obj)
+                    
+                    if( index == data.length - 1 ){
+                      this.option_tab= arr
+                      this.content_tab = data
+                     if(this.after_delete != ''){
+                      if(this.panel != ''){
+                    this.panel = this.after_delete
+                    this.after_delete = ''
+                  }
+                     }
+
+                    }
+                
+              }
+
+              this.get_content()
+             
+        })
+        .catch(err => {
+          console.error(err); 
+        })
+      },
+      get_content(){
+            axios.get(`${this.global_hostname}/api/GET_DOCUMENT_201_CONTENT/`,{
+              
+              headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': this.token
+              }
+            
+          })
+          .then(res => {
+            console.log(res)
+
+            this.content = res.data
+            this.sort_content()
+            this.show_modal()
+            
+            
+          
+
+     })
+     .catch(err => {
+       console.error(err); 
+     })
+      },
+      show_modal(){
+        this.modal_employee = true
+
+        var emp = '{{empcode}}'
+      
+        var info = this.data.filter(
+            function(el){
+                return el.EmpCode == emp
+            }
+        )
+        console.log(info)
+      
+        var emp_selected = info
+        this.firstname =emp_selected[0].FirstName
+        this.middlename = emp_selected[0].MiddleName
+        this.lastname = emp_selected[0].LastName
+        this.suffix = emp_selected[0].Suffix
+        this.email = emp_selected[0].Email
+        this.contactnumber = emp_selected[0].ContactNumber
+        this.department = emp_selected[0].Department
+        this.designation = emp_selected[0].Designation
+        this.joblevel = emp_selected[0].JobLevel
+        this.jobstatus = emp_selected[0].JobStatus
+        this.nickname =  emp_selected[0].NickName
+        this.empcode = emp_selected[0].EmpCode
+        this.placeofassignment = emp_selected[0].PlaceOfAssignment
+        
+        this.sort_content()
+
+     
+
+
+    
+      },
+     
+     
+      add_employee(){
+        this.dialog_newemployee = true;
+      },
+      event_filter_terminal(){
+        
+        // alert(this.model_terminal)
+        axios.get(`${this.global_hostname}/api/Employee/`,{
+                
+                headers: {
+                            'Content-Type': 'application/json',
+                               'X-CSRFToken': this.token
+                }
+               
+           })
+           .then(res => {
+               console.log(`employee`)
+               this.data = res.data
+
+              
+             
+               
+              
+           })
+           .catch(err => {
+               console.error(err); 
+           })
+        
+
+      },
+      clear(event){
+
+        if(event.code == "Backspace"){
+            if(this.model_search.length < 5){
+          
+              this.model_terminal = ''
+    
+            }
+
+         }
+
+
+       
+      },
+      go_to_employee_info(){
+
+
+          
+      },
+      get_employee(){
+        axios.get(`${this.global_hostname}/api/Employee/`,{
+                
+                headers: {
+                            'Content-Type': 'application/json',
+                               'X-CSRFToken': this.token
+                }
+               
+           })
+           .then(res => {
+               console.log(`employee`)
+               this.data = res.data
+             
+               
+              
+           })
+           .catch(err => {
+               console.error(err); 
+           })
+      },
+
+     
+    },beforeMount () {
+      if(innerWidth < 1017){
+                    this.drawerState = false
+                }
+
+                this.get_employee()
+                this.get_column_document()
+                this.get_content()
+            
+    },
+    mounted(){
+
+      
+    },
+  })
+
+
+
+
+</script>
+{% endblock %}
+
+
+
+

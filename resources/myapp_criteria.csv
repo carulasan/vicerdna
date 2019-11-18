@@ -1,0 +1,6 @@
+id,criteria,description,percentage,date_created,date_updated,kind_of_evaluation_id
+2,EFFICIENCY,"Relates to productivity, quantity of work and accomplishments in a given time within the required schedules.",30,2019-09-27 06:25:15.377013,2019-09-27 06:25:15.377013,1
+3,QUALITY OF WORK,Accurate and systematic work according to company and superior standards. Free from work irregularities.,25,2019-09-27 06:25:43.093656,2019-09-27 06:25:43.093656,1
+4,ATTENDANCE AND PUNCTUALITY,"Report to work on time, observes regulations and procedures on leave of absence. Observes prescribed attendance and work schedules.",20,2019-09-27 06:26:02.645075,2019-09-27 06:26:02.645075,1
+5,INTERPERSONAL RELATIONS,"Respects and having harmonious relationship w/ co workers, superiors, customers and others.",15,2019-09-27 06:26:20.017682,2019-09-27 06:26:20.017682,1
+6,PERSONALITY AND WORK ATTITUDE,"Good grooming, appropriate clothing and complete set of uniform at all times. Protects the company's interest.",10,2019-09-27 06:26:43.291601,2019-09-27 06:26:43.291601,1

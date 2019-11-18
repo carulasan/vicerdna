@@ -1,0 +1,1139 @@
+{% extends "myapp/layout.html" %}
+
+{% block content %}
+
+
+<q-breadcrumbs style="color: red; cursor: pointer">
+    <q-breadcrumbs-el label="File Maintenance /" onclick="window.location.href='{% url 'settings_panel' %}' " icon="settings" />
+    <q-breadcrumbs-el label="Place of Assignments " icon="all_inbox" />
+    <q-breadcrumbs-el label=" /"  />
+</q-breadcrumbs>
+
+<div class="row animated fadeInDown" style="padding: 10px;">
+    <div style="width: 100% ">
+         <legend style="font-size: 25px; color:#34495E;font-weight: 900">Place of Assignments</legend>
+    </div>
+    <div class="row animated fadeInDown">
+         <span style="color: #34495E">
+                <small>Employees should be assigned to workplaces according to their competences and preferences to ensure that motivated employees carry out tasks effectively and efficiently.</small>
+         </span>
+    </div>
+</div>
+
+
+
+
+
+
+
+<div class="row animated fadeInDown" style="padding: 10px;">
+    <div style="width: 100% ">
+         <legend style="font-size: 25px; color:#34495E;font-weight: 900">Category</legend>
+    </div>
+
+    <div class="row" style="width:100%;margin-top: 20px;  ">
+        <!-- @click="new_department_event"  -->
+          <q-btn color="red-8" icon="add" label="add Category"  @click="new_category"   ></q-btn>
+        
+        </div>
+    
+    <div class="row" style="width: 100%">
+
+      
+
+
+
+        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-3" v-for="item in category" style="padding: 10px;">
+
+            <q-list  >
+
+                <q-item clickable style="width: 100% ; border-radius: 5px; -webkit-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12);
+                -moz-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12);
+                box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12); background-color: #273746">
+               
+                    <q-item-section>
+                      <q-item-label style="font-size: 18px; color: white;font-weight: 900">${ item.category }</q-item-label>
+                      <q-item-label caption lines="2"></q-item-label>
+                    </q-item-section>
+            
+                    <q-item-section side top>
+                      <q-item-label caption>
+                        
+                          <q-icon style="width: 100%;text-align:center;color: white;font-size: 25px; "  @click="edit_category(item.id)"  name="edit"></q-icon> 
+                          <q-icon style="width: 100%;text-align:center;color: red;font-size: 25px; "  @click="delete_category(item.id)"  name="delete"></q-icon> 
+                          
+                                         
+                        </q-item-label>
+                     
+                    </q-item-section>
+                  </q-item>
+            </q-list>
+
+
+          </div>
+
+
+
+
+
+
+
+
+    </div>
+</div>
+
+
+
+<!-- 
+<div class="row animated fadeInDown" style="padding: 10px;">
+    <div style="width: 100% ">
+         <legend style="font-size: 20px; color:#34495E;font-weight: 900">Location</legend>
+    </div> -->
+    
+
+<!--         
+<div class="row" style="width:100%; ">
+    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6"> -->
+     <!-- @input="searchBus"  -->
+     <!-- v-model="search" -->
+       <!-- <q-input outlined label="Search"  v-model="modellocation" @input="SearchLocation"  >
+           <template v-slot:append>
+             <q-icon name="search" ></q-icon>
+           </template>
+         </q-input>
+   
+ 
+   </div>
+ </div> -->
+
+ <div class="row" style="width:100%;margin-top: 20px;  ">
+    <!-- @click="new_department_event"  -->
+     
+    <q-btn color="red-8" icon="add" label="Add Location"  @click="new_location"  ></q-btn>
+    </div>
+
+
+    <div class="row" style="width: 100% ; margin-top: 20px;">
+
+
+    
+
+        <q-table
+
+     
+          style="width: 100%"
+          :data="locations"
+          :columns="columns"
+          row-key="id"
+          selection="single"
+          :selected.sync="selected"
+           :filter="terms"
+           title="Location"
+            
+            
+          
+          >
+          <!-- hai -->
+
+        
+          
+          <template  slot="top-selection" >
+
+             
+                      <q-btn-group class="animated fadeInDown">
+                        <q-btn label="Get QR Code" icon="nfc" style="color: white ; background-color: #34495E ;"  @click="GetQR(selected)" ></q-btn>
+                        <q-btn label="edit" color="orange" icon="edit" @click="edit_location(selected)"   ></q-btn>
+                        <q-btn label="delete" icon="delete"  color="red" @click="delete_location(selected)"  ></q-btn>
+                      </q-btn-group>
+                     
+                    
+          </template>
+     
+          
+          
+          
+               <template v-slot:top-right>
+                  <div style="width: 200px;padding: 10px;">
+                      <q-select outlined   filled  :options="optionfilter" dense debounce="300"  v-model="filtercategory"  @input="eventfilter" label="Filter by Category" ></q-select>
+                      <!-- :options="OptionDepartment" -->
+              </div> 
+            
+                  
+          <q-input outlined  v-model="terms" style="width: 200px;padding: 10px;"  filled  dense debounce="300"  placeholder="Search">
+                  <template v-slot:append>
+                    <q-icon name="search" ></q-icon>
+                  </template>
+              </q-input>
+            
+            
+            
+            
+           
+          
+          
+                 
+          
+          
+           
+            </template>
+          
+          
+          
+          </q-table> 
+    <!-- caru -->
+
+          
+        <!-- <div class="col-xs-12 col-sm-4 col-md-4 col-lg-3" v-for="item2 in locations" style="padding: 10px;">
+
+            <q-list  >
+
+                <q-item clickable style="width: 100% ; border-radius: 5px; -webkit-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12);
+                -moz-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12);
+                box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12); background-color:#273746">
+               
+                    <q-item-section>
+                      <q-item-label style="font-size: 18px; color:white;font-weight: 900"> ${item2.location} </q-item-label>
+                      
+                    </q-item-section>
+            
+                    <q-item-section side top>
+                      <q-item-label caption style="color: white;"> ${item2.category} </q-item-label>
+                      <q-item-label ><q-icon name="edit" style="width: 100%;text-align:center;color: white;font-size: 25px; " @click="edit_location(item2.id)" ></q-icon> </q-item-label>
+                      
+                      <q-item-label caption>  <q-icon style="width: 100%;text-align:center;color: red;font-size: 25px; "  @click="delete_location(item2.id)"  name="delete"></q-icon>  </q-item-label>
+                     
+                      <q-btn icon="nfc" flat color="orange" label="Get QRCode" @click="GetQR(item2.id)"  ></q-btn>
+                    </q-item-section>
+                  </q-item>
+            </q-list>
+
+
+          </div> -->
+
+
+         
+
+
+
+
+
+
+
+    </div>
+</div>
+
+
+<q-dialog v-model="modal_qrcode" persistent>
+    <q-card style="width: 900px; max-width: 1020;">
+      <div id="printMe">
+          <q-card-section  class="row items-center" style="padding: 30px; width: 100%;">
+         
+              <img width="150px;"  style="margin-left: auto;margin-right: auto;width: 50%" :src="qr" alt="QR" srcset="">
+      
+                <!-- buru -->
+                
+            </q-card-section>
+            <q-item-label style="width: 100%; text-align: center; font-weight: bold;">
+               ${ web_info_qr }
+      
+            </q-item-label>
+      
+        
+      
+      
+  
+      </div>
+    
+      <q-card-actions align="center">
+          <q-btn push  label="Close" color="grey" v-close-popup ></q-btn>
+        <q-btn push icon="print" @click="printna"  label="Print" color="red-8"  ></q-btn>
+      </q-card-actions>
+    </q-card>
+  </q-dialog>
+  
+
+
+<q-dialog v-model="modal_category" persistent>
+  <q-card style="width: 900px;">
+    <q-card-section class="row items-center" style="padding: 30px;">
+        <div class="row animated fadeInDown" style="width: 100%; padding: 5px;">
+           
+          <legend style="font-size: 25px; color:#34495E;font-weight: 900">New Place of Assingnments Category</legend>
+        </div>
+        <div class="row animated fadeInDown" style="width: 100%; padding: 5px;">
+              <q-input style="width: 100%;" v-model="model_new_category" type="text" outlined label="Enter Name of Category" ></q-input>
+        </div>
+        
+        
+    </q-card-section>
+    <q-card-actions align="right">
+      <q-btn flat label="Cancel" color="grey" v-close-popup ></q-btn>
+      <q-btn flat label="save" color="red-8" v-close-popup  @click="save_category"></q-btn>
+    </q-card-actions>
+  </q-card>
+</q-dialog>
+
+
+<q-dialog v-model="modal_category_update" persistent>
+  <q-card style="width: 900px;">
+    <q-card-section class="row items-center" style="padding: 30px;">
+        <div class="row animated fadeInDown" style="width: 100%; padding: 5px;">
+           
+          <legend style="font-size: 25px; color:#34495E;font-weight: 900">New Place of Assingnments Category</legend>
+        </div>
+        <div class="row animated fadeInDown" style="width: 100%; padding: 5px;">
+              <q-input style="width: 100%;" v-model="model_new_category_update" type="text" outlined label="Enter Category" ></q-input>
+        </div>
+        
+        
+    </q-card-section>
+    <q-card-actions align="right">
+      <q-btn flat label="close" color="grey" v-close-popup ></q-btn>
+      <q-btn flat label="save" color="red-8" v-close-popup  @click="update_category"></q-btn>
+    </q-card-actions>
+  </q-card>
+</q-dialog>
+
+
+
+
+
+
+
+
+
+<q-dialog v-model="modal_location" persistent>
+    <q-card style="width: 900px;">
+      <q-card-section class="row items-center" style="padding: 30px;">
+          <div class="row animated fadeInDown" style="width: 100%; padding: 5px;">
+             
+            <legend style="font-size: 25px; color:#34495E;font-weight: 900">New Place of Assingnments Location</legend>
+          </div>
+          <div class="row animated fadeInDown" style="width: 100%; padding: 5px;">
+                <q-input style="width: 100%;" v-model="model_new_location" type="text" outlined label="Enter Location" ></q-input>
+          </div>
+
+          <div class="row animated fadeInDown" style="width: 100%; padding: 5px;">
+              <q-select style="width: 100%;"  v-model="model_my_catgory" :value="model_my_catgory" :options="category_option" outlined label="Select Category" ></q-select>
+        </div>
+          
+          
+      </q-card-section>
+      <q-card-actions align="right">
+        <q-btn flat label="Close" color="grey" v-close-popup ></q-btn>
+        <q-btn flat label="save" color="red-8" v-close-popup  @click="save_new_location"></q-btn>
+      </q-card-actions>
+    </q-card>
+  </q-dialog>
+
+
+
+
+  
+ <q-dialog v-model="modal_location_edit" persistent>
+    <q-card style="width: 900px;">
+      <q-card-section class="row items-center" style="padding: 30px;">
+          <div class="row animated fadeInDown" style="width: 100%; padding: 5px;">
+             
+            <legend style="font-size: 25px; color:#34495E;font-weight: 900">Edit Place of Assingnments Location</legend>
+          </div>
+          <div class="row animated fadeInDown" style="width: 100%; padding: 5px;">
+                <q-input style="width: 100%;" v-model="model_new_location_edit" type="text" outlined label="Enter Location" ></q-input>
+          </div>
+
+          <div class="row animated fadeInDown" style="width: 100%; padding: 5px;">
+              <q-select style="width: 100%;"  v-model="model_my_catgory_edit" :value="model_my_catgory_edit" :options="category_option" outlined label="Enter Location" ></q-select>
+        </div>
+          
+          
+      </q-card-section>
+      <q-card-actions align="right">
+        <q-btn flat label="Cancel" color="grey" v-close-popup ></q-btn>
+        <q-btn flat label="save" color="red-8" v-close-popup @click="update_location" ></q-btn>
+      </q-card-actions>
+    </q-card>
+  </q-dialog> 
+
+
+
+
+
+{% endblock %}
+
+
+
+{% block script %}
+<script>
+
+new Vue({
+            el: '#app',
+            delimiters: ['${','}'],
+            data: function () {
+              return {
+                drawerState: false,
+                pic_user : 'http://res.heraldm.com/phpwas/restmb_jhidxmake.php?idx=5&simg=201701181539234376570_20170118154018_02.jpg',
+                showing : false,
+                showing2 : false,
+        
+                dash : {
+            backgroundColor : '#273746',
+           color : 'white'
+           },
+           
+           Deliberation : {
+           backgroundColor : '#273746',
+           color : 'white',
+       },
+
+       employee : {
+            backgroundColor : '#273746',
+           color : 'white'
+           },
+           performance_evaluation : {
+           backgroundColor : '#273746',
+           color : 'white',
+        
+       },
+       settings : {
+            backgroundColor : '#273746',
+           color : 'white'
+           },
+           Deliberation : {
+           backgroundColor : '#273746',
+           color : 'white',
+       },
+       report : {
+           backgroundColor : '#273746',
+           color : 'white',
+       },
+       concern : {
+           backgroundColor : '#273746',
+           color : 'white',
+       },
+
+
+
+       category : [
+         
+       ],
+       global_hostname  : '',
+       token : '',
+       locations : [],
+       modal_category : false,
+       model_new_category : '',
+
+       model_new_category_update : '',
+       modal_category_update : false,
+       id_category_toupdate : 0,
+       model_new_location : '',
+       modal_location : false,
+       category_option : [],
+       model_my_catgory : '',
+       model_new_location_edit : '',
+       modal_location_edit : false,
+       model_my_catgory_edit : '',
+       id_location_edit : 0,
+       modellocation: '',
+       rawlocation : [],
+       modal_qrcode : false,
+       web_info_qr : '',
+       qr : '', 
+       optionfilter : [],
+       filtercategory : '',
+       reserve_location : [],
+      //  state
+       
+       
+columns: [
+          
+        
+        { name: 'location', align: 'center', label: 'location', field: 'location', sortable: true },
+        { name: 'category', align: 'center', label: 'Category', field: 'category', sortable: true },
+       
+      ],
+      data: [
+               
+      ],
+selected : [],
+
+terms: ''
+
+
+    }
+    },methods: {
+
+      logout(){
+              axios.post(`${this.global_hostname}/logout/`,{
+                  
+                   headers: {
+                               'Content-Type': 'application/json',
+                                  'X-CSRFToken': this.token
+                   }
+                  
+              })
+              .then(res => {
+                  window.location.replace(`${this.global_hostname}/login/`)
+                
+              })
+              .catch(err => {
+                  
+              })
+            },
+
+            eventfilter(){
+              // caru
+              // this.locations
+                  
+
+                  this.locations = this.reserve_location
+                  this.data = this.ViolationDepartmentPerCriteria_data
+                  if(this.filtercategory.toLowerCase() != 'all'){
+                        var data = this.reserve_location.filter(
+                            (element)=>{
+                              return element.category.toLowerCase() == this.filtercategory.toLowerCase()
+                            }
+                        )
+                        alert(this.filtercategory)
+                      this.locations = data
+                  }
+
+
+  // carulasan
+  
+
+            },
+
+            printna(){
+              axios.get(`${this.global_hostname}/api/QRBusses/`,{
+               
+               headers: {
+                     'Content-Type': 'application/json',
+                      'X-CSRFToken': this.token
+               }
+              
+            })
+            .then(res => {
+              console.log(res)
+              // this.web_info_qr  = res.data
+              //end 
+            })
+            .catch(err => {
+              console.error(err); 
+            })
+            var url = this.qr
+     var info = this.web_info_qr
+      
+     
+    
+      var divToPrint = document.getElementById('printME');
+         var popupWin = window.open('', '_blank', 'width=300,height=300');
+         popupWin.document.open();
+         popupWin.document.write('<html><body onload="window.print()">' 
+          + 
+         `  
+         <div style="margin: auto;width : 50%">
+         <img width="200px;"  style="margin:auto:width:50%" src="${url}" alt="QR" srcset=""> 
+         
+         <label style="margin: auto;width : 50% text-align:center ; margin-left:-60px" > ${info} </label>
+       
+  
+        </div>
+    
+        `
+
+  
+          
+          + '</html>');
+          popupWin.document.close();
+
+            },
+            GetQR(data,ids){
+
+            //  http://127.0.0.1:8000/PasengerConcern/PlaceofAssignments/
+             
+                  var id = data[0].id
+              this.modal_qrcode = true
+              var placeid = id
+        
+          var hostname = `${this.global_hostname}/`
+
+
+          axios.get(`${this.global_hostname}/api/QRCodePlaceOfAssingment/`,{
+            
+             headers: {
+                   'Content-Type': 'application/json',
+                    'X-CSRFToken': this.token
+             }
+            
+          })
+          .then(res => {
+            console.log(res)
+
+            var data = res.data
+                var info = data.filter(
+                  (e)=>{
+                    return e.LocationID == placeid
+                  }
+                )
+
+                if(info.length > 0){  
+
+                  axios.delete(`${this.global_hostname}/api/QRCodePlaceOfAssingment/${info[0].id}/`,{
+                 
+                     headers: {
+                           'Content-Type': 'application/json',
+                            'X-CSRFToken': this.token
+                     }
+                    
+                  })
+                  .then(res => {
+                    
+                              let formadata = new FormData()
+                              formadata.append('id',placeid )
+                              formadata.append('hostname',hostname )
+                              
+                              console.log(formadata)
+                              axios.post(`${this.global_hostname}/PasengerConcern/PlaceofAssignments/`,formadata,{
+                              
+                                headers: {
+                                      'Content-Type': 'application/json',
+                                        'X-CSRFToken': this.token
+                                }
+                                
+                              })
+                              .then(res => {
+                                console.log(res)
+                                this.qr = `${this.global_hostname}/${res.data.url}`
+                                this.web_info_qr = res.data.info
+                                
+                              })
+                              .catch(err => {
+                                console.error(err); 
+                              })
+
+
+                  })
+                  .catch(err => {
+                    console.error(err); 
+                  })
+
+                }else{
+                        let formadata = new FormData()
+                        formadata.append('id',placeid )
+                              formadata.append('hostname',hostname )
+                                    
+                                    console.log(formadata)
+                                    axios.post(`${this.global_hostname}/PasengerConcern/PlaceofAssignments/`,formadata,{
+                                    
+                                      headers: {
+                                            'Content-Type': 'application/json',
+                                              'X-CSRFToken': this.token
+                                      }
+                                      
+                                    })
+                                    .then(res => {
+                                      console.log(res)
+                                      this.qr = `${this.global_hostname}/${res.data.url}`
+                                      this.web_info_qr = res.data.info
+                                      
+                                    })
+                                    .catch(err => {
+                                      console.error(err); 
+                                    })
+
+
+
+                }
+          })
+          .catch(err => {
+            console.error(err); 
+          })
+
+
+
+
+
+
+
+
+
+
+            },
+            SearchLocation(){
+              var data = this.modellocation.toLowerCase()
+              var info= this.rawlocation.filter(
+                (element)=>{
+                  return element.location.toLowerCase().includes(data)
+                }
+              )
+              this.locations = info
+            },
+
+            
+      delete_location(data){
+        if(data.length <= 0){
+          alert('Please Select Row')
+          return
+        }
+        var id = data[0].id
+
+
+        this.$q.dialog({
+        title: 'Confirm',
+        message: 'Would you like to Delete this file?',
+        cancel: true,
+        persistent: true
+      }).onOk(() => {
+        // console.log('>>>> OK')
+
+
+        axios.delete(`${this.global_hostname}/api/POST_PLACE_OF_ASSIGNMENT_LOCATION/${id}/`,{
+              headers: {
+                 'Content-Type': 'application/json',
+                  'X-CSRFToken': this.token
+           }
+          
+        })
+        .then(res => {
+          console.log(res)
+          this.$q.notify({ //put dollor sign(q)
+            message: `Successfully Deleted!`,
+            timeout: 10000, // in milliseconds; 0 means no timeout
+            
+            color: 'orange',
+            textColor: 'white', // if default 'white' doesn't fit
+           icon: 'check', //or  avatar: 'statics/boy-avatar.png',
+         
+           position: 'top', // 'top', 'left', 'bottom-left' etc.
+           
+
+
+            })
+            this.get_location()
+
+        })
+        .catch(err => {
+          console.error(err);
+          this.$q.notify({ //put dollor sign(q)
+                              message: `Unsuccessfull!`,
+                              timeout: 10000, // in milliseconds; 0 means no timeout
+
+                              color: 'red',
+                              textColor: 'white', // if default 'white' doesn't fit
+                             icon: 'error', //or  avatar: 'statics/boy-avatar.png',
+
+                             position: 'top', // 'top', 'left', 'bottom-left' etc.
+
+                              }) 
+        })
+
+
+      }).onOk(() => {
+        // console.log('>>>> second OK catcher')
+      }).onCancel(() => {
+        // console.log('>>>> Cancel')
+      }).onDismiss(() => {
+        // console.log('I am triggered on both OK and Cancel')
+})
+        
+      
+        
+      },
+      update_location(){
+        var category = this.category
+        var cat = this.model_my_catgory_edit
+        var id = category.filter(function(element){ return element.category == cat })
+        var location = this.model_new_location_edit 
+        var payload = {
+          "location": location,
+          "category": `${this.global_hostname}/api/PLACE_OF_ASSIGNMENT_CATEGORY/${id[0].id}/`,
+        }
+        console.log(payload)
+        axios.put(`${this.global_hostname}/api/POST_PLACE_OF_ASSIGNMENT_LOCATION/${this.id_location_edit}/`,payload,{
+         
+           headers: {
+                 'Content-Type': 'application/json',
+                  'X-CSRFToken': this.token
+           }
+          
+        })
+        .then(res => {
+          console.log(res)
+
+          this.$q.notify({ //put dollor sign(q)
+            message: `Successfully Updated!`,
+            timeout: 10000, // in milliseconds; 0 means no timeout
+            
+            color: 'orange',
+            textColor: 'white', // if default 'white' doesn't fit
+           icon: 'check', //or  avatar: 'statics/boy-avatar.png',
+         
+           position: 'top', // 'top', 'left', 'bottom-left' etc.
+           
+
+
+            })
+            this.get_location()
+
+
+        })
+        .catch(err => {
+          console.error(err); 
+
+          this.$q.notify({ //put dollor sign(q)
+                              message: `Unsuccessfull!`,
+                              timeout: 10000, // in milliseconds; 0 means no timeout
+
+                              color: 'red',
+                              textColor: 'white', // if default 'white' doesn't fit
+                             icon: 'error', //or  avatar: 'statics/boy-avatar.png',
+
+                             position: 'top', // 'top', 'left', 'bottom-left' etc.
+
+                              })
+        })
+
+      },
+      edit_location(data){
+        if(data.length <= 0){
+          alert('Please Select Row')
+          return
+        }
+        // wait
+        this.id_location_edit = data[0].id
+        var id_location = data[0].id
+        var location = this.locations
+        var old_location = location.filter(function(element){ return element.id == id_location })
+        this.model_new_location_edit = old_location[0].location
+        this.model_my_catgory_edit = old_location[0].category
+        this.modal_location_edit = true
+      },
+
+      delete_category(id){
+
+        this.$q.dialog({
+        title: 'Confirm',
+        message: 'Would you like to delete this file?',
+        cancel: true,
+        persistent: true
+      }).onOk(() => {
+        // console.log('>>>> OK')
+
+
+
+
+        axios.delete(`${this.global_hostname}/api/PLACE_OF_ASSIGNMENT_CATEGORY/${id}/`,{
+        
+        headers: {
+              'Content-Type': 'application/json',
+               'X-CSRFToken': this.token
+        }
+       
+     })
+     .then(res => {
+       console.log(res)
+       this.$q.notify({ //put dollor sign(q)
+         message: `Successfully Deleted!`,
+         timeout: 10000, // in milliseconds; 0 means no timeout
+         
+         color: 'orange',
+         textColor: 'white', // if default 'white' doesn't fit
+        icon: 'check', //or  avatar: 'statics/boy-avatar.png',
+      
+        position: 'top', // 'top', 'left', 'bottom-left' etc
+
+         })
+
+         this.get_category()
+     })
+     .catch(err => {
+       console.error(err);
+
+       this.$q.notify({ //put dollor sign(q)
+                           message: `Unsuccessfull!`,
+                           timeout: 10000, // in milliseconds; 0 means no timeout
+
+                           color: 'red',
+                           textColor: 'white', // if default 'white' doesn't fit
+                          icon: 'error', //or  avatar: 'statics/boy-avatar.png',
+
+                          position: 'top', // 'top', 'left', 'bottom-left' etc.
+
+                           })
+        
+     })
+
+
+
+      }).onOk(() => {
+        // console.log('>>>> second OK catcher')
+      }).onCancel(() => {
+        // console.log('>>>> Cancel')
+      }).onDismiss(() => {
+        // console.log('I am triggered on both OK and Cancel')
+})
+
+
+     
+      },
+      save_new_location(){
+        var mycat  =this.model_my_catgory;
+        var category = this.category
+        var id = category.filter(function(element){ return element.category == mycat })
+        var location = this.model_new_location
+        var payload = {
+          "location": location,
+          "category": `${this.global_hostname}/api/PLACE_OF_ASSIGNMENT_CATEGORY/${id[0].id}/`,
+        }
+        axios.post(`${this.global_hostname}/api/POST_PLACE_OF_ASSIGNMENT_LOCATION/`,payload,{
+         
+           headers: {
+                 'Content-Type': 'application/json',
+                  'X-CSRFToken': this.token
+           }
+          
+        })
+        .then(res => {
+          console.log(res)
+
+          this.$q.notify({ //put dollor sign(q)
+            message: `Successfully Saved`,
+            timeout: 10000, // in milliseconds; 0 means no timeout
+            
+            color: 'orange',
+            textColor: 'white', // if default 'white' doesn't fit
+           icon: 'check', //or  avatar: 'statics/boy-avatar.png',
+         
+           position: 'top', // 'top', 'left', 'bottom-left' etc.
+           
+
+
+            })
+            this.get_location()
+
+
+        })
+        .catch(err => {
+          console.error(err); 
+
+          this.$q.notify({ //put dollor sign(q)
+                              message: `Unsuccessfull!`,
+                              timeout: 10000, // in milliseconds; 0 means no timeout
+
+                              color: 'red',
+                              textColor: 'white', // if default 'white' doesn't fit
+                             icon: 'error', //or  avatar: 'statics/boy-avatar.png',
+
+                             position: 'top', // 'top', 'left', 'bottom-left' etc.
+
+                              })
+        })
+
+      },
+
+      new_location(){
+        this.modal_location = true
+      },
+      update_category(){
+
+        var id = this.id_category_toupdate
+        var payload = {
+          "category": this.model_new_category_update
+        }
+
+        axios.put(`${this.global_hostname}/api/PLACE_OF_ASSIGNMENT_CATEGORY/${id}/`,payload,{
+         
+           headers: {
+                 'Content-Type': 'application/json',
+                  'X-CSRFToken': this.token
+           }
+          
+        })
+        .then(res => {
+          console.log(res)
+          this.$q.notify({ //put dollor sign(q)
+            message: `Successfully Updated`,
+            timeout: 10000, // in milliseconds; 0 means no timeout
+            
+            color: 'orange',
+            textColor: 'white', // if default 'white' doesn't fit
+           icon: 'check', //or  avatar: 'statics/boy-avatar.png',
+         
+           position: 'top', // 'top', 'left', 'bottom-left' etc.
+           
+
+
+            })
+
+            this.get_category()
+            
+        })
+        .catch(err => {
+          console.error(err)
+          this.$q.notify({ //put dollor sign(q)
+                              message: `Unsuccessfull!`,
+                              timeout: 10000, // in milliseconds; 0 means no timeout
+
+                              color: 'red',
+                              textColor: 'white', // if default 'white' doesn't fit
+                             icon: 'error', //or  avatar: 'statics/boy-avatar.png',
+
+                             position: 'top', // 'top', 'left', 'bottom-left' etc.
+
+                              })
+        })
+      },
+      edit_category(id){
+        this.modal_category_update  = true
+        this.id_category_toupdate = id
+        var  id = id
+        var data = this.category.filter(
+          function(element){
+            return element.id == id
+          }
+        )
+        console.log(data)
+
+        this.model_new_category_update = data[0].category
+
+
+      },
+      save_category(){
+
+        var payload = {
+          "category": this.model_new_category,
+        }
+        axios.post(`${this.global_hostname}/api/PLACE_OF_ASSIGNMENT_CATEGORY/`,payload,{
+        
+           headers: {
+                 'Content-Type': 'application/json',
+                  'X-CSRFToken': this.token
+           }
+          
+        })
+        .then(res => {
+          console.log(res)
+          this.$q.notify({ //put dollor sign(q)
+            message: `Successfully Saved`,
+            timeout: 10000, // in milliseconds; 0 means no timeout
+            
+            color: 'orange',
+            textColor: 'white', // if default 'white' doesn't fit
+           icon: 'check', //or  avatar: 'statics/boy-avatar.png',
+         
+           position: 'top', // 'top', 'left', 'bottom-left' etc.
+           
+
+
+            })
+
+            this.get_category()
+          
+          
+        })
+        .catch(err => {
+          console.error(err); 
+          this.$q.notify({ //put dollor sign(q)
+                              message: `Unsuccessfull!`,
+                              timeout: 10000, // in milliseconds; 0 means no timeout
+
+                              color: 'red',
+                              textColor: 'white', // if default 'white' doesn't fit
+                             icon: 'error', //or  avatar: 'statics/boy-avatar.png',
+
+                             position: 'top', // 'top', 'left', 'bottom-left' etc.
+
+                              })
+        })
+
+      },
+        new_category(){
+          this.modal_category = true
+        },
+        get_location(){
+
+            axios.get(`${this.global_hostname}/api/GET_PLACE_OF_ASSIGNMENT_LOCATION/`,
+            {
+              
+               headers: {
+                     'Content-Type': 'application/json',
+                      'X-CSRFToken': this.token
+               }
+              
+            })
+                .then(res => {
+                    this.locations = res.data
+                    this.reserve_location = res.data
+                    this.rawlocation = res.data
+                    console.log(this.locations)
+                })
+                .catch(err => {
+                    console.error(err); 
+                })
+
+        },
+        get_category() {
+           
+    
+
+
+                axios.get(`${this.global_hostname}/api/PLACE_OF_ASSIGNMENT_CATEGORY/`,
+                {
+                
+                   headers: {
+                         'Content-Type': 'application/json',
+                          'X-CSRFToken': this.token
+                   }
+                  
+                })
+                .then(res => {
+                    this.category = res.data
+                    
+                    var category_to_option = []
+                    var data = res.data
+                    data.forEach(element => {
+                       var a =  element.category
+                      category_to_option.push(a)
+                    });
+                    console.log('my option')
+                    this.category_option = category_to_option
+                    console.log(this.category_option)
+
+
+                    for (let index = 0; index < res.data.length; index++) {
+                      const element = res.data[index];
+                      this.optionfilter.push(element.category)
+                      if (index == res.data.length - 1) {
+                        this.optionfilter.push('All')
+                      }
+                      
+                    }
+
+                })
+                .catch(err => {
+                    console.error(err); 
+                })
+        }
+    },
+    mounted () {
+        var hostname = window.location.hostname;
+        var port = window.location.port
+        if(port != '' ){
+
+            hostname = hostname+':8000'
+                    }
+                    else{
+                        hostname = hostname
+                    }
+        
+                    this.global_hostname = `${window.location.protocol}//${hostname}`;
+                 var csrftoken = Cookies.get('csrftoken');
+                this.token = csrftoken
+                this.get_category()
+                this.get_location()
+    },
+})
+</script>
+
+
+{% endblock %}

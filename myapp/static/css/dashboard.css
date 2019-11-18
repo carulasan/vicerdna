@@ -1,0 +1,136 @@
+#employee_num{
+    background-color: #FDEDEC ;
+    padding: 10px;
+    color: #5D6D7E;
+    cursor: pointer;
+    
+
+}
+#employee_num:hover{
+    background-color:#F9EBEA  ;
+}
+.titles{
+    border-bottom: 1px solid white;width: 100%; text-align: center;
+    padding: 5px;
+    font-size: 15px;
+}
+.employee_num_content{
+    padding: 20px;
+    font-weight: 900;
+    width: 100%;
+    text-align: center;
+    font-size: 25px;
+}
+#employee_num_probationary{
+    background-color: #F5EEF8 ;
+    padding: 10px;
+    color:  #5D6D7E;
+    cursor: pointer;
+}
+#employee_num_probationary:hover{
+    background-color: #F4ECF7;
+}
+
+
+
+#employee_num_regular{
+    background-color: #EAF2F8 ;
+    padding: 10px;
+    color: #5D6D7E;
+    cursor: pointer;
+}
+#employee_num_regular:hover{
+    background-color:#EBF5FB;
+}
+
+
+#employee_num_best{
+    background-color: #E8F8F5 ;
+    padding: 10px;
+    color: #5D6D7E;
+    cursor: pointer;
+}
+#employee_num_best:hover{
+    background-color: #E8F6F3   ;
+}
+
+
+#employee_num_under{
+    background-color: #FEF9E7 ;
+    padding: 10px;
+    color: #5D6D7E;
+    cursor: pointer;
+}
+#employee_num_under:hover{
+    background-color: #FDF2E9;
+}
+
+
+
+#employee_of_the_month{
+    background-color: #FDF2E9;
+    padding: 10px;
+    color: #5D6D7E;
+    cursor: pointer;
+}
+#employee_of_the_month:hover{
+    background-color: #FBEEE6;
+}
+#myChart{
+    cursor: pointer;
+}
+
+#employee_violation{
+    cursor: pointer;
+}
+
+#to_evaluate{
+    height: 150px;
+    overflow-y: scroll;
+  
+}
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+    #to_evaluate{
+        height: 200px;
+        overflow-y: scroll;
+    }
+}
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+       
+    #to_evaluate{
+        height: 100px;
+        overflow-y: scroll;
+    }
+}
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+    #to_evaluate{
+        height: 200px;
+        overflow-y: scroll;
+    }
+        
+}
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+    #to_evaluate{
+        height: 200px;
+        overflow-y: scroll;
+    }
+}
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+    #to_evaluate{
+        height: 500px;
+        overflow-y: scroll;
+    }
+}
+
+
+
+
+
+
+
+

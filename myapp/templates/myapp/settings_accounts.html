@@ -1,0 +1,590 @@
+{% extends "myapp/layout.html" %}
+
+{% block content %}
+<q-breadcrumbs style="color: red; cursor: pointer">
+        <q-breadcrumbs-el label="File Maintenance /" onclick="window.location.href='{% url 'settings_panel' %}' " icon="settings" />
+        <q-breadcrumbs-el label="Accounts " icon="all_inbox" />
+        <q-breadcrumbs-el label=" /"  />
+    </q-breadcrumbs>
+    
+<div class="row animated fadeInDown" style="padding: 10px;">
+        <div style="width: 100% ">
+             <legend style="font-size: 25px; color:#34495E;font-weight: 900">Users Account</legend>
+        </div>
+        <div class="row animated fadeInDown">
+             <span style="color: #34495E">
+                    <small>A user's account allows a user to authenticate to a system and potentially to receive authorization to access resources provided by or connected to that system.Performance Evaluation management system provide user account of their employee contains username and password </small>
+             </span>
+        </div>
+</div>
+
+<div class="row animated fadeInDown" style="padding: 10px;">
+    <q-btn push color="red" label="My Account" @click="modal_account"></q-btn>
+</div>
+
+
+
+<div class="row animated fadeInDown" style="padding: 10px; width: 100%;">
+        
+       
+        <q-table
+        style="width: 100%;"  
+:filter="model_search"
+title="Employee Accounts"
+:data="data"
+:columns="columns"
+row-key="id"
+
+:loading="loading_department"
+selection="single"
+:selected.sync="account_selected"
+>
+<template  slot="top-selection" >
+<div>
+<q-tooltip >
+View | Deactivate | Activate Account
+<!-- current -->
+</q-tooltip>
+<q-btn  dense color="red" class="animated fadeInDown" label="modify" @click="modifyAccount"  icon="edit"  ></q-btn>
+</div>
+            </template>
+            <template v-slot:top-right>
+                       
+                        
+                      
+                        <q-input style="padding-left: 50px;" v-model="model_search" borderless dense debounce="300"   color="primary" placeholder="search">
+                              <template v-slot:append>
+                              <q-icon name="search" ></q-icon>
+                              </template>
+                        </q-input>
+            </template>
+
+</q-table>
+
+
+
+<q-dialog v-model="modal_personal" persistent>
+  <q-card style="width: 700px; max-width: 90%;">
+    <q-card-section class="row items-center" style="padding: 30px;">
+        
+      
+      <div class="row" style="width: 100%">
+        
+        
+            <div class="row animated fadeInDown" style="width: 100%; padding: 5px;">
+           
+                <legend style="font-size: 15px; color:#34495E;font-weight: 900">My Account</legend>
+
+              </div>
+              <div class="row animated fadeInDown" style="width: 100%; padding: 5px;">
+              <!-- <legend style="font-size: 15px; color:#5D6D7E;font-weight: 900">User Level :</legend>
+              <legend style="font-size: 15px; color:orange;font-weight: 900">{{ user }}</legend> -->
+               
+                 
+            </div>
+              <div class="row animated fadeInDown" style="width: 100%; padding: 5px;">
+                    <q-input  style="width: 100%; " value="{{user}}" readonly type="text" outlined label="Username" ></q-input>
+                   
+                   
+              </div>
+              <div class="row animated fadeInDown" style="width: 100%; padding: 5px;">
+                 
+                  <!-- <q-input style="width: 100%;"  type="password" outlined label="Password" ></q-input> -->
+                  <q-btn color="orange" flat icon="edit" label="change password"  @click="change_pass" ></q-btn>
+                 
+            </div>
+
+              <div v-if="new_pass" class="row animated fadeInDown" style="width: 100%;  padding: 5px; ">
+                  <legend style="font-size: 15px; color:#34495E;font-weight: 900">New Password</legend>
+                  <q-input style="width: 100%;" v-model="modelNewPassword" type="password" outlined label="Enter your new password" ></q-input>
+                  <q-input style="width: 100%;" v-model="modelConfirmPassword"  type="password" outlined label="Confirm password" ></q-input>
+                  <q-btn color="red"  label="save" @click="eventUpdataPassword"  ></q-btn>
+                  <q-btn color="gray" flat  label="done" @click="change_pass()" ></q-btn>
+                   
+            </div>
+
+            
+              
+          
+      
+        
+        
+        
+        
+      </div>
+      
+    </q-card-section>
+    <q-card-actions align="right">
+      <q-btn flat label="Close" color="grey" v-close-popup ></q-btn>
+      
+    </q-card-actions>
+  </q-card>
+</q-dialog>
+
+
+
+
+
+<q-dialog v-model="modalaccountopen" persistent>
+    <q-card style="width: 900px; max-width: 1020;">
+
+
+        <q-card-section>
+          <div class="text-h6">Employees Account</div>
+          <div class="text-subtitle2"></div>
+        </q-card-section>
+        <q-card-section>
+          <q-input style="padding: 5px;" v-model="show_fullname"  type="text" outlined label="Employee's Full Name" ></q-input>
+          <q-input style="padding: 5px;" v-model="show_joblevel"  type="text" outlined label="Job Level" ></q-input>
+          <q-input style="padding: 5px;" v-model = "show_designation"  type="text" outlined label="Designation" ></q-input>
+
+          <div>
+            <q-tooltip >
+              <span v-if="account == true ">
+                To Deactivate this Account Please Click.
+              </span>
+              <span v-else>
+                To Activate this Account Please Click.
+              </span>
+            </q-tooltip>
+            <q-toggle @input="update_account"  v-model="account" color="green" :label="account == true ? 'Account is Activated' : 'Account is Deactivated' " ></q-toggle>
+     
+          </div>
+        </q-card-section>
+<!--         
+current -->
+
+      <q-card-actions align="center">
+          <q-btn push  label="Close" color="grey" v-close-popup ></q-btn>
+
+      </q-card-actions>
+    </q-card>
+  </q-dialog> 
+
+
+    <!-- end row -->
+</div>
+
+
+
+
+
+
+{% endblock %}
+
+
+
+
+
+{% block script %}
+<script>
+  new Vue({
+            el: '#app',
+            delimiters: ['${','}'],
+            data: function () {
+              return {
+                drawerState: false,
+                pic_user : 'http://res.heraldm.com/phpwas/restmb_jhidxmake.php?idx=5&simg=201701181539234376570_20170118154018_02.jpg',
+                left : false,
+            
+                dash : {
+            backgroundColor : '#273746',
+           color : 'white'
+           },
+           
+           Deliberation : {
+           backgroundColor : '#273746',
+           color : 'white',
+       },
+
+       employee : {
+            backgroundColor : '#273746',
+           color : 'white'
+           },
+           performance_evaluation : {
+           backgroundColor : '#273746',
+           color : 'white',
+        
+       },
+       settings : {
+            backgroundColor : '#273746',
+           color : 'white'
+           },
+           Deliberation : {
+           backgroundColor : '#273746',
+           color : 'white',
+       },
+       report : {
+           backgroundColor : '#273746',
+           color : 'white',
+       },
+       concern : {
+           backgroundColor : '#273746',
+           color : 'white',
+       },
+
+       columns: [
+          
+         
+        { name: 'EmpCode', label: 'Employee Code', field: 'EmpCode', sortable: true },
+        { name: 'FirstName', label: 'First Name', field: 'FirstName' },
+        { name: 'MiddleName', label: 'Middle Name', field: 'MiddleName' },
+        { name: 'LastName', label: 'Last Name', field: 'LastName' },
+        { name: 'JobLevel', label: 'Job Level', field: 'JobLevel', sortable: true },
+        { name: 'Designation', label: 'Designation', field: 'Designation', sortable: true },
+        { name: 'email', label: 'Email', field: 'email',  align: 'left', sortable: true },
+        { name: 'ContactNumber', label: 'ContactNumber', field: 'ContactNumber', sortable: true },
+        {
+          name: 'username',
+          required: true,
+          label: 'Username',
+          align: 'left',
+          field: row => row.username,
+          format: val => `${val}`,
+          sortable: true
+        },
+        { name: 'password', align: 'center', label: 'Password', field: 'password', sortable: true },
+        { name: 'is_active', align: 'center', label: 'Active', field: 'is_active', sortable: true },
+
+      ],
+      data: [
+       
+    ],
+    account_selected : [],
+    model_search : '',
+    loading_department : false,
+  
+  global_hostname : '',
+    token : '',
+    list_employee : [],
+    profile : [],
+    accounts : [],
+    modal_personal : false,
+    new_pass : false,
+    modalaccountopen : false,
+    account : false,
+    show_fullname : '',
+    show_joblevel : '',
+    show_designation : '',
+    modelNewPassword : '',
+    modelConfirmPassword : ''
+
+    }
+  },methods: {
+
+    logout(){
+              axios.post(`${this.global_hostname}/logout/`,{
+                  
+                   headers: {
+                               'Content-Type': 'application/json',
+                                  'X-CSRFToken': this.token
+                   }
+                  
+              })
+              .then(res => {
+                  window.location.replace(`${this.global_hostname}/login/`)
+                
+              })
+              .catch(err => {
+                  
+              })
+        },
+        eventUpdataPassword(){
+          var newpass=this.modelNewPassword
+          var confirmPass = this.modelConfirmPassword
+          if(newpass.length < 8){
+            alert('Password Minimum of 8 Characters!')
+            return
+
+          }
+          else{
+                  if(newpass != confirmPass ){
+
+                              alert('Password Didn\'t Match!')
+                              this.modelNewPassword = ''
+                                this.modelConfirmPassword = ''
+                              return
+                               
+                  } else{
+                
+
+                    let data = new FormData()
+                    data.append('username','{{user}}')
+                    data.append('newpassword',newpass)
+                    axios.post(`${this.global_hostname}/ChangePassword/`,data,{
+                     
+                       headers: {
+                             'Content-Type': 'application/json',
+                              'X-CSRFToken': this.token
+                       }
+                      
+                    })
+                    .then(res => {
+                      console.log(res)
+                      if(res.data.statustxt == 'success'){
+                         this.$q.notify({ //put dollor sign(q)
+                        message: `Password Change Successfull!`,
+                        timeout: 2000, // in milliseconds; 0 means no timeout
+
+                        color: 'orange',
+                        textColor: 'white', // if default 'white' doesn't fit
+                      icon: 'check', //or  avatar: 'statics/boy-avatar.png',
+
+                      position: 'top', // 'top', 'left', 'bottom-left' etc.
+
+                      })
+                      setTimeout(() => {
+                        
+                        this.logout()
+
+
+
+                      }, 2000);
+                      }else{
+                        this.$q.notify({ //put dollor sign(q)
+                                message: `Network Error`,
+                                timeout: 3000, // in milliseconds; 0 means no timeout
+
+                                color: 'red',
+                                textColor: 'white', // if default 'white' doesn't fit
+                              icon: 'error', //or  avatar: 'statics/boy-avatar.png',
+
+                              position: 'top', // 'top', 'left', 'bottom-left' etc.
+
+                              })
+
+
+                      }
+                      
+
+
+                    })
+                    .catch(err => {
+                      console.error(err); 
+                    })
+
+
+
+                  }
+
+
+          }
+        },
+        modifyAccount(){
+          // current
+          this.modalaccountopen = true
+          var info =  this.account_selected[0]
+          this.account = info.is_active
+          this.show_fullname = `${info.FirstName} ${info.MiddleName} ${info.LastName}`
+          this.show_joblevel = info.JobLevel
+          this.show_designation = info.Designation
+    
+
+
+        },
+
+    change_pass(){
+      if(this.new_pass == false){
+        this.new_pass = true
+      }else{
+        this.new_pass = false
+      }
+    },
+      modal_account(){
+        this.modal_personal = true
+      },
+
+    // pushing info of an objects 
+    sort_list_of_employee(array,empcode){
+
+
+        var array = array
+        var empcode_info = empcode
+
+        var list_employee = this.list_employee
+
+        var data = list_employee.filter(function(element){return element.EmpCode == empcode_info})
+        array['id_employee'] = data[0].id //im just manipulating the id
+        array['FirstName'] = data[0].FirstName 
+        array['MiddleName'] = data[0].MiddleName
+        array['LastName'] = data[0].LastName
+        array['EmpCode'] = data[0].EmpCode
+        array['StatusCode'] = data[0].StatusCode
+        array['Department'] = data[0].Department
+        array['Designation'] = data[0].Designation
+        array['JobLevel'] = data[0].JobLevel
+        array['email'] = data[0].email
+        array['ContactNumber'] = data[0].ContactNumber
+        return array
+
+
+
+    },
+    // sort account matching between profile and accounttable
+    sort_account(account,empcode){
+
+      var account_data = this.accounts
+
+      var empcode = empcode
+      var acc = account
+
+      var data = account_data.filter(function(element){ return element.username == acc})
+      
+      return this.sort_list_of_employee(data[0],empcode)
+
+
+    },
+    sorter(){
+      // this code sort data from profile = account and empcode > accounts > list of employee
+        var profile = this.profile
+        
+        
+        var get_account = []
+        for (let index = 0; index < profile.length; index++) {
+          const element = profile[index];
+            get_account.push(this.sort_account(element.account,element.empcode))
+
+            if(index == profile.length - 1){
+              console.log('sorted acc')
+              console.log(get_account)
+              this.data = get_account
+            }
+          
+        }
+    },
+
+    // from other system
+    get_profile(){
+      axios.get(`${this.global_hostname}/api/GET_PROFILE/`,{
+       
+         headers: {
+               'Content-Type': 'application/json',
+                'X-CSRFToken': this.token
+         }
+      
+      })
+      .then(res => {
+       
+        this.profile = res.data
+        console.log('profile')
+        console.log(this.profile)
+        this.get_employee()
+      })
+      .catch(err => {
+        console.error(err); 
+      })
+    },
+    get_account(){
+      axios.get(`${this.global_hostname}/api/User/`,{
+        
+         headers: {
+               'Content-Type': 'application/json',
+                'X-CSRFToken': this.token
+         }
+        
+      })
+      .then(res => {
+        
+        console.log('accounts')
+        this.accounts = res.data
+        console.log(this.accounts)
+        this.sorter()
+
+      })
+      .catch(err => {
+        console.error(err); 
+      })
+    },
+    get_employee() {
+
+      axios.get(`${this.global_hostname}/api/Employee/`,{
+      
+         headers: {
+               'Content-Type': 'application/json',
+                'X-CSRFToken': this.token
+         }
+        
+      })
+      .then(res => {
+          this.list_employee = res.data
+          console.log(`employee list`)
+          console.log(this.list_employee)
+          this.get_account()
+      })
+      .catch(err => {
+        console.error(err); 
+      })
+
+      
+    },
+    update_account(){
+      
+      var account = this.account_selected[0]
+      var id = account.id
+      var payload = {
+        "username": account.username,
+        "password": account.password,
+        "is_staff": account.is_staff,
+        "is_superuser": account.is_superuser,
+        "is_active": this.account
+      }
+      axios.put(`${this.global_hostname}/api/User/${id}/`,payload,{
+        
+         headers: {
+               'Content-Type': 'application/json',
+                'X-CSRFToken': this.token
+         }
+        
+      })
+      .then(res => {
+        console.log(res)
+         this.$q.notify({ //put dollor sign(q)
+  message: `Successfully Updated!`,
+  timeout: 3000, // in milliseconds; 0 means no timeout
+
+  color: 'orange',
+  textColor: 'white', // if default 'white' doesn't fit
+icon: 'check', //or  avatar: 'statics/boy-avatar.png',
+
+position: 'top', // 'top', 'left', 'bottom-left' etc.
+
+
+})
+
+this.get_profile();
+      })
+      .catch(err => {
+        console.error(err); 
+      })
+
+    },
+  },
+  watch: {
+     
+  },
+  mounted () {
+
+
+    var hostname = window.location.hostname;
+    var port = window.location.port
+        if(port != ''){
+
+            hostname = hostname+':8000'
+               }
+                    else{
+                        hostname = hostname
+                    }
+        
+                    this.global_hostname = `${window.location.protocol}//${hostname}`;
+                 var csrftoken = Cookies.get('csrftoken');
+                this.token = csrftoken
+
+               
+                this.get_profile();
+    
+      },
+
+  })
+</script>
+
+{% endblock %}

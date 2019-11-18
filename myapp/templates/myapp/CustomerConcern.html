@@ -1,0 +1,818 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+      <link rel="icon" href="{% static 'img/logo.png' %}">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no,initial-scale=1,maximum-scale=1,minimum-scale=1,width=device-width">
+    
+    <style>
+    
+body{
+     background-image: url("https://2.bp.blogspot.com/-PU0qhtcgkUs/Vrhg_RoNlZI/AAAAAAAASVg/XmcVpkwpXC4/s1600/x5.JPG");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    
+    
+}
+    
+    </style>
+    
+    <head>
+
+            <!-- Do you need Material Icons? -->
+            <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons" rel="stylesheet" type="text/css">
+          
+            <!-- Do you need Fontawesome? -->
+            <link href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" rel="stylesheet">
+          
+            <!-- Do you need Ionicons? -->
+            <link href="https://cdn.jsdelivr.net/npm/ionicons@^4.0.0/dist/css/ionicons.min.css" rel="stylesheet">
+          
+            <!-- Do you need MDI? -->
+            <link href="https://cdn.jsdelivr.net/npm/@mdi/font@^3.0.0/css/materialdesignicons.min.css" rel="stylesheet">
+          
+            <!-- Do you need all animations? -->
+            <link href="https://cdn.jsdelivr.net/npm/animate.css@^3.5.2/animate.min.css" rel="stylesheet">
+          
+          
+            <!--
+              Finally, add Quasar's CSS:
+              Replace version below (1.0.3) with your desired version of Quasar.
+              Add ".rtl" for the RTL support (example: quasar.rtl.min.css).
+            -->
+            <link href="https://cdn.jsdelivr.net/npm/quasar@^1.0.3/dist/quasar.min.css" rel="stylesheet" type="text/css">
+          </head>
+          
+          <body>
+
+
+          
+            <!-- Do you want IE support? Replace "1.0.3" with your desired Quasar version -->
+            <script src="https://cdn.jsdelivr.net/npm/quasar@^1.0.3/dist/quasar.ie.polyfills.umd.min.js"></script>
+          
+            <!-- You need Vue too -->
+            <script src="https://cdn.jsdelivr.net/npm/vue@latest/dist/vue.min.js"></script>
+          
+            <!--
+              Add Quasar's JS:
+              Replace version below (1.0.3) with your desired version of Quasar.
+            -->
+            <script src="https://cdn.jsdelivr.net/npm/quasar@^1.0.3/dist/quasar.umd.min.js"></script>
+          
+            <!--
+              If you want to add a Quasar Language pack (other than "en-us").
+              Notice "pt-br" in "i18n.pt-br.umd.min.js" for Brazilian Portuguese language pack.
+              Replace version below (1.0.0-beta.0) with your desired version of Quasar.
+              Also check final <script> tag below to enable the language
+              Language pack list: https://github.com/quasarframework/quasar/tree/dev/ui/lang
+            -->
+            <script src="https://cdn.jsdelivr.net/npm/quasar@^1.0.3/dist/lang/pt-br.umd.min.js"></script>
+          
+            <!--
+              If you want to make Quasar components (not your own) use a specific set of icons (unless you're using Material Icons already).
+              Replace version below (1.0.3) with your desired version of Quasar.
+              Icon sets list: https://github.com/quasarframework/quasar/tree/dev/ui/icon-set
+            -->
+            <script src="https://cdn.jsdelivr.net/npm/quasar@^1.0.3/dist/icon-set/fontawesome-v5.umd.min.js"></script>
+          
+            <script src="{% static 'js/axios.js' %}"></script>
+              <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+
+
+            <div id="q-app">
+               
+               <div class="row">
+                   
+                    <div class="col-xs-12 col-sm-12 col-md-8 col-lg-6" style="margin: auto; margin-top: 30px;;">
+
+                    
+                          
+                            <!-- {{ ConcernFor }} -->
+                           <!-- {{ GlobalId }} -->
+                            
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style=" -webkit-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12);
+                                            -moz-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12);
+                                            box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12);
+                                            border-radius: 10px;
+                                            padding: 20px;;
+                                           
+                                            background-color: rgb(255, 255, 255);
+                                            opacity: .9;
+        
+                                            ">
+                                           
+                                           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                                <img  style="margin: auto; width: 50%;" src="https://upload.wikimedia.org/wikipedia/en/thumb/6/65/Victory_Liner_logo.svg/1280px-Victory_Liner_logo.svg.png" alt="">
+                                            </div>
+                                           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                                <legend style="font-size: 25px; color:red;font-weight: 900"> Customer FeedBack </legend>
+                                        </div>
+                                            
+        
+                                                            <legend style="font-size: 25px; color:#34495E;font-weight: 900"> Select Option </legend>
+                                                                    <q-option-group
+                                                                    
+                                                                        v-model="group"
+                                                                        type="radio"
+                                                                        color="red"
+                                                                        :options="options"
+                                                                        
+                                                                        style="font-size: 25px; color: #273746;font-weight: 900"
+                                                                    >
+                                            </q-option-group>
+                                           
+                                
+                            </div>
+        
+        
+        
+        
+        
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style=" -webkit-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12);
+                                            -moz-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12);
+                                            box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12);
+                                            border-radius: 10px;
+                                            padding: 20px;;
+                                            background-color: white;
+                                            opacity: .9;
+                                            margin-top: 20px;;;
+                                            ">
+        
+                                        <legend style="font-size: 25px; color:#34495E;font-weight: 900"> Customer  Information </legend>
+                                                <q-input ref="fullname" :rules="[ val => val && val.length > 0 || 'Please Enter Your Full Name']"   lazy-rules v-model="modelCustomername" style="padding: 5px;" outlined  type="text" label="Full Name" ></q-input>
+                                                <q-input v-model="modelContactNumber" ref="modelContactNumber"  lazy-rules :rules="[ val => val && val.length > 0 || 'Please Enter Your Contact Number']" outlined  style="padding: 5px;" type="text" label="Contact Number" ></q-input>
+                                                
+                                                <q-select outlined style="padding: 5px;;" v-model="modelwhatconcernabout" @input="checkabout" :options="options_aboutconcern" label="Please Select Your Concern"></q-select>
+                                                <div v-if="modelwhatconcernabout == 'Others'" class="animated flash">
+                                                    <q-input  outlined  v-model="modelotherconcern" style="padding: 10px; margin-left: 10px;;" type="text" label="Please specify" ></q-input>
+                                                </div>
+
+                                                <div v-if="modelwhatconcernabout.includes('Employees')" class="">
+                                                    <q-select
+                                                  label="Search Name of Employee"
+                                                    outlined
+                                                    v-model="modelemployee"
+                                                    use-input
+                                                    hide-selected
+                                                    fill-input
+                                                    input-debounce="0"
+                                                    :options="options_"
+                                                    @filter="filterFn"
+                                                    
+                                                    style="width: 100%; padding-bottom: 32px;padding: 5px ; padding-left: 10px;;"
+                                                  >
+                                                    <template v-slot:no-option>
+                                                      <q-item>
+                                                        <q-item-section class="text-grey">
+                                                          No results
+                                                        </q-item-section>
+                                                      </q-item>
+                                                    </template>
+                                                  </q-select>
+
+
+                                                </div>
+
+
+                                                <q-input outlined v-model="modelEmail" style="padding: 5px;" type="text" label="Email" ></q-input>
+                                                <q-input outlined ref="modelMessage"  lazy-rules :rules="[ val => val && val.length > 0 || 'Please Leave a Message']" v-model="modelMessage" style="padding: 5px;" type="textarea" label="Your Message" ></q-input>
+                                               
+                                                      
+                                                <legend style="font-size: 18px; color:#34495E;font-weight: 900">Attach Photo </legend>
+                                                <q-input outlined  id="file" ref="file" multiple @change="onFileChange(event)"  type="file" style="padding: 5px;" type="file"  ></q-input>
+                                                
+                                                <q-btn color="red" icon="send" @click="submitna" label="Submit"  ></q-btn>
+
+
+                                                
+                                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-top: 20px;">
+                                                  
+                                                    <legend style="font-size: 15px; color:#34495E; text-align: center;"> Copyright <i class="fa fa-copyright" aria-hidden="true"></i> 2019 Victory Liner Inc. <a href="">Terms of Use</a> |  <a href="https://www.victoryliner.com/GeneralInquiries.aspx">For Inquires</a> | <a href="https://www.victoryliner.com/">Official Website</a>
+                                                     </legend>
+                                                </div>
+                                                
+                                
+                            </div>
+                            
+                            
+                            
+                        </div>
+
+
+               </div>
+
+             
+
+
+               <q-dialog
+      v-model="dialog"
+      persistent
+      :maximized="maximizedToggle"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
+      <q-card class="bg-red text-white">
+        <q-bar>
+          <q-space />
+
+          <q-btn dense flat icon="minimize" @click="maximizedToggle = false" :disable="!maximizedToggle">
+            <q-tooltip v-if="maximizedToggle" content-class="bg-white text-primary">Minimize</q-tooltip>
+          </q-btn>
+          <q-btn dense flat icon="crop_square" @click="maximizedToggle = true" :disable="maximizedToggle">
+            <q-tooltip v-if="!maximizedToggle" content-class="bg-white text-primary">Maximize</q-tooltip>
+          </q-btn>
+          <q-btn dense flat icon="close" v-close-popup>
+           
+          </q-btn>
+        </q-bar>
+
+        <q-card-section>
+          <div class="text-h6">Successfully Sent!</div>
+        </q-card-section>
+
+        <q-card-section>
+          Thank you for cooperating us!. We are happy to serve you!.
+          <!-- <a @click="backtohome">Back to Home</a> -->
+        </q-card-section>
+      </q-card>
+    </q-dialog>
+               
+        
+        
+        
+            </div> 
+
+
+
+     
+
+
+
+            <script>
+             
+          
+              
+              new Vue({
+                el: '#q-app',
+                data: function () {
+                  return {
+
+                   
+       global_hostname : '',
+       token : '',
+                    options : [
+                        {
+                            'value' : 'Complaint',
+                            'label' : 'Complaint'
+                        },
+                        {
+                            'value' : 'Complement',
+                            'label' : 'Complement'
+                        },
+                        {
+                            'value' : 'Suggestion',
+                            'label' : 'Suggestion'
+                        }
+                    ]
+                    ,
+                    group : '',
+                    modelwhatconcernabout : '',
+                    options_aboutconcern : [
+                      
+                    ],
+                    file : [],
+                        stringOptions : [
+                            
+                 ],
+                 modelemployee : '',
+                 rawEmployee : [],
+                 empcode_final : '',
+                 modelCustomername : '',
+                 modelContactNumber : '',
+                 modelEmail : '',
+                 modelMessage : '',
+                 dialog: false,
+                maximizedToggle: true,
+                modelotherconcern : '',
+                options_: this.stringOptions,
+                bussesinformation : [],
+                dispatchsystem : [],
+                empcodenanereklamo : ''
+                // state
+                
+
+
+
+                  }
+                },
+
+                watch: {
+                 
+                },
+                methods: {
+                  checkabout (){
+                    var busses = this.bussesinformation
+                    if(this.modelwhatconcernabout.toLowerCase().includes('driver')){
+                      var buss_id = '{{GlobalId}}'
+                     var getbusinfo = busses.filter(
+                       (element)=>{
+                        return element.id = buss_id
+                       }
+                     )
+                      
+                     var bussnumber = getbusinfo[0].BusNo
+                     
+                     var modeljobtitle = this.modelwhatconcernabout.toLowerCase()
+                    
+                     
+                     var getdriverempcode = this.dispatchsystem.filter(
+                       (element)=>{
+                        return element.Busno == bussnumber  
+                       }
+                     )
+                     var fil = getdriverempcode.filter(
+                          function(element){
+                            return element.EmpPosition.toLowerCase().includes(modeljobtitle) && new Date(element.date_created).getDate()+'-'+new Date(element.date_created).getFullYear() ==new Date().getDate()+'-'+new Date().getFullYear()
+                        }
+                     )
+                     console.log(getdriverempcode)
+                     console.log(fil)
+                     //&& new Date(element.date_created).toString().substring(0,15) == new Date().toString().substring(0,15)
+                       if(fil[0].EmpCode){
+                          this.empcodenanereklamo = fil[0].EmpCode
+                       }
+                      
+                    }
+
+                    if(this.modelwhatconcernabout.toLowerCase().includes('conductor')){
+                              
+                      var buss_id = '{{GlobalId}}'
+                              var getbusinfo = busses.filter(
+                                (element)=>{
+                                  return element.id = buss_id
+                                }
+                              )
+
+                              var bussnumber = getbusinfo[0].BusNo
+                              
+                              
+                                var modeljobtitle = this.modelwhatconcernabout.toLowerCase()
+                              
+                              var getdriverempcode = this.dispatchsystem.filter(
+                                (element)=>{
+                                  return element.Busno == bussnumber  
+                                }
+                              )
+                              var fil = getdriverempcode.filter(
+                                    function(element){
+                                      return element.EmpPosition.toLowerCase().includes(modeljobtitle) && new Date(element.date_created).getDate()+'-'+new Date(element.date_created).getFullYear() == new Date().getDate()+'-'+new Date().getFullYear()
+                                  }
+                              )
+                              console.log(getdriverempcode)
+                              console.log(fil)
+                              //&& new Date(element.date_created).toString().substring(0,15) == new Date().toString().substring(0,15)
+                                if(fil[0].EmpCode){
+                                    this.empcodenanereklamo = fil[0].EmpCode
+                                }
+
+
+
+
+                    }
+                
+                  },
+                  backtohome(){
+                    // var id = '{{GlobalId}}'
+                    // window.location.href=`${this.global_hostname}/CustomerConcern/Bus/${id}/`
+                  },
+                  
+                  submitna(){
+
+
+
+              //       this.refs.fullname.validate()
+              //       this.refs.modelContactNumber.validate()
+              //       this.refs.modelMessage.validate()
+              //     if (this.refs.fullname.hasError || this.refs.modelContactNumber.hasError || this.refs.modelMessage.hasError ) {
+              //  this.formHasError = true
+              //   }
+               
+
+                     
+                      
+                  
+             
+                if(this.group== ''){
+                        alert('Please Select Option')
+                        return
+                      }
+                    var cc = '{{ ConcernFor }}'
+                      let data = new FormData()
+
+                      var info = this.rawEmployee.filter(
+                      (element)=>{
+                          return element.fullname.toLowerCase() == this.modelemployee.toLowerCase()
+                      }
+                    )
+                    var empcode = ''
+                    if(info.length > 0){
+                        empcode = info[0].empcode
+                    }
+               
+                   
+
+
+                    if(this.modelwhatconcernabout.toLowerCase().includes('employees')){
+                        
+                          if( empcode == ''){
+
+                            alert('Please Enter Name of Employee')
+                            this.$q.loading.Hide()
+                            return
+                          }
+                        
+                      }
+                      if(this.modelwhatconcernabout.toLowerCase().includes('driver') || this.modelwhatconcernabout.toLowerCase().includes('conductor')){
+                        
+                        empcode = this.empcodenanereklamo
+                        // abi
+                      
+                    }
+
+                      if(this.modelCustomername == ''){
+                        
+                      
+
+                          alert('Please Enter Full Name')
+                          this.$q.loading.Hide()
+                          return
+                      
+                        
+                      }
+
+                      if(this.modelContactNumber == ''){
+                        
+                      
+
+                        alert('Please Enter Contact Number')
+                        this.$q.loading.Hide()
+                        return
+                    
+                      
+                    }
+                   
+
+                    if(this.modelContactNumber == ''){
+                        
+                      
+
+                        alert(`Please Provide Contact Number`)
+                        this.$q.loading.Hide()
+                        return
+                    
+                      
+                    }
+                    if(this.modelwhatconcernabout == ''){
+                        
+                      
+
+                        alert(`Please Select.. What is your Concern All About.`)
+                        this.$q.loading.Hide()
+                        return
+                    
+                      
+                    }
+
+                    if(this.modelMessage == ''){
+                        
+                      
+
+                        alert(`Please leave a message..`)
+                        this.$q.loading.Hide()
+                        return
+                    
+                      
+                    }
+                    // if(this.file == ''){
+                    //   alert(`Please Attach Photo.. as a Proof`)
+                    //   this.$q.loading.Hide()
+                    //   return
+
+                    // }
+ 
+                 
+                   
+                    this.$q.loading.show({
+                  message: '<span class="red">Please Wait..</span>'
+                })
+                    
+                  var id = '{{GlobalId}}'
+                   
+                    data.append('ConcernType',this.group)
+                    data.append('ConcernCategory',cc)
+                    data.append('EmpCode',empcode)
+                    data.append('Name',this.modelCustomername) // name of customer
+                    data.append('MobileNumber',this.modelContactNumber)
+                    data.append('Email',this.modelEmail)
+                    data.append('Topic',this.modelwhatconcernabout)
+                    data.append('YourConcern',this.modelMessage)
+                    data.append('IsToCallCenter',true)
+                    data.append('ConcernCategoryIDPlace', id)
+                    data.append('OtherConcern',this.modelotherconcern)
+                    // data.append('Picture', this.file,this.file.name);
+                
+                      console.log(data)
+
+                      axios.post(`${this.global_hostname}/api/POST_CustomerConcern/`,data,{
+                      
+                         headers: {
+                               'Content-Type': 'application/json',
+                                'X-CSRFToken': this.token
+                         }
+                        
+                      })
+                      .then(res => {
+                      if(this.group.toLowerCase().includes('complement') == false){
+
+                        this.email_response(this.modelCustomername,this.modelEmail,this.group.toLowerCase())
+
+                      }
+                       
+                        let formData = new FormData()
+                        for( var i = 0; i < this.file.length; i++ ){
+                                      var file = this.file[i];
+                                      console.log(file)
+                                      this.send(file,file.name,res.data.id)
+                                      
+                                  // //send
+                                  //     formData.append('Proof', file,file.name);
+                                  //     formData.append('CustomerConcernID',`${this.global_hostname}/api/GET_CustomerConcern/${res.data.id}/`)
+
+                                  //         axios.post( `${this.global_hostname}/api/UploadProof/`,
+                                  //           formData,
+                                  //           {
+                                  //             headers: {
+                                  //                 'Content-Type': 'multipart/form-data',
+                                  //                 'Content-Type': 'application/json',
+                                  //                   'X-CSRFToken': this.token
+                                  //             }
+                                  //           }
+                               
+                              
+                                
+                                              
+                                  //           ).then(function(){
+                                  //             file = null
+                                  //           })
+                                  //           .catch(function(){
+                                  //             console.log('FAILURE!!');
+                                  //           });
+
+                                    }
+           
+                        
+                        this.$q.loading.hide()
+                        this.dialog = true
+                          
+                          
+                      })
+                      .catch(err => { 
+                        console.error(err); 
+                      })
+
+                  },
+                  filterFn (val, update, abort) {
+                    // abi
+                      
+                                          if (val === '') {
+                              update(() => {
+                                this.options_ = this.stringOptions
+                              })
+                              return
+                            }
+
+                            update(() => {
+                              const needle = val.toLowerCase()
+                              this.options_ = this.stringOptions.filter(v => v.toLowerCase().indexOf(needle) > -1)
+                            })
+                        
+
+                    },
+                    send(file,filename,id){
+                      let formData = new FormData()
+                           formData.append('Proof', file,filename);
+                                      formData.append('CustomerConcernID',`${this.global_hostname}/api/GET_CustomerConcern/${id}/`)
+
+                                          axios.post( `${this.global_hostname}/api/UploadProof/`,
+                                            formData,
+                                            {
+                                              headers: {
+                                                  'Content-Type': 'multipart/form-data',
+                                                  'Content-Type': 'application/json',
+                                                    'X-CSRFToken': this.token
+                                              }
+                                            }
+                               
+                                            
+                                
+                                              
+                                            ).then(function(){
+                                              console.log('oks')
+
+                                              
+                                            })
+                                            .catch(function(){
+                                              console.log('FAILURE!!');
+                                     });
+
+
+
+                    },
+
+                  onFileChange(event) {
+      
+      this.file = event.target.files;
+      
+      console.log(this.file.length)
+     
+                                      
+ 
+    },
+    email_response(name,email,issue){
+
+      let formData = new FormData()
+     
+      
+    
+      var firstWord = name.replace(/ .*/, '');
+      
+      formData.append('name',firstWord)
+      formData.append('email',email)
+      formData.append('issue',issue)
+      axios.post(`${this.global_hostname}/sendemail/`,formData,{
+        
+         headers: {
+               'Content-Type': 'application/json',
+                'X-CSRFToken': this.token
+         }
+      
+      })
+      .then(res => {
+        alert(res.statustxt)
+      })
+      .catch(err => {
+        console.error(err); 
+      })
+
+    },
+    getEmployee(){
+        axios.get(`${this.global_hostname}/api/Employee/`,{
+         
+           headers: {
+                 'Content-Type': 'application/json',
+                  'X-CSRFToken': this.token
+           }
+          
+        })
+        .then(res => {
+          
+          var tempemployee = []
+          var data = res.data
+          var temp = []
+          for (let index = 0; index < data.length; index++) {
+            const element = data[index];
+            var fullname = `${element.FirstName} ${element.MiddleName } ${element.LastName}`
+            temp.push(fullname)
+                  var obj = {
+                    'fullname' : fullname,
+                    'empcode' : element.EmpCode
+                  }
+                  
+            tempemployee.push(obj)
+            
+            if(index == data.length - 1){
+              // abi
+              this.stringOptions = temp
+              this.rawEmployee = tempemployee
+              console.log(this.rawEmployee)
+            }
+            
+          }
+
+
+          
+        })
+        .catch(err => {
+          console.error(err); 
+        })
+    },
+    getCategoryOption(){
+      axios.get(`${this.global_hostname}/api/CategoryConcern/`,{
+     
+         headers: {
+               'Content-Type': 'application/json',
+                'X-CSRFToken': this.token
+         }
+        
+      })
+      .then(res => {
+        console.log(res)
+
+        var data =res.data
+        var temp = []
+        for (let index = 0; index < data.length; index++) {
+          const element = data[index];
+
+            temp.push(element.CategoryName)
+            if(index == data.length - 1){
+                temp.push('Others')
+
+                this.options_aboutconcern = temp
+            }
+          
+            // 'Travel Experience','Facilities','Company Process','Employees','Others'
+        }
+      })
+      .catch(err => {
+        console.error(err); 
+      })
+    },
+
+    get_facitlities(){
+      axios.get(`${this.global_hostname}/api/GET_Busses/`,{
+       
+         headers: {
+               'Content-Type': 'application/json',
+                'X-CSRFToken': this.token
+         }
+        
+      })
+      .then(res => {
+        console.log(res)
+        this.bussesinformation = res.data
+      
+
+      })
+      .catch(err => {
+        console.error(err); 
+      })
+
+
+     
+
+    },
+  getDispatch(){
+    axios.get(`${this.global_hostname}/api/DISPATCH/`,{
+     
+       headers: {
+             'Content-Type': 'application/json',
+              'X-CSRFToken': this.token
+       }
+      
+    })
+    .then(res => {
+      console.log(res)
+      this.dispatchsystem = res.data
+    })
+    .catch(err => {
+      console.error(err); 
+    })
+  },
+
+
+                },
+                mounted () {
+
+                  var hostname = window.location.hostname;
+                  var port = window.location.port
+        if(port != ''){
+
+            hostname = hostname+':8000'
+        }
+        else{
+            hostname = hostname
+        }
+
+        this.global_hostname = `${window.location.protocol}//${hostname}`;
+        var csrftoken = Cookies.get('csrftoken');
+        this.token = csrftoken
+        
+
+
+                this.get_facitlities()
+                this.getDispatch()
+
+                  this.getEmployee()
+                  this.getCategoryOption()
+                    
+                },
+                // ...etc
+              })
+            </script>
+          </body>
+</html>

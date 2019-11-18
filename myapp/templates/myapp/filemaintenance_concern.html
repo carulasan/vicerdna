@@ -1,0 +1,389 @@
+{% extends "myapp/layout.html" %}
+
+{% block content %}
+
+<q-breadcrumbs style="color: red; cursor: pointer">
+        <q-breadcrumbs-el label="File Maintenance /" onclick="window.location.href='{% url 'settings_panel' %}' " icon="settings" />
+        <q-breadcrumbs-el label="Departments " icon="all_inbox" />
+        <q-breadcrumbs-el label=" /"  />
+    </q-breadcrumbs>
+    
+    <div class="row animated fadeInDown" style="padding: 10px;">
+        <div style="width: 100% ">
+             <legend style="font-size: 25px; color:#34495E;font-weight: 900"> List of Category Concern </legend>
+        </div>
+        <div class="row animated fadeInDown">
+             <span style="color: #34495E">
+                    <small>This concern will appear to  CUSTOMER CONCERN Page.</small>
+             </span>
+        </div>
+    </div>
+    
+   
+    
+<div class="row" style="width:100%;margin-top: 20px;  ">
+  <!-- @click="new_bus" -->
+  <q-btn color="red-8" icon="add" label="add Category Concern" @click="newConcern"   ></q-btn>
+  <!-- @click="new_department_event" -->
+</div>
+      
+
+<div class="row animated fadeInDown" style=" width: 100%;  margin-top : 20px;">
+            
+            
+  <!-- v-for="item in CustomerConcern" -->
+
+  <div class="col-xs-12 col-sm-4 col-md-4 col-lg-3" style="" v-for="item in CustomerConcern">
+
+    <q-list style="padding: 5px;"  >
+
+        <q-item clickable style="width: 100% ; border-radius: 5px; -webkit-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12);
+        -moz-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12);
+        box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12) ;background-color:  #273746; ">
+            <q-item-section>
+              <q-item-label style="font-size: 18px; color:white;font-weight: 900">${ item.CategoryName }</q-item-label>
+              <q-item-label caption lines="2">
+                                        <q-btn icon="delete" flat color="red" @click="delete_concern(item.id)" ></q-btn>
+                                         <q-btn icon="edit" flat color="white" @click="edit_concern(item.id,item)"></q-btn>
+              </q-item-label>
+            </q-item-section>
+           
+    
+            <q-item-section side top>
+              <q-item-label>
+                <!-- ${ item.descritption } -->
+              </q-item-label>
+
+              <q-icon name="offline_pin" color="red" />
+            </q-item-section>
+          </q-item>
+    </q-list>
+
+
+  </div>
+    
+    
+        
+    </div>
+
+
+    <q-dialog v-model="new_concern" persistent>
+      <q-card style="width: 900px;">
+        <q-card-section class="row items-center" style="padding: 30px;">
+            <div class="row animated fadeInDown" style="width: 100%; padding: 5px;">
+               
+              <legend style="font-size: 25px; color:#34495E;font-weight: 900">New Department</legend>
+            </div>
+            <div class="row animated fadeInDown" style="width: 100%; padding: 5px;">
+                  <q-input style="width: 100%;" v-model="model_category_concern"  type="text" outlined label="Enter Category Concern" ></q-input>
+            </div>
+            
+            
+        </q-card-section>
+        <q-card-actions align="right">
+          <q-btn flat label="Cancel" color="grey" v-close-popup ></q-btn>
+          <q-btn flat label="save" color="red-8" v-close-popup  @click="save" ></q-btn>
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+
+
+
+    <q-dialog v-model="modaleditconcern" persistent>
+      <q-card style="width: 900px;">
+        <q-card-section class="row items-center" style="padding: 30px;">
+            <div class="row animated fadeInDown" style="width: 100%; padding: 5px;">
+               
+              <legend style="font-size: 25px; color:#34495E;font-weight: 900">Edit Department</legend>
+            </div>
+            <div class="row animated fadeInDown" style="width: 100%; padding: 5px;">
+                  <q-input style="width: 100%;" v-model="model_edit_concern"  type="text" outlined label="Enter Category Concern" ></q-input>
+            </div>
+            <div class="row animated fadeInDown" style="width: 100%;  padding: 5px; ">
+                
+          </div>
+            
+        </q-card-section>
+        <q-card-actions align="right">
+          <q-btn flat label="Cancel" color="grey" v-close-popup ></q-btn>
+          <q-btn flat label="save" color="red-8" v-close-popup  @click="updated_concern" ></q-btn>
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+
+
+
+    
+    {% endblock %}
+
+    {% block script %}
+    <script>
+    
+    // setup
+new Vue({
+            el: '#app',
+            delimiters: ['${','}'],
+            data: function () {
+              return {
+                drawerState: false,
+                pic_user : 'http://res.heraldm.com/phpwas/restmb_jhidxmake.php?idx=5&simg=201701181539234376570_20170118154018_02.jpg',
+                left : false,
+            
+                dash : {
+            backgroundColor : '#273746',
+           color : 'white'
+           },
+           
+           Deliberation : {
+           backgroundColor : '#273746',
+           color : 'white',
+       },
+
+       employee : {
+            backgroundColor : '#273746',
+           color : 'white'
+           },
+           performance_evaluation : {
+           backgroundColor : '#273746',
+           color : 'white',
+        
+       },
+       settings : {
+            backgroundColor : '#273746',
+           color : 'white'
+           },
+           Deliberation : {
+           backgroundColor : '#273746',
+           color : 'white',
+       },
+       report : {
+           backgroundColor : '#273746',
+           color : 'white',
+       },
+       concern : {
+           backgroundColor : '#273746',
+           color : 'white',
+       },
+
+       global_hostname : '',
+       token : '',
+       CustomerConcern : [],
+       new_concern : false,
+       model_category_concern : '',
+       modaleditconcern : false,
+       model_edit_concern : '',
+       globalid : 0,
+
+
+
+
+       
+        
+               
+              }
+            },beforeMount () {
+              if(innerWidth < 1017){
+                    this.drawerState = false
+                }
+            },
+          methods: {
+            logout(){
+              axios.post(`${this.global_hostname}/logout/`,{
+                  
+                   headers: {
+                               'Content-Type': 'application/json',
+                                  'X-CSRFToken': this.token
+                   }
+                  
+              })
+              .then(res => {
+                  window.location.replace(`${this.global_hostname}/login/`)
+                
+              })
+              .catch(err => {
+                  
+              })
+
+
+              
+        },
+        updated_concern(){
+          var payload = {
+            "CategoryName": this.model_edit_concern,
+          }
+
+            axios.put(`${this.global_hostname}/api/CategoryConcern/${this.globalid}/`,payload,{
+            
+               headers: {
+                     'Content-Type': 'application/json',
+                      'X-CSRFToken': this.token
+               }
+              
+            })
+            .then(res => {
+
+              this.$q.notify({ //put dollor sign(q)
+                  message: `Successfully Updated! `,
+                  timeout: 3000, // in milliseconds; 0 means no timeout
+               
+                  color: 'green',
+                  textColor: 'white', // if default 'white' doesn't fit
+                icon: 'check', //or  avatar: 'statics/boy-avatar.png',
+                  
+                position: 'top', // 'top', 'left', 'bottom-left' etc.
+                
+              })
+              this.getConcern()
+
+
+            })
+            .catch(err => {
+              console.error(err); 
+            })
+        },
+        save(){
+
+          if(this.model_category_concern == ''){
+            alert('Please Enter New Category Concern!')
+            return
+          }
+          var  payload = {
+            "CategoryName": this.model_category_concern,
+          }
+          axios.post(`${this.global_hostname}/api/CategoryConcern/`,payload,{
+             headers: {
+                   'Content-Type': 'application/json',
+                    'X-CSRFToken': this.token
+             }
+            
+          })
+          .then(res => {
+            console.log(res)
+
+            this.$q.notify({ //put dollor sign(q)
+                  message: `Successfully Saved!`,
+                  timeout: 3000, // in milliseconds; 0 means no timeout
+               
+                  color: 'green',
+                  textColor: 'white', // if default 'white' doesn't fit
+                icon: 'check', //or  avatar: 'statics/boy-avatar.png',
+                  
+                position: 'top', // 'top', 'left', 'bottom-left' etc.
+                
+              })
+              this.getConcern()
+            
+            
+          })
+          .catch(err => {
+            console.error(err); 
+          })
+        },
+        newConcern(){
+          this.new_concern= true
+        },
+        delete_concern(id){
+
+
+          this.$q.dialog({
+                title: 'Confirm',
+                message: 'Would you like to this file?',
+                cancel: true,
+                persistent: true
+              }).onOk(() => {
+                // console.log('>>>> OK')
+
+                axios.delete(`${this.global_hostname}/api/CategoryConcern/${id}/`,{
+               
+                   headers: {
+                         'Content-Type': 'application/json',
+                          'X-CSRFToken': this.token
+                   }
+                  
+                })
+                .then(res => {
+                  console.log(res)
+
+                  this.$q.notify({ //put dollor sign(q)
+                  message: `Successfully Deleted!`,
+                  timeout: 3000, // in milliseconds; 0 means no timeout
+               
+                  color: 'green',
+                  textColor: 'white', // if default 'white' doesn't fit
+                icon: 'check', //or  avatar: 'statics/boy-avatar.png',
+                  
+                position: 'top', // 'top', 'left', 'bottom-left' etc.
+                
+              })
+              this.getConcern()
+
+
+                })
+                .catch(err => {
+                  console.error(err); 
+                })
+              }).onOk(() => {
+                // console.log('>>>> second OK catcher')
+              }).onCancel(() => {
+                // console.log('>>>> Cancel')
+                return 
+              }).onDismiss(() => {
+                // console.log('I am triggered on both OK and Cancel')
+        })
+
+
+
+        },
+        edit_concern(id,element){
+          this.model_edit_concern = element.CategoryName
+          this.modaleditconcern = true
+          this.globalid= id
+
+
+        },
+        getConcern(){
+          axios.get(`${this.global_hostname}/api/CategoryConcern/`,{
+       
+             headers: {
+                   'Content-Type': 'application/json',
+                    'X-CSRFToken': this.token
+             }
+          
+          })
+          .then(res => {
+            console.log(res)
+            this.CustomerConcern = res.data
+          })
+          .catch(err => {
+            console.error(err); 
+          })
+        },
+
+          },
+          mounted () {
+            
+            var hostname = window.location.hostname;
+            var port = window.location.port
+        if(port != ''){
+
+            hostname = hostname+':8000'
+        }
+        else{
+            hostname = hostname
+        }
+
+        this.global_hostname = `${window.location.protocol}//${hostname}`;
+        var csrftoken = Cookies.get('csrftoken');
+        this.token = csrftoken
+        this.getConcern()
+        
+        
+        
+          },
+        })
+
+
+
+   
+    </script>
+     {% endblock %}

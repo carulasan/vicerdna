@@ -1,0 +1,431 @@
+{% extends "myapp/layout.html" %}
+
+{% block content %}
+    
+  <q-breadcrumbs style="color: red; cursor: pointer" >
+        <q-breadcrumbs-el label="File Maintenance  /"  icon="settings" />
+        <q-breadcrumbs-el label="" icon="" />
+       
+      </q-breadcrumbs>
+
+      <div class="row animated fadeInDown" style="padding: 10px; width: 100%;">
+
+        
+          <div class="row animated fadeInDown" style="width: 100%;">
+               <!-- row -->
+                 
+              {% if UserLevel.FileMaintenance_General == True %}
+                  <div class="col-xs-12 col-sm-4 col-md-4 col-lg-3" style="padding: 10px;">
+
+                      <q-list   >
+                          <q-item clickable  onclick="location.href='{% url 'settings_general_panel' %}'"  style="width: 100% ; border-radius: 5px;  -webkit-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12);
+                          -moz-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12);
+                          box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12); background-color: #273746; color:white">
+                              <q-item-section>
+                                <q-item-label>General</q-item-label>
+                                <q-item-label caption lines="2" style="color:white">Evaluation period of probationary and regular employees</q-item-label>
+                              </q-item-section>
+                      
+                              <q-item-section side top>
+                                <q-item-label caption></q-item-label>
+                                <q-icon name="all_inbox"  color="green" />
+                              </q-item-section>
+                            </q-item>
+                      </q-list>
+
+                    </div>
+              {% endif %}
+              {% if UserLevel.FileMaintenance_PlaceofAssignment == True %}
+                  <div class="col-xs-12 col-sm-4 col-md-4 col-lg-3" style="padding: 10px;">
+
+                      <q-list  >
+
+                          <q-item clickable onclick="location.replace('{% url 'Busses' %}')" style="width: 100% ; border-radius: 5px; -webkit-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12);
+                          -moz-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12);
+                          box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12); background-color: #273746; color:white">
+                              <q-item-section>
+                                <q-item-label>Busses</q-item-label>
+                                <q-item-label caption lines="2" style="color:white">Bus Number , Place of Assignment</q-item-label>
+                              </q-item-section>
+                      
+                              <q-item-section side top>
+                                <q-item-label caption></q-item-label>
+                                <q-icon name="airport_shuttle" color="orange" />
+                              </q-item-section>
+                            </q-item>
+                          </q-list>
+                          
+                    </div>
+              {% endif %}  
+
+              <div class="col-xs-12 col-sm-4 col-md-4 col-lg-3" style="padding: 10px;">
+
+                  <q-list  >
+
+                      <q-item clickable onclick="location.replace('{% url 'employee_panel' %}')" style="width: 100% ; border-radius: 5px; -webkit-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12);
+                      -moz-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12);
+                      box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12); background-color: #273746; color:white">
+                          <q-item-section>
+                            <q-item-label>201 File</q-item-label>
+                            <q-item-label caption lines="2" style="color:white">list of Employees, Attachments</q-item-label>
+                          </q-item-section>
+                  
+                          <q-item-section side top>
+                            <q-item-label caption></q-item-label>
+                            <q-icon name="person" color="red" />
+                          </q-item-section>
+                        </q-item>
+                      </q-list>
+
+                </div>
+           
+
+              {% if UserLevel.FileMaintenance_EvaluationSheet == True %}
+                <div class="col-xs-12 col-sm-4 col-md- col-lg-3" style="padding: 10px;">
+
+                    <q-list  >
+                        <q-item clickable onclick="window.location.href='{% url 'settings_evaluation_sheet_panel' %}' " style="width: 100% ; border-radius: 5px; -webkit-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12);
+                        -moz-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12);
+                        box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12); background-color: #273746; color:white">
+                            <q-item-section>
+                              <q-item-label>Type of Evaluation Sheet</q-item-label>
+                              <q-item-label caption lines="2" style="color:white">Criteria and Discriptions. This module can be maintained by admin.</q-item-label>
+                            </q-item-section>
+                    
+                            <q-item-section side top>
+                              <q-item-label caption></q-item-label>
+                              <q-icon name="assignment"  color="green" />
+                            </q-item-section>
+                          </q-item>
+                    </q-list>
+
+                  </div>
+              {% endif %}
+              {% if UserLevel.FileMaintenance_Departments == True %}
+                <div class="col-xs-12 col-sm-4 col-md-4 col-lg-3" style="padding: 10px;">
+
+                    <q-list  >
+
+                        <q-item clickable onclick="window.location.href='{% url 'settings_department_panel' %}'" style="width: 100% ; border-radius: 5px; -webkit-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12);
+                        -moz-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12);
+                        box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12); background-color: #273746; color:white">
+                            <q-item-section>
+                              <q-item-label>Departments</q-item-label>
+                              <q-item-label caption lines="2" style="color:white">Job description of departments,positions</q-item-label>
+                            </q-item-section>
+                    
+                            <q-item-section side top>
+                              <q-item-label caption></q-item-label>
+                              <q-icon name="business" color="orange" />
+                            </q-item-section>
+                          </q-item>
+                    </q-list>
+
+                  </div>
+              {% endif %}
+
+              <div class="col-xs-12 col-sm-4 col-md-4 col-lg-3" style="padding: 10px;">
+
+                  <q-list  >
+
+                      <q-item clickable onclick="location.replace('{% url 'ConcernTopic' %}')" style="width: 100% ; border-radius: 5px; -webkit-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12);
+                      -moz-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12);
+                      box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12); background-color: #273746; color:white">
+                          <q-item-section>
+                            <q-item-label>Customer Concern</q-item-label>
+                            <q-item-label caption lines="2" style="color:white">Travel Experience </q-item-label>
+                          </q-item-section>
+                  
+                          <q-item-section side top>
+                            <q-item-label caption></q-item-label>
+                            <q-icon name="offline_pin" color="red" />
+                          </q-item-section>
+                        </q-item>
+                      </q-list>
+
+                </div>
+
+
+              {% if UserLevel.FileMaintenance_EvaluationGuide == True %}
+                  <div class="col-xs-12 col-sm-4 col-md-4 col-lg-3" style="padding: 10px;">
+
+                      <q-list  >
+
+                          <q-item clickable onclick="window.location.href='{% url 'settings_evaluation_guide_panel'%}'" style="width: 100% ; border-radius: 5px; -webkit-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12);
+                          -moz-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12);
+                          box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12); background-color: #273746; color:white">
+                              <q-item-section>
+                                <q-item-label>Evaluation Guide</q-item-label>
+                                <q-item-label caption lines="2" style="color:white">Basis for evaluation by department,criteria</q-item-label>
+                              </q-item-section>
+                      
+                              <q-item-section side top>
+                                <q-item-label caption></q-item-label>
+                                <q-icon name="playlist_add_check"  color="green"/>
+                              </q-item-section>
+                            </q-item>
+                      </q-list>
+
+                    </div>
+
+                {% endif %}    
+
+              
+
+               
+
+                
+
+                    
+
+                      {% if UserLevel.FileMaintenance_JobLevelorAccessLevel == True %}
+                              
+                        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-3" style="padding: 10px;">
+
+                            <q-list  >
+    
+                                <q-item clickable onclick="window.location.href='{% url 'settings_joblevel_panel'%}'" style="width: 100% ; border-radius: 5px; -webkit-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12);
+                                -moz-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12);
+                                box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12); background-color: #273746; color:white">
+                                    <q-item-section>
+                                      <q-item-label>Job Level | Access Level</q-item-label>
+                                      <q-item-label caption lines="2" style="color:white">Managerial ,Rank and File , Supervisor</q-item-label>
+                                    </q-item-section>
+                            
+                                    <q-item-section side top>
+                                      <q-item-label caption></q-item-label>
+                                      <q-icon name="supervisor_account" color="orange" />
+                                    </q-item-section>
+                                  </q-item>
+                                </q-list>
+    
+                          </div>
+    
+                        {% endif %}  
+
+                        <!-- busses at job levels -->
+
+
+
+
+                     
+               
+               
+                   
+                        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-3" style="padding: 10px;">
+
+                            <q-list  >
+      
+                                <q-item clickable  onclick="window.location.href='{% url 'settings_violation_panel' %}' " style="width: 100% ; border-radius: 5px; -webkit-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12);
+                                -moz-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12);
+                                box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12); background-color: #273746; color:white">
+                                    <q-item-section>
+                                      <q-item-label>Violation</q-item-label>
+                                      <q-item-label caption lines="2" style="color:white">List of Violation,Minor or Grave </q-item-label>
+                                    </q-item-section>
+                            
+                                    <q-item-section side top>
+                                      <q-item-label caption></q-item-label>
+                                      <q-icon name="business" color="red" />
+                                    </q-item-section>
+                                  </q-item>
+                            </q-list>
+      
+      
+      
+      
+      
+      
+                          </div>
+      
+               
+             
+                 
+
+                  {% if UserLevel.ReportsModule == True %}
+                  <div class="col-xs-12 col-sm-4 col-md-4 col-lg-3" style="padding: 10px;">
+
+                      <q-list  >
+
+                          <q-item clickable onclick="window.location.href='{% url 'JobDescription' %}'" style="width: 100% ; border-radius: 5px; -webkit-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12);
+                          -moz-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12);
+                          box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12); background-color: #273746; color:white">
+                              <q-item-section>
+                                <q-item-label>Job Description</q-item-label>
+                                <q-item-label caption lines="2" style="color:white">Job Titles</q-item-label>
+                              </q-item-section>
+                      
+                              <q-item-section side top>
+                                <q-item-label caption></q-item-label>
+                                <q-icon name="playlist_add_check" color="green" />
+                              </q-item-section>
+                            </q-item>
+                          </q-list>
+
+                    </div>
+                {% endif %} 
+
+
+                  
+                <div class="col-xs-12 col-sm-4 col-md-4 col-lg-3"  style="padding: 10px;">
+
+                    <q-list  >
+                        <q-item clickable onclick="location.href='{% url 'settings_accounts_panel' %}' " style="width: 100% ; border-radius: 5px; -webkit-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12);
+                        -moz-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12);
+                        box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12); background-color: #273746; color:white">
+                            <q-item-section>
+                              <q-item-label>Accounts</q-item-label>
+                              <q-item-label caption lines="2" style="color:white">Your accounts,username,password.Admin can see deactivate accounts of an employee in end of contract.</q-item-label>
+                            </q-item-section>
+                    
+                            <q-item-section side top>
+                              <q-item-label caption>5-mins ago</q-item-label>
+                              <q-icon name="account_circle" color="orange" />
+                            </q-item-section>
+                          </q-item>
+                    </q-list>
+                  </div>
+
+                     
+
+
+
+                    
+
+              
+
+                      
+
+                        
+  
+  
+
+
+                          
+
+
+                   
+
+
+                  <!-- row -->
+          </div>
+          
+      </div>
+
+
+{% endblock %}
+
+{% block script %}
+
+
+
+<script>
+
+        new Vue({
+            el: '#app',
+            delimiters: ['${','}'],
+            data: function () {
+              return {
+                drawerState: false,
+                pic_user : 'http://res.heraldm.com/phpwas/restmb_jhidxmake.php?idx=5&simg=201701181539234376570_20170118154018_02.jpg',
+                left : false,
+                dash : {
+            backgroundColor : '#273746',
+           color : 'white'
+           },
+           
+           Deliberation : {
+           backgroundColor : '#273746',
+           color : 'white',
+       },
+
+       employee : {
+            backgroundColor : '#273746',
+           color : 'white'
+           },
+           performance_evaluation : {
+           backgroundColor : '#273746',
+           color : 'white',
+        
+       },
+       settings : {
+            backgroundColor : '#273746',
+           color : 'white'
+           },
+           Deliberation : {
+           backgroundColor : '#273746',
+           color : 'white',
+       },
+       report : {
+           backgroundColor : '#273746',
+           color : 'white',
+       },
+       concern : {
+           backgroundColor : '#273746',
+           color : 'white',
+       },
+
+       global_hostname : '',
+       token : '',
+
+
+
+       
+        
+               
+              }
+            },beforeMount () {
+              if(innerWidth < 1017){
+                    this.drawerState = false
+                }
+            },
+          methods: {
+            logout(){
+              axios.post(`${this.global_hostname}/logout/`,{
+                  
+                   headers: {
+                               'Content-Type': 'application/json',
+                                  'X-CSRFToken': this.token
+                   }
+                  
+              })
+              .then(res => {
+                  window.location.replace(`${this.global_hostname}/login/`)
+                
+              })
+              .catch(err => {
+                  
+              })
+
+              
+        },
+
+
+          },
+          mounted () {
+            
+            var hostname = window.location.hostname;
+            var port = window.location.port
+        if(port != '' ){
+
+            hostname = hostname+':8000'
+        }
+        else{
+            hostname = hostname
+        }
+
+        this.global_hostname = `${window.location.protocol}//${hostname}`;
+        var csrftoken = Cookies.get('csrftoken');
+        this.token = csrftoken
+        
+        
+        
+        
+          },
+        })
+        
+</script>
+
+
+
+{% endblock %}

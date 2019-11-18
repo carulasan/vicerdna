@@ -1,0 +1,3849 @@
+{% extends "myapp/layout.html" %}
+
+   
+
+
+{% block content %}
+
+    <q-breadcrumbs >
+      <q-breadcrumbs-el style="color: red; " label="Deliberation /" icon="insert_chart_outlined" />
+      {{ user }}
+     
+      <!-- <q-btn color="primary" icon="check" label="compute" @click="solve_me" ></q-btn> -->
+    </q-breadcrumbs>
+    <div class="row animated fadeInDown" style="padding: 10px;">
+           <div style="width: 100% ">
+                <legend style="font-size: 25px; ; color:#34495E;font-weight: 900 ;">Employee Deliberation
+                  <!-- <span style="margin-top: -10px; border-radius: 5px; padding: 5px; position: absolute; font-weight: normal; ;color: orange; font-size: 18px;;">8 Pendings</span> -->
+
+                </legend>
+           </div>
+           
+           <div class="row animated fadeIn">
+                <span style="color: #34495E">
+                       Deliberation is a long and careful consideration or discussion of employee status.Please <strong>Click</strong> and vote Employees that can be for Regularization, Termination of Contract or Termination of Contract with chance.
+                </span>
+           </div>
+    </div>
+
+    <div class="row"  style="width: 100% ;margin-left: auto; margin-right: auto;  ">
+       
+        <q-card style="width: 100% ;margin-left: auto; margin-right: auto;">
+            <q-tabs
+              v-model="tab"
+              dense
+              class="text-grey"
+              active-color="#34495E"
+              indicator-color="#34495E"
+              align="justify"
+              narrow-indicator
+            >
+              
+            
+              <!-- <q-tab name="employeelist" icon="person" label="Employee Deliberation" > -->
+                  <!-- <q-badge color="red" text-color="white" floating  >${ deliberation_length}</q-badge> -->
+              </q-tab>
+            </q-tabs>
+    
+            <q-separator></q-separator>
+    
+            <q-tab-panels v-model="tab" animated style="color: white;border-radius: 10px;" >
+              <!-- background-color:#2C3E50 -->
+    
+              <q-tab-panel name="employeelist">
+               
+           
+                  
+                  <div class="row" style="width: 100%">
+                    
+                    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 animated fadeInLeft" style="padding: 2px; background-color: white;color: #273746;;" >
+                    
+                        <q-card class="my-card  " v-if="go" class="animated fadeInTop"  style=" background-color: white;color: #273746; border:1px solid orange;">
+                            <q-card-section  >
+                              <div class="text-h6">${ fullname }</div>
+                              <div class="text-subtitle2">Probationary</div>
+                            </q-card-section>
+                      
+                            <q-card-section  >
+                                <div class="text-subtitle2">Date Hired : ${ datehired }</div>
+                                <div class="text-subtitle2">JobLevel :  ${ designation }</div>
+              
+                                <div class="text-subtitle2">Department :  ${ department  }</div>
+
+                            </q-card-section>
+                            
+                      
+                            <q-separator style="color: white;"></q-separator>
+
+                      
+                            <q-card-actions style="display :none" >
+                                <div class="text-subtitle2" style="width: 100% ; color: #34495E ">For Discussion</div>
+                                <small>This is predifined messages</small>
+                                
+                                <q-btn-group>
+                                    <q-btn flat color="#34495E-7" icon="timeline" label="Regularized"></q-btn>
+                                    <q-btn  flat color="#34495E-7" icon="visibility" label="TOC"></q-btn>
+                                    <q-btn flat color="#34495E-7" icon="update" label="TOCw/Chance" ></q-btn>
+                                  </q-btn-group>
+                              
+                              
+
+                            
+
+
+                            </q-card-actions>
+
+                            <q-card-section>
+                             
+
+                                <div id="mychats" style="width: 100%; max-width: 400px; height: 400px; overflow-x: scroll ; border-top: white solid 1px;">
+                                   
+
+                                  
+                                  <q-chat-message
+                                      v-for="item in CHATS"
+                                      :name="item.name"
+                                      :avatar="item.avatar"
+                                      :text="item.message"
+                                      :stamp="item.stamp"
+                                      :sent = "item.sent"
+                                      :bg-color="item.bg_color"
+                                    ></q-chat-message>
+                                   
+                                   
+<!-- 
+                                    <q-chat-message
+                                      name="Jane"
+                                      avatar="https://cdn.quasar.dev/img/avatar5.jpg"
+                                      :text="[
+                                        'doing fine, how r you?',
+                                        'I just feel like typing a really, really, REALY long message to annoy you...'
+                                      ]"
+                                      size="6"
+                                      stamp="4 minutes ago"
+                                      text-color="white"
+                                      bg-color="primary"
+                                    ></q-chat-message>
+                                    <q-chat-message
+                                      name="Jane"
+                                      avatar="https://cdn.quasar.dev/img/avatar5.jpg"
+                                      :text="['Did it work?']"
+                                      stamp="1 minutes ago"
+                                      size="8"
+                                      text-color="white"
+                                      bg-color="primary"
+                                    ></q-chat-message> -->
+
+                                    
+
+                                    
+
+                                  </div>
+                                  <div class="row" style="width: 100% ">
+
+                                      
+                                      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <q-input v-on:keypress.enter.prevent="send_chat" style="width: 100% ;  margin-top: 20px;; background-color:white; color: #273746;" v-model="message" outlined  label="Enter your message"   >
+
+                                  
+                                          <template v-slot:after style="background-color: #273746;">
+                                            <q-btn  dense  style="color:white; width: 150px; background-color: red;"  icon="send"  label="send"  @click="send_chat" ></q-btn>
+                                          </template>
+                                        </q-input>
+
+                                      </div>
+
+                                   
+                                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                        <q-btn round dense flat style="color:  white;; margin-top: 30px;;;" icon="send" @click="send_chat" ></q-btn>
+                                      </div> 
+                                      
+                                      
+                                       
+                                       
+                                       
+                                        <div class="row" style="width: 100%;margin-top: 20px;"  v-if="go">
+                                            <div class="text-subtitle2" style="width: 100% ; color: white ">For Final Decision</div>
+                                            <small>This for is the final dicision of participant. So when you click submit the vote can no longer modified.</small>
+    
+                                            <div class="row" style="width: 100%">
+                                                <div class="q-pa-md">
+                                                    <div class="q-gutter-sm">
+                                                      <q-radio v-for="item in OptionOfParticipant " v-model="decision" :val="item.value" :label="item.label" ></q-radio>
+                                                      <!-- <q-radio v-model="decision" val="Termination of Contract" label="Termination of Contract" ></q-radio>
+                                                      <q-radio v-model="decision" val="Termination of Contract with Chance" label="Termination of Contract with Chance" ></q-radio>
+           -->
+                                                    </div>
+                                                
+                                                   
+                                                  </div>
+                                            </div>
+    
+                                            <q-btn color="red-10" icon="check" @click="savefinalscore()" style="width: 100%" label="Submit Final Decision" ></q-btn>
+                                          
+
+
+                                        </div>
+                                       
+                                  </div>
+
+
+                              </q-card-section>
+                        
+
+                            <q-separator  ></q-separator>
+                          </q-card>
+
+                         
+                      
+                    </div>
+
+                    
+                    
+                    
+                    <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 animated fadeInRight"  v-if="go"  style="padding: 2px;">
+                    
+                        <q-card class="my-card " style="background-color: white; color: #273746;">
+                            <q-card-section>
+                              <div class="text-h6">201 File</div>
+                             
+                            </q-card-section>
+                      
+                            <q-card-section>
+                             
+                                <q-list bordered>
+
+                                  <!-- ======================================= performance evaluation -->
+                                    <q-expansion-item
+                                      group="somegroup"
+                                      icon="fiber_manual_record"
+                                      label="Performance Evaluation"
+                                     
+                                      style="color: #DF8B00 ; font-weight: 900; "
+                                    >
+                                      <q-card>
+                                        <q-card-section>
+
+
+                                          
+                                          <div class="row" style="width: 100%">
+                                              
+                                              <table class="table table-hover">
+                                                <thead>
+                                                
+                                                      <tr style="background-color:  #34495E ; color: whitesmoke">
+                                                          <th>Employee name</th>
+                                                          <th>Date Hired</th>
+                                                          <th>Designation</th>
+                                                          <th>Department Section</th>
+                                                          <th>Place of Assignment</th>
+                                                          <th>Job Status</th>
+                                                          <th>Supervisor/Rater</th>
+                                                  </tr>
+
+                                                
+                                                </thead>
+                                                <tbody>
+
+
+                                                  <tr>
+
+
+                                                   
+                                                      <td> ${ EVALUATIONCOPY_FROM_HR[0].employeefullname }  </td>
+                                                      <td>${ EVALUATIONCOPY_FROM_HR[0].datehired }</td>
+                                                      <td>${ EVALUATIONCOPY_FROM_HR[0].designation }</td>
+                                                      <td>${ EVALUATIONCOPY_FROM_HR[0].departmentsection }</td>
+                                                      <td>${ EVALUATIONCOPY_FROM_HR[0].placeofassignment }</td>
+                                                      <td> probatioanary </td>
+                                                      <td>${ EVALUATIONCOPY_FROM_HR[0].supervisorrater }</td>
+
+                                                      
+                                                  </tr>
+                                                </tbody>
+                                              </table>
+
+                                             
+                                             <table class="table table-hover">
+                                               <thead>
+                                               
+                                               </thead>
+                                               <tbody>
+
+
+                                                  <tr>
+                                                    <td  v-for="(item,index) in render"> 
+                                                     <span style="color: #34495E; font-weight: 900; font-size: 15px" > ${item.month_name} </span>
+                                                    
+                                                      <q-list  >
+                                                          <q-item  style="font-weight:800; color: #5D6D7E" v-ripple v-for="item2 in item.per_criteria">
+                                                           
+                                                            <q-item-section v-if="index == 0 " >${item2.criteria} 
+
+                                                            </q-item-section>
+                                                            <q-item-section v-if="index > 0 " >
+                                                                ${ item2.score }
+                                                            </q-item-section>
+
+                                                              </q-item-section>
+                                                          </q-item>
+                                                        </q-list>
+                                                      
+
+                                                        
+                                                    </td>
+                                                  </tr>
+                                                 
+                                                 
+                                                   
+                                                      
+                                                      
+                                                      <!-- //current -->
+                                                 
+                                                   
+                                              
+                                                 
+                                                 
+                                                
+                                               </tbody>
+                                             </table>
+                                             
+                                              
+                                            
+                                          </div>
+                                          
+                                         
+
+
+                                        </q-card-section>
+                                      </q-card>
+                                    </q-expansion-item>
+
+
+                                   <q-expansion-item
+                                      group="somegroup"
+                                      icon="fiber_manual_record"
+                                      label="Commendations"
+                                      
+                                      style="color:#C30C6D ;font-weight: 900; "
+                                      >
+                                      <q-card>
+<!-- abi -->
+
+<q-table
+                                                                 
+style="width: 100%"
+:data="data_commendation"
+:columns="columns_commendation"
+
+
+:selected.sync="selected_commendation"
+:filter="terms_commendation"
+    grid
+    title="Evaluation "
+dark
+>
+<!-- hai -->
+
+<template  slot="top-selection" >
+
+            <!-- <div>
+                <q-tooltip >
+                Click to Evaluate
+                </q-tooltip>
+                <q-btn push class="animated fadeInDown" dense color="red-8" label="Start Evaluate"  icon="launch" @click="event_evaluate" ></q-btn>
+                
+            </div> -->
+</template>
+
+    <template v-slot:top-right>
+     
+      <div style="width: 300px;padding: 10px;">
+        <q-select  outlined  dense debounce="300" v-model="model_filter_commendation" :value="model_filter_commendation" @input="filtermoyungcommendation" :options="options_filtercustomercommendation" filled label="Filter" ></q-select>
+        <!-- :options="options_terminal" -->
+    </div>
+
+<q-input outlined  style="width: 200px;padding: 10px;"  v-model="terms_commendation" filled  dense debounce="300"  placeholder="Search">
+        <template v-slot:append>
+          <q-icon name="search" ></q-icon>
+        </template>
+    </q-input>
+
+  </template>
+
+</q-table> 
+
+                                      </q-card>
+                                      </q-expansion-item>
+
+
+
+                                                      <q-expansion-item
+                                                group="somegroup"
+                                                icon="fiber_manual_record"
+                                                label="Customer Complaints"
+                                               
+                                                style="color:red ;font-weight: 900;"
+                                                >
+                                                <q-card>
+                                                                 <!-- andi                            -->
+                                                  <q-table
+                                                                 
+                                                  style="width: 100%"
+                                                  :data="data_comlaints"
+                                                  :columns="columns_complaints"
+                                                 
+                                                  :selected.sync="selected_complaints"
+                                                  :filter="terms_complaints"
+                                                      grid
+                                                      title="Evaluation "
+          dark
+                                                  >
+                                                  <!-- hai -->
+
+                                                  <template  slot="top-selection" >
+
+                                                              <!-- <div>
+                                                                  <q-tooltip >
+                                                                  Click to Evaluate
+                                                                  </q-tooltip>
+                                                                  <q-btn push class="animated fadeInDown" dense color="red-8" label="Start Evaluate"  icon="launch" @click="event_evaluate" ></q-btn>
+                                                                  
+                                                              </div> -->
+                                                  </template>
+
+                                                      <template v-slot:top-right>
+                                                       
+                                                        <div style="width: 300px;padding: 10px;">
+                                                          <q-select  outlined  dense debounce="300" v-model="model_filter_complaint" :value="model_filter_complaint" @input="filtermoyungcomplaint" :options="options_filtercustomercomplaint" filled label="Filter" ></q-select>
+                                                          <!-- :options="options_terminal" -->
+                                                      </div>
+
+                                                  <q-input outlined  style="width: 200px;padding: 10px;"  v-model="terms_complaints" filled  dense debounce="300"  placeholder="Search">
+                                                          <template v-slot:append>
+                                                            <q-icon name="search" ></q-icon>
+                                                          </template>
+                                                      </q-input>
+                             
+                                                    </template>
+
+                                                  </q-table> 
+
+
+
+
+
+
+
+                                                </q-card>
+                                                </q-expansion-item>
+
+
+
+                                  <!-- mydispatch -->
+                                  <!-- abi -->
+                                     <q-expansion-item
+                                group="somegroup"
+                                icon="fiber_manual_record"
+                                :label="joblevelemployee.includes('bus driver') || joblevelemployee.includes('conductor') ? 'Attendance(Dispatch System)' : 'Attendance(TimeKeeping System)' "
+                               
+                              
+                                style="color:  green;font-weight: 900;"
+                                >
+                                <q-card v-if="joblevelemployee.includes('bus driver') || joblevelemployee.includes('conductor')">
+                                  <!-- if driver condutor -->
+                                  <q-card-section >
+
+                                    <template>
+                                      <div>
+                                        <q-splitter
+                                          v-model="splitterModel"
+                                          style="height: 450px"
+                                        >
+                                        <!-- Dispatch_Attendance -->
+                                          <template v-slot:before>
+                                            <div class="q-pa-md">
+                                              <q-date
+                                              style="width: 100%;"
+                                              color="green-6"
+                                                v-model="date"
+                                                :events="events"
+                                                event-color="amber-8"
+                                              />
+                                            </div>
+                                          </template>
+                                    
+                                          <template v-slot:after>
+
+                                            <q-tab-panels
+                                              v-model="date"
+                                              animated
+                                              transition-prev="jump-up"
+                                              transition-next="jump-up"
+                                            >
+                                              <q-tab-panel :name="item.identifier" v-for="item in Dispatch_Attendance">
+                                                
+                                                  <q-card class="my-card" v-for="item2 in item.info" style="border: 1px solid green">
+                                                 
+                                                    <q-card-section>
+
+                                                      <q-item>
+                                                       
+                                                        <q-item-section>
+                                                          <q-item-label>Bus Number</q-item-label>
+                                                          <q-item-label caption lines="2">${item2.Busno}</q-item-label>
+                                                          <q-item-label>From</q-item-label>
+                                                          <q-item-label caption lines="2">${item2.Location}</q-item-label>
+                                                          <q-item-label caption lines="2">${item2.DepartureTime}</q-item-label>
+                                                          <q-item-label>To</q-item-label>
+                                                          <q-item-label caption lines="2">${item2.Route}</q-item-label>
+                                                          <q-item-label caption lines="2">${item2.ArrivalTime}</q-item-label>
+
+
+                                                        </q-item-section>
+                                                        <q-item-section side top>
+                                                          <q-item-label caption >${item2.KMRun}</q-item-label>
+                                                          
+                                                          <q-icon name="directions_run" color="red" ></q-icon>
+                                                        </q-item-section>
+                                                      </q-item>
+                                                        
+                                                      
+
+
+                                                
+                                                      
+                                                    </q-card-section>
+                                                  
+                                                  </q-card>
+                                              </q-tab-panel>
+                                                  </q-tab-panels>
+                                                </template>
+                                              </q-splitter>
+                                            </div>
+                                          </template>
+
+
+
+                                        </q-card-section>
+                                </q-card>
+
+                                <q-card v-else>
+                                    <!-- if driver condutor -->
+                                    <q-card-section >
+  
+                                      <template>
+                                        <div>
+                                          <q-splitter
+                                            v-model="splitterModel"
+                                            style="height: 450px"
+                                          >
+                                          <!-- Dispatch_Attendance -->
+                                            <template v-slot:before>
+                                              <div class="q-pa-md">
+                                                <q-date
+                                                style="width: 100%;"
+                                                color="green-6"
+                                                  v-model="date"
+                                                  :events="events"
+                                                  event-color="amber-8"
+                                                />
+                                              </div>
+                                            </template>
+                                      
+                                            <template v-slot:after>
+  
+                                              <q-tab-panels
+                                                v-model="date"
+                                                animated
+                                                transition-prev="jump-up"
+                                                transition-next="jump-up"
+                                              >
+                                                <q-tab-panel :name="item.identifier" v-for="item in Dispatch_Attendance">
+                                                  
+                                                    <q-card class="my-card" v-for="item2 in item.info" style="border: 1px solid green">
+                                                   
+                                                      <q-card-section>
+  
+                                                        <q-item>
+                                                         
+                                                          <q-item-section>
+                                                            <q-item-label>Time In</q-item-label>
+                                                            <q-item-label caption lines="2">${item2.TimeIn}</q-item-label>
+                                                            <q-item-label>Time Out</q-item-label>
+                                                            <q-item-label caption lines="2">${item2.TimeOut}</q-item-label>
+  
+  
+                                                          </q-item-section>
+                                                          <q-item-section side top>
+                                                            <q-item-label caption >${item2.KMRun}</q-item-label>
+                                                            
+                                                            <q-icon name="alarm" color="red" ></q-icon>
+                                                          </q-item-section>
+                                                        </q-item>
+                                                          
+                                                        
+  
+  
+                                                  
+                                                        
+                                                      </q-card-section>
+                                                    
+                                                    </q-card>
+                                                </q-tab-panel>
+                                                    </q-tab-panels>
+                                                  </template>
+                                                </q-splitter>
+                                              </div>
+                                            </template>
+  
+  
+  
+                                          </q-card-section>
+                                  </q-card>
+
+
+
+
+                                
+                                </q-expansion-item>
+
+
+                                     <q-expansion-item  group="somegroup"
+                                            icon="fiber_manual_record"
+                                            label="Violation(TVR System)"
+                                         
+                                            style="color: #6B1111 ;  font-weight: 900; "
+                                          > 
+                                          
+                                           <q-card>
+
+                                          
+                                              <q-card-section>
+                                               
+                                                
+                                               
+                                                <q-table
+
+     
+style="width: 100%"
+:data="tvrRecord"
+:columns="columns"
+row-key="id"
+selection="single"
+:selected.sync="selectedrecord"
+ :filter="search"
+    grid
+    title="Tvr System Record"
+
+>
+<!-- hai -->
+
+
+
+
+
+     <template v-slot:top-right>
+  
+ 
+<q-input outlined  style="width: 200px;padding: 10px;"  v-model="search" filled  dense debounce="300"  placeholder="Search">
+        <template v-slot:append>
+          <q-icon name="search" ></q-icon>
+        </template>
+    </q-input>
+  
+  
+  
+  
+ 
+
+
+       
+
+
+ 
+  </template>
+
+
+
+</q-table> 
+
+
+                                              </q-card-section>
+                                             
+                                           
+                                          </q-card>
+                                        </q-expansion-item>
+
+
+                              
+                                    <!-- ======================================= performance evaluation -->
+                                    <q-separator ></q-separator>
+                              
+                                    <q-expansion-item group="somegroup" icon="fiber_manual_record" :label="item.category" v-for="item in final201file" style="color : #650A72 ; font-weight: 900;">
+                                      <q-card>
+                                        <q-card-section>
+                                         
+                                          
+                                                                        
+                                                        <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3 animated fadeIn "  style="padding: 5px;" v-for="item2 in item.documents">
+                                                          <q-card class="my-card" style="width: 100%; ">
+                                                            
+                                                            
+                                                            <div v-if="item2.icon == 'pdf'">
+                                                                <q-parallax
+                                                                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAA+VBMVEX////DCxWFCA7o5ub8DxrAAAD8AADlDhh/CA3txsh/AAD8Cxfq6urMs7Tz8vL/7u/z2Nnp1tjrDhnaDRfFCxX/2Nngw8T+w8X9dnn8Eh+aCRCDAAD8AA79mZ3jn6F9AACMCA//9/j9VlzCAAn+r7Lgk5XmvL3+0NHGFyDWb3LOQkjKLTTIJCvRVlrSXWHVZ2vchYjos7TYen3nra/KNjzxz9H34+TIKS/OS1Dbvr/mvr+0dnioXmD8REr+tLbjzc68hYecQUXToKGSAADIo6SMGx+cTE6lXmD+paj9i478MDj9ZWmwb3H9fYGXOj3+lpr8PEORKS29kJEYRA6LAAALbklEQVR4nN3de0PayBoG8NTjcGqoBrux6oaK2XgJKCgXqa6lpz0V11Z70e//YTY3IPd53yGTmfD800Ir4efchwEUhXdMs3EyPDge9Dqjs3PbfmXb52ejTm9wfDA8aZgm9+vzjDbuX150dOLHsnRdf+XG+dOygnv1zsVlf6yJfqoMafTb17YH81VZ0T2q3Wn3G6KfMiKNg65NtyWcdvegCkqtP3CrJRwXYro/N+hLXWPHwx6jLqzsDceiIekx+11rOd4caXX78vWxV21Uw6MgnV9V+0o0KRztYFRE6UWQhIwOZGmSY6dvsQrl+bGcfkeGFtnoFV18izgF2RM9gFx1+PkCY0dkg7zqcqme0VikK8ro1k/uPjeC6qo5KMnnGwelD5AHJfp840Gpvo0R1/4lLToZbZTmM9sldDDJWKRdUlU9KbmCLkLISQk+7aL0CrqITi64z+Q2bFEF6IfYnFvjpZAWGI5FLjn6xiOxBeiHjLjNx08s0QXox7I4dTjHAruYaHRyzMFndqUBusRu4UOj9kGGJrgI+VDwsHEleJBIhtiFrqlOhA8SyVhFTnCGEjXBRXQyLAp4IFsNnaWoFdWxrECHWMiocSkv0CEWMIVLAxI+YWnsyxPTqigZNtjz97us9NmIS1bU1E6GLLOA2XqTFeVvNuJS3c0wtQ0uJ/xPVrZYiUsMGifpnQw3ISuReei/yrgeP6HzO2Ug6oRxAqfZGVM1jkI2omUzTcPNzNUETyFbRSUfWBZT3cyRnquQrRRJF/9McuZqfIWMRPSwmHcZzkKmiqpjO9Rx3qkD3kI2ooXbgRvlrXi5C5kqqjXCPI389QR/IRMRMwnfyF8wlSBkqqjw55U51JcoZCHCB/4Lypq3FCFLRSUXsOeQMd8uW8hSirAhw6Q+cElCBqJOILO3NnVfpiwhQ0UlbfozoPSjpQpZiPTnljvWly3EV1T6uA/Z/S1RiCfStm3o3UzJQnRFpXU2A8j2b6lCNJEM8i7fAO1vlytEV1SSd8yvJ6MQSyS97KtfwV6iKFuIrag5W2/ZWzNihchSzN60ARahACGWmFWIHeBL2QKEuIpqddIfBNaRChLiiBndKawjFSVEVdT07nQMfgQxQgxRJ2kbb6DpjEghpqKmTWw0Hf7jfIRvtihR/g8uBF1PbtkgjpRwElLzZvMrvBSSSwzAulC8sPUnlJhcJ0JHe7FC9TWYmBj16bszUgjXwMT4jg1o5SuDEEyMr4T7mINPQoVgIulHrtvFnK4UK4QSrcgKI/flQtmEQGL0BcX0k0GyCoHEyEki8KRbDiGMGJ5+a8hdAuFCEFEni5kbqieVQggihnpT+LJCGiGEGFpgwJcV8ggBRF2fXRS8fSGVEECcb2Zgz+JLIqQT50so4DapdEIqcb5xamNfwJJFSCPqtn9NbDOUSEgjBg0RORpKJaQQgxERs/iVTphPDJbB19j3pUklzCVa1+4lNWxHI5kwj6h758DG6Pc1SSbMI3p73+iORjphDtHravDvTZNOmE30zpzSTiJWQZhJ9E4rQl8XlVqYRXRfKzWRSydJhRlEXTcVE/8WUSmFGURi4melsgrTic7MlHoiuDLCVCI5QW6VSi1MI5Ihy5vtpRWmEJ1lPsO77eUVJonkGLuTKLkwQSQDpYf/TA+ZhXGi1WOY0sgtjBGdSc2I5/uLRAijRH2knK2cMELUz5Tz1ROGifq5YqOB8gvDRHs1hSGireCBVRCGiCtahguivZI9TYjo9DSrNx5GiM5o0VlZoUd0Rnz0nn51hC7RmbWt2sw7RrS6+FeeqiRce/21t2rrw3jUjywfOFclofGyWvs0KWV4x/DSU7WEm5B3p1dZ2HqnaCsu3MadYa+gcEtRPqy0cE1BHmKvmtC4V9CHSysmvFVYPkS3QkL1s7ISZzFyhJvKKpynyRNuO5c00fsYFRJOvTc/oTvT6gi9rpThyNCSwswPEqYGL7z1romemZKhxp7xNnvusEKvo8G8TX2Wt+v7zFnPSuq/7Ef++OM1tgy3/YqDPn75ti4maOFa0DRw7+vyylBI0ELjYyBEL/OrInQW+ErQEFdU2Nqe9eDYMb8qwsP5GIUdESsiDEZDN5iPG6iQsHUzF5rI8aIiQiP0aSnIrf1qCI1/QpNF5BqxGsL5WOGNF7ij0NUQGpGPqMGtoCohnE9oWKppJYTqTUSooNYXOcJ6LZxmfXZ/5O5aPfQTzVo89ZTHZRDGPuUTNehnC+v7jZ1ZTneP9taDp1t7CN396dv3BaP5uBPL7noGESU0nqJA3Nw0Txh73KP9pifcjV3uR7MZCPdiP6FohQgXc9JZMCcWEEJFmzRThIrSmNR4Co2f8YdFndnHCBXTrZBJoaI81jgKI4Nh8EQQMze6UNM0c9bSj2pzoelmfkmvdAOhOd/IMXeKEB6mfL4d4vULqnDH6xMnu/NCDIQT9+7vezvBr8Et3UD4UGxf6u3mx9OADxgAofv3Zu3Uu/VXcyZ0/rZedwaUB/+Sv2pz4VEt8zFZhEbqF5bA34gIEzp184d360ctLHT/V3BTc8ZLLsLYfGYW+IABFTYn6cJ5c3VucxEmhwo/4D03cBn6z36vGRfObjvVdC6kNkO40PiSDoS/UQ8orC9cCeE37/anuVA7nWd/6Z6m9b8MIbglAvvSdb9DMRejxVzYfPRun9ZSxsOlhRmt0C9EWHdKFZpuWewEI9/7NKHv2uUiVDOLENwSUXMaLTSnWdTSX97tIx7CnCIEt0SM0PwdmpfGe5pvC6E5z7LCrI7UD2xigxDuRtYWM2Hzt/+vk2bKnGbJvlS9VfICe+86aF6qjcenvyaz9WFsxPcnOzs85jQG5ct0QEsMyGixv+8u92O18q9a00mtHqw0HpvFC1vJRUUs1wAiQOi+3Be6PxDu/Z5MJo9HwW/51FUVLDSeaUDQiAGd0ySEkYy9GlywMG+kmAXQ2RQi3PnuVeFihZRuxg/gOGYRwoegjRYrpHUzfuifsrC0UHuYbcKtN/0V1qdChK2bhCY11HqaJ3x47+RHM3Z/c+/9LL++7YU2E9frE+/ex/hPsAjV+A5iVswzyr4bfUc4cX9437dZT/4EAEgVGlPwtwJnfV01QMgzNKH6DgqknjmVU5i6+5SZ/HFfSmHKHnBe8j/gW0ahmr69lp3c7wORUggcKBbJOygloVB9wQJzTy/IJ1Tv8UBF6WQSpRMaz+CRMBzzQ9bAL5vQmEK/6jiWRlaHKp0QsGRKT9b5aMmE0Pl2WobpY4ZcQvq+BZ74NnM7TIAw5dVeJDFF+Md/xURPEbYYBsJoUkZ+/dXaazFJAX5eFugSExVVf3WY3qmVniKAUhNZ5mqVIi7fBmfpy0lcbpiI5kpPTOCEEw0DsWlBz/gs0aUKJhprzFO19JgjuYjqM3JJD0gv0RgFEtW813mZc0zijVEYsahRIp4NO15TxRANY4nFRH60brymiiCqP4tvgoskamrpRKOYiVp2rs6JUKI65VZDZzEvYjW1VGLrifrNzwVkw4oayyOq/LqYWC4JEUA01CemPUOmNK4jxVgKsfWz4GkaJUMSNvInqkaBCwlYzHbYyJloqLeMe75LZdwONUeeREP9mHsYj2MaISM3otG6L7cBxozdeV3lQxTsixo5EFXjXlT9DGd8fO7PVgsmGuraZxl8bsz+tVeQRRKN1vNdGTM0cBoD4iCLIhqq+iS6+SVj9nu2g1yeaDitb7O8+Rkq2knbJl+X47WMf+54rnCXjrkx+NpSDYaPcHQLr3V4eyNp6UWyffc0daoahun8Z2Pt/k6WrhOS8c3t/dRwStOg21R1en+7WSXdLOb43cvtF6PVaqmONFKm7m1H1mod/nx6uRmLmFYXF3Nr/G7z7uXp4/2Xn8/T6dradPr8/OXj7cvd3c32Fv9W9y/CQx6PYG8AkwAAAABJRU5ErkJggg=="
+                                                                :height="150"
+                                                              ></q-parallax>
+                                                            </div>
+
+                                                            <div  v-if="item2.icon == 'lsx'" >
+                                                                <q-parallax
+                                                                src="http://www.iconarchive.com/download/i77903/carlosjj/microsoft-office-2013/Excel.ico"
+                                                                :height="150"
+                                                              ></q-parallax>
+                                                            </div> 
+                                                            
+                                                            <div  v-if="item2.icon == 'ocx'" >
+                                                                <q-parallax
+                                                                src="https://s1.mzstatic.com/us/r30/Purple/v4/8b/4a/1b/8b4a1b43-c07a-6312-6894-8467a35ce365/mzl.frajvwny.png"
+                                                                :height="150"
+                                                              ></q-parallax>
+                                                            </div> 
+
+                                                              <div v-if="item2.icon == 'peg'">
+                                                                <q-parallax
+                                                                :src="item2.files"
+                                                                :height="150"
+                                                              ></q-parallax>
+                                                            </div>
+                                                            <div v-if="item2.icon == 'png'">
+                                                                <q-parallax
+                                                                :src="item2.files"
+                                                                :height="150"
+                                                              ></q-parallax>
+                                                            </div>
+                                                            <div v-if="item2.icon == 'PNG'">
+                                                                <q-parallax
+                                                                :src="item2.files"
+                                                                :height="150"
+                                                              ></q-parallax>
+                                                            </div>
+                                                            <div v-if="item2.icon == 'PEG'">
+                                                                <q-parallax
+                                                                :src="item2.files"
+                                                                :height="150"
+                                                              ></q-parallax>
+                                                            </div>
+                                                            <div v-if="item2.icon == 'JPG'">
+                                                                <q-parallax
+                                                                :src="item2.files"
+                                                                :height="150"
+                                                              ></q-parallax>
+                                                            </div>
+                                                            <div v-if="item2.icon == 'jpg'">
+                                                                <q-parallax
+                                                                :src="item2.files"
+                                                                :height="150"
+                                                              ></q-parallax>
+                                                </div>
+
+                 
+          
+                  <q-card-section right  style="width: 100%;">
+                    <div class="text-h6">${ item2.classification }  </div>
+                    <div style="font-size: 13px;">${item2.Description}</div>
+                    <div class="text-subtitle2" > 
+                      
+                        <div class="row" style="width: 100%">
+                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                <div>
+                                    <q-tooltip >
+                                      Open
+                                    </q-tooltip>
+                                 <!-- abi -->
+                                    <q-btn color="#34495E" flat icon="fullscreen"  @click="window.open(item2.files, '_blank')"  ></q-btn>
+                                    
+                                  </div>
+                            </div>
+                           
+                           
+                          </div>
+                          
+                    
+                    
+                    
+                    </div>
+                      
+                    
+                  </div>
+                      
+                      
+                      
+   
+                  
+                  </q-card-section>
+                                    </q-card>
+            
+                          </div>
+
+
+
+
+
+                                        </q-card-section>
+                                      </q-card>
+                                    </q-expansion-item>
+                              
+                                    <q-separator></q-separator>
+                              
+                                  </q-list>
+                              
+                            </q-card-section>
+                      
+                            <q-separator  ></q-separator>
+
+                      
+                         
+                          </q-card>
+                      
+                    </div>
+
+
+
+                    <div class="row" style="width: 100%" v-if="go ==true">
+
+
+                      <div class="row animated fadeIn"   style="padding: 8px">
+                        <q-item-section>
+                             <q-item-label v-if="go == false " style="font-size: 20px; font-weight: 900; color: #34495E  " >No Data...</q-item-label>
+                             <q-item-label v-if="go == true " style="font-size: 20px; font-weight: 900; color:   #34495E " > Need to Deliberate </q-item-label>
+                           </q-item-section>
+                         
+                       </div>
+                       <div class="row" style=" margin-top: 10px;;  width: 100%; ">
+   
+                           
+                           <div class="col-xs-12 col-sm-12 col-md-4 col-lg-3 "  v-for="item in DataforDeleberation_final" style="padding: 2px; ">
+                                  <q-list  style="" >
+                                    <q-item clickable style="width: 100% ; border-radius: 5px; -webkit-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12);
+                                    -moz-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12);
+                                    box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.12); background-color: white;">
+                                       
+                                      <q-item-section>
+                                          <q-item-label caption >${ item.employeefullname }</q-item-label>
+                                          <q-item-label caption >${ item.jobstatus }</q-item-label>
+                                          <q-item-label caption >${ item.designation }</q-item-label>
+                                          
+                                          <q-item-label caption>${ item.placeofassignment }</q-item-label>
+                                          
+                                          
+                                        </q-item-section>
+                                
+                                        <q-item-section side top>
+                                          <q-item-label caption>Date Hired : <q-item-label caption >${ item.datehired }</q-item-label></q-item-label>
+                                          <!-- <q-icon name="account_circle" color="red" /> -->
+                                        </q-item-section>
+                                      </q-item>
+                                </q-list>
+
+
+                              
+                            </div>
+   
+   
+                             
+   
+   
+                                   
+                           
+                       </div>
+                    </div>
+
+
+
+
+                    <div class="row" style="width: 100%; margin-top: 20px;;"></div>
+                    <div class="col-xs-12 col-sm-6 col-md-8 col-lg-8" >
+
+                       
+                            <legend  style="color: #34495E  ;font-weight: bold; padding: 10px;font-size:20px;" v-if="HRCOPYANDPARTICIPANTVOTE.length > 0">Deliberation Results</legend>
+                              <div class="row" style="width: 100%;">
+                              
+                                    
+                                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4" v-for="item,index in HRCOPYANDPARTICIPANTVOTE" style="padding: 10px; ">
+                                     
+                                        <q-card class="my-card" :style="item.length < 3  ? 'width: 100%; background-color:black   ; color: white' : 'width: 100%; background-color:  #566573 ; color: white' "  >
+                                            <q-card-section style="width: 100%;"  >
+                                                  
+                                                <q-list>
+                                                    <q-item>
+                                                      
+                                                      <q-item-section>
+                                                        <q-item-label style="font-weight: bold; padding: 5px;font-size:20px ; color:#F5B041;">${item.employeefullname}</q-item-label>
+                                                       
+                                                        <div class="row" style="width: 100%;">
+                                                          
+                                                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="padding: 5px;">
+                                                                <q-item-label >Job Status</q-item-label>
+                                                            </div>
+                                                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="padding: 5px;">
+                                                                <q-item-label  style="font-weight: bold;" >${ item.jobstatus }</q-item-label>
+                                                              </div>
+                                                            
+                                                          </div>
+                                                        <div class="row" style="width: 100%;">
+                                                          
+                                                          <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="padding: 5px;">
+                                                              <q-item-label >Empcode</q-item-label>
+                                                          </div>
+                                                          <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="padding: 5px;">
+                                                              <q-item-label  style="font-weight: bold;" >${ item.empcode }</q-item-label>
+                                                            </div>
+                                                          
+                                                        </div>
+          
+                                                        <div class="row" style="width: 100%;">
+                                                          
+                                                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="padding: 5px;">
+                                                                <q-item-label >Designation </q-item-label>
+                                                            </div>
+                                                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="padding: 5px;">
+                                                                <q-item-label  style="font-weight: bold;" >${ item.designation }</q-item-label>
+                                                              </div>
+                                                            
+                                                          </div>
+          
+                                                          <div class="row" style="width: 100%;">
+                                                          
+                                                              <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="padding: 5px;">
+                                                                  <q-item-label >Department Section </q-item-label>
+                                                              </div>
+                                                              <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="padding: 5px;">
+                                                                  <q-item-label  style="font-weight: bold;" >${ item.departmentsection }</q-item-label>
+
+                                                            </div>
+                                                       
+                                                            <div class="row" style="width: 100%;">
+                                                          
+                                                                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="padding: 5px;">
+                                                                    <q-item-label >Place of Assignment </q-item-label>
+                                                                </div>
+                                                                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="padding: 5px;">
+                                                                    <q-item-label  style=" font-weight: bold;" >${ item.placeofassignment }</q-item-label>
+                                                                  </div>
+                                                                
+                                                              </div>
+          
+                                                              <div class="row" style="width: 100%;">
+                                                          
+                                                                  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="padding: 5px;">
+                                                                      <q-item-label >Date Hired </q-item-label>
+                                                                  </div>
+                                                                  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="padding: 5px;">
+                                                                      <q-item-label  style=" font-weight: bold;" >${ item.datehired }</q-item-label>
+                                                                    </div>
+                                                                  
+                                                                </div>
+                                                        
+                                                        
+          
+                                                      
+                                                        
+                                                        <div class="row" style="width: 100%">
+                                                          
+                                                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" v-for="item2 in item.participant ">
+                                                                <q-item v-if="item2.participants == 'finaldecision'">
+                                                                    <q-item-section top avatar>
+                                                                      <q-avatar color="red" text-color="white" icon="gavel" ></q-avatar>
+                                                                    </q-item-section>
+                                                                    <q-item-section>
+                                                                      <q-item-label style="color: yellowgreen; font-size: 20px; font-weight: 900;">${item2.finaldecision}</q-item-label>
+                                                                      <q-item-label caption lines="2" style="color: white;">Final Decision</q-item-label>
+                                                                    </q-item-section>
+                                                                    <q-item-section side top>
+                                                                      <q-item-label caption style="color: white;">5 min ago</q-item-label>
+                                                                      <q-icon name="alarm" color="grey" ></q-icon>
+                                                                    </q-item-section>
+                                                                </q-item>
+                                                                <q-item clickable v-ripple v-else>
+                                                                      <q-item-section avatar>
+                                                                        <q-avatar>
+                                                                          <img src="https://cdn.quasar.dev/img/avatar2.jpg">
+                                                                        </q-avatar>
+                                                                      </q-item-section>   <!-- dito -->
+                                                                      <q-item-section side top style="color: white;">
+                                                                          
+                                                                          <q-item-label lines="1">${item2.participants}</q-item-label>
+                                                                        <q-item-label >
+                                                                          <span class="text-weight-bold">${item2.finaldecision}</span>
+                                                                          
+                                                                        </q-item-label>
+                                                                        
+                                                                        ${item2.date_created}
+                                                                      </q-item-section>
+                                                                </q-item>
+
+                                                                  
+
+
+
+
+
+                                                            </div>
+                                                            
+                                                        </div>
+                                                        <div class="row" style="width: 100%">
+          
+                                                          
+                                                           <span style="color: red;font-weight: bold; " v-if="item.length < 3 ">Pending...
+                                                            <br>
+                                                            <small>
+                                                              ${item.length } of 3
+                                                            </small>
+                                                          </span>
+
+                                                        
+                                                        </div>
+                                                       
+                                                      </q-item-section>
+          
+                                                      <!-- "evaluation_sheet": element2.id,
+                                                      "participants": element.participants,
+                                                      "finaldecision": element.finaldecision,
+                                                      "date_created": this.dateformtter(element.date_created),
+                                                       }
+                                  
+                                                        obj['participant'].push(obj_2)
+                                               -->
+                                                      
+                                                    </q-item>
+                                                    <q-separator spaced inset ></q-separator>
+                                                    </q-list>
+          
+                                               
+                                              </q-card-section>
+                                        </q-card> 
+                                      
+                                    </div>
+                                    
+                              </div>
+                            
+
+                          </div>
+
+                      
+                    </div>
+                    
+                    
+
+
+
+
+                  
+                    
+                    
+                    
+                  </div>
+                  
+                
+
+              </q-tab-panel>
+            </q-tab-panels>
+          </q-card>
+    
+
+
+      
+    </div>
+   
+  
+
+    
+{% endblock %}
+
+{% block script %}
+<script>
+
+new Vue({
+    el: '#app',
+    delimiters: ['${','}'],
+    data: function () {
+      return {
+        drawerState: false,
+           model_terminal : '',
+           pic_user : 'http://res.heraldm.com/phpwas/restmb_jhidxmake.php?idx=5&simg=201701181539234376570_20170118154018_02.jpg',
+           dash : {
+            backgroundColor : '#273746',
+           color : 'white'
+           },
+           
+           Deliberation : {
+           backgroundColor : '#273746',
+           color : 'white',
+       },
+
+       employee : {
+            backgroundColor : '#273746',
+           color : 'white'
+           },
+           performance_evaluation : {
+           backgroundColor : '#273746',
+           color : 'white',
+        
+       },
+       settings : {
+            backgroundColor : '#273746',
+           color : 'white'
+           },
+           Deliberation : {
+           backgroundColor : '#273746',
+           color : 'white',
+       },
+       report : {
+           backgroundColor : '#273746',
+           color : 'white',
+       },
+       concern : {
+           backgroundColor : '#273746',
+           color : 'white',
+       },
+ 
+      
+      tab: 'employeelist',
+      message : '',
+      fullname : ' ',
+      middlename : ' ',
+      lastname : '',
+      datehired : '',
+      designation : '',
+      joblevel : '',
+      department : 'Operations',
+      decision : '',
+      go : false,
+      //201
+      displayfirstname : 'fir',
+          displaylastname : 'jj',
+          displaymiddldname : 'fdfd',
+          displaydatehired : '09/12/45',
+          displaydesignation : 'drvier',
+          displaydepartmentsection : 'Operation' ,   
+          displayplaceofassignment : 'cubao', 
+          displayjobstatus : 'probatioanary', 
+          DataforDeleberation  : [],
+          global_hostname : '',
+          token : '',
+         CurrentEmployee : [],
+         final201file : [],
+         documents : [],
+         EvaluationPeriod : [],
+         PerMonth : [],
+         PerCriteria : [],
+         HrCopy : [],
+         //for tommorow
+         final_month : [],
+         GlobalEmpcode : '',
+         GlobaEvaluationId : 0,
+         FilteredEvaluationSheet : [],
+         participantstable : [],
+         dataMONITORED : [],
+         ParticipantsTable : [],
+         deliberation_length : '',
+         DataforDeleberation_final : [],
+
+         EVALUATIONCOPY_FROM_HR : [],
+         GET_PER_MONTH : [],
+         get_PER_CRITERIA : [],
+         final_evaluation_sheet :[],
+         render : [],
+         display_criteria : [
+            // {
+            //   'cri' : 'Eff',
+            //   'score' : [
+            //     {
+            //      'score' : '30'
+            //     },
+            //     {
+            //      'score' : '40'
+            //     }
+            //   ]
+            // },
+            // {
+            //   'cri' : 'qw'
+            // },
+            // {
+            //   'cri' : 'atee'
+            // }
+         ],
+         Participant_result : [],
+         HrCopy_RESULT  : [],
+         HRCOPYANDPARTICIPANTVOTE : [],
+        score_permonth : [],
+        OptionOfParticipant : [
+        { 
+          label: 'Regularized',
+         value: 'Regularized',
+       
+       },
+       { 
+          label: 'Termination of Contract',
+         value: 'Termination of Contract',
+         
+       },
+       { 
+          label: 'Termination of Contract with Chance',
+         value: 'Termination of Contract with Chance',
+         
+       },
+
+        ],
+        columns: [
+          
+          {
+          name: 'CaseNO',
+          required: true,
+          label: 'CaseNO',
+          align: 'left',
+          field: row => row.CaseNO,
+          format: val => `${val}`,
+          sortable: true
+        },
+        { name: 'IncidentDate', align: 'center', label: 'IncidentDate', field: 'IncidentDate', sortable: true },
+        { name: 'Type', align: 'Type', label: 'Type', field: 'Type', sortable: true },
+        { name: 'NatureofOffense', label: 'NatureofOffense', field: 'NatureofOffense', sortable: true },
+        { name: 'Decision', label: 'Decision', field: 'Decision' },
+        { name: 'DateofDecision', label: 'DateofDecision', field: 'DateofDecision' },
+        { name: 'ReportedBy', label: 'ReportedBy', field: 'ReportedBy' },
+ 
+      ],
+      tvrRecord : [],
+      selectedrecord : [],
+
+search: '',
+DispatchRecord : [],
+
+         splitterModel: 50,
+      date: '',
+      events: [],
+      Dispatch_Attendance : [],
+         
+      joblevelemployee : '',
+      votelength : 0,
+      participantCount : 0,
+    checker : false,
+    columns_complaints: [
+          
+        
+        { name: 'Name', align: 'center', label: 'Customer Name', field: 'Name', sortable: true },
+        { name: 'Topic', align: 'center', label: 'Complaint', field: 'Topic', sortable: true },
+        { name: 'YourConcern', label: 'Message', field: 'YourConcern', sortable: true },
+        { name: 'OtherConcern', label: 'Other', field: 'OtherConcern' },
+        { name: 'message', label: 'Message', field: 'message' },
+        { name: 'date_created', label: 'Date', field: 'date_created' },
+        { name: 'time', label: 'Time', field: 'time' },
+     
+      ],
+      data_comlaints: [
+               
+      ],
+selected_complaints : [],
+
+terms_complaints: '',
+options_filtercustomercomplaint : [],
+model_filter_complaint : '',
+globalEMployeeCode : '',
+CustomerConcern : [],
+
+columns_commendation: [
+          
+        
+        { name: 'Name', align: 'center', label: 'Customer Name', field: 'Name', sortable: true },
+        { name: 'Topic', align: 'center', label: 'Complaint', field: 'Topic', sortable: true },
+        { name: 'YourConcern', label: 'Message', field: 'YourConcern', sortable: true },
+        { name: 'OtherConcern', label: 'Other', field: 'OtherConcern' },
+        { name: 'message', label: 'Message', field: 'message' },
+        { name: 'date_created', label: 'Date', field: 'date_created' },
+        { name: 'time', label: 'Time', field: 'time' },
+     
+      ],
+      data_commendation: [
+               
+      ],
+selected_commendation : [],
+
+terms_commendation: '',
+options_filtercustomercommendation : [],
+model_filter_commendation : '',
+CHATS : [
+                {
+                     name : 'me',
+                 avatar : 'https://cdn.quasar.dev/img/avatar3.jpg',
+                     message : ['hey, how are you?'],
+                     stamp : '7 minutes ago',
+                     sent : true,
+                     bg_color:'orange-5'           
+
+                     },
+                     {
+                          name : 'Szhane',
+                          avatar : 'https://cdn.quasar.dev/img/avatar3.jpg',
+                          message : ['okay la men','ikaw ba'],
+                          stamp : '7 minutes ago',
+                          sent   : false,
+                          bg_color:'green-5'
+                     },
+
+                     {
+                     name : 'me',
+                 avatar : 'https://cdn.quasar.dev/img/avatar3.jpg',
+                     message : ['hey, how are you?'],
+                     stamp : '7 minutes ago',
+                     sent : true,
+                     bg_color:'orange-5'           
+
+                     },
+                     {
+                     name : 'jane',
+                 avatar : 'https://cdn.quasar.dev/img/avatar3.jpg',
+                     message : ['heyu?'],
+                     stamp : '7 minutes ago',
+                     sent : false,
+                     bg_color:'orange-5'           
+
+                     },
+                     
+                   
+                   
+                  
+                     
+                                    
+          ]
+
+
+
+
+
+      //state
+          
+          
+          
+           
+
+          
+       
+      }
+
+    },beforeMount () {
+     
+      
+      var hostname = window.location.hostname;
+      var port = window.location.port
+        if(port != ''){
+
+            hostname = hostname+':8000'
+        }
+        else{
+            hostname = hostname
+        }
+
+        this.global_hostname = `${window.location.protocol}//${hostname}`;
+        var csrftoken = Cookies.get('csrftoken');
+        this.token = csrftoken
+        
+        
+        
+        
+
+
+    },
+
+
+    mounted () {
+
+      this.percriteria()
+          this.getEvaluaition_permonth()
+        this.getEvaluationperiod()
+
+      this.get_hr_copy()
+      this.participantstable_chck()
+  
+      
+     
+
+        this.GetHRCopy()
+        this.paritcipant()
+        
+        setInterval(this.updateScroll,1000);
+        setInterval(() => {
+          this.recieved()
+        }, 5000);
+
+       
+       
+    },
+    methods: {
+       updateScroll(){
+  var element = document.getElementById("mychats");
+  element.scrollTop = element.scrollHeight;
+
+},
+
+
+    
+     
+
+      recieved(){
+        var newdata = [
+
+              {
+                            name : 'jonel',
+                            avatar : 'https://cdn.quasar.dev/img/avatar3.jpg',
+                            message : 'hallofdsfldsofosdfosdfds',
+                            stamp : '7 minutes ago',
+                            sent : true,
+                            bg_color:'orange-5'           
+
+                            },
+                            
+                           
+                            
+                            
+              ]
+
+
+
+        if(this.CHATS[(this.CHATS.length-1)].name == newdata[(newdata.length-1)].name){
+          this.CHATS[(this.CHATS.length-1)].message.push(newdata[(newdata.length-1)].message)
+        }else{
+          var obj = {
+         
+              name : newdata[(newdata.length-1)].name,
+              avatar : 'https://cdn.quasar.dev/img/avatar3.jpg',
+              message : [newdata[(newdata.length-1)].message],
+              stamp : '7 minutes ago',
+              sent : false,
+              bg_color:'orange-5'           
+
+       
+        }
+        this.CHATS.push(obj)
+
+
+        }
+      },
+
+      send_chat(){
+       
+        console.log(this.CHATS[(this.CHATS.length-1)])
+      if(this.CHATS[(this.CHATS.length-1)].name == 'me'){
+
+        this.CHATS[(this.CHATS.length-1)].message.push(this.message)
+        this.message = ''
+      
+      }else{
+        // ifname in last index is same
+        var obj = {
+         
+                     name : 'me',
+                     avatar : 'https://cdn.quasar.dev/img/avatar3.jpg',
+                     message : [this.message],
+                     stamp : '7 minutes ago',
+                     sent : true,
+                     bg_color:'orange-5'           
+
+                   
+        }
+        this.CHATS.push(obj)
+        this.message = ''
+
+      }
+
+      // var user = ' {{ user }}'
+
+      // var payload = {
+      //   "evaluation_sheet": this.GlobaEvaluationId,
+      //   "messages": this.message,
+      //   "who": user,
+      //   "avatar": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcREgqNXrVLOvypD9ErW3KpeyTA79C8K7C43v3V13d15lrFljEEf",
+
+      // }
+
+      // console.log(payload)
+      // axios.post(`${this.global_hostname}/api/CHAT_BOOTS_FOR_DELIBERATION/`,payload,{
+       
+      //    headers: {
+      //          'Content-Type': 'application/json',
+      //           'X-CSRFToken': this.token
+      //    }
+        
+      // })
+      // .then(res => {
+      //   console.log(res)
+      // })
+      // .catch(err => {
+      //   console.error(err); 
+      // })
+        // var obj_message = {
+        
+        //                   name : 'Szhane',
+        //                   avatar : 'https://cdn.quasar.dev/img/avatar3.jpg',
+        //                   message : ,
+        //                   stamp : '7 minutes ago',
+        //                   sent   : false,
+        //                   bg_color:'green-5'
+                     
+
+        // }
+      },
+      logout(){
+              axios.post(`${this.global_hostname}/logout/`,{
+                  
+                   headers: {
+                               'Content-Type': 'application/json',
+                                  'X-CSRFToken': this.token
+                   }
+                  
+              })
+              .then(res => {
+                  window.location.replace(`${this.global_hostname}/login/`)
+                
+              })
+              .catch(err => {
+                  
+              })
+
+              
+        },
+        paritcipant(){
+
+          axios.get(`${this.global_hostname}/api/UserLevelEachEmployee/`,{
+               headers: {
+                   'Content-Type': 'application/json',
+                    'X-CSRFToken': this.token
+             }
+            
+          })
+          .then(res => {
+            console.log(res)
+
+                var filterdata = res.data.filter(
+                  (element)=>{
+                    return element.DeliberationModule == true
+                  }
+                )
+                var count = filterdata.length
+                
+                // haru
+                      this.checkvoteslenght()
+                     
+
+
+                          setInterval(() => {
+                            
+                            this.checkvoteslenght()
+                            
+
+
+                          }, 1000);
+
+
+
+
+          })
+          .catch(err => {
+            console.error(err); 
+          })
+        },
+
+        checkvoteslenght(){
+         
+          var previos = this.votelength
+          axios.get(`${this.global_hostname}/api/GET_PARTICIPANTS_VOTE/`,{
+            
+             headers: {
+                   'Content-Type': 'application/json',
+                    'X-CSRFToken': this.token
+             }
+            
+          })
+          .then(res => {
+            console.log(res)
+            console.log(`${previos  } ${res.data.length}`)
+          
+            
+                if(previos < res.data.length){
+                      this.get_hr_copy()
+                      this.GetHRCopy()
+                      console.log('carulasan')
+                      this.$q.notify({ //put dollor sign(q)
+                    message: `New Vote`,
+                    timeout: 3000, // in milliseconds; 0 means no timeout
+
+                    color: 'orange',
+                    textColor: 'white', // if default 'white' doesn't fit
+                  icon: 'check', //or  avatar: 'statics/boy-avatar.png',
+
+                  position: 'top', // 'top', 'left', 'bottom-left' etc.
+
+                  })
+            }
+            
+
+            this.votelength = res.data.length
+              
+
+          
+
+           
+          
+           
+          })
+          .catch(err => {
+            console.error(err); 
+          })
+
+          
+        },
+
+        
+        filtermoyungcommendation(){
+          
+          axios.get(`${this.global_hostname}/api/GET_CustomerConcern/`,{
+            
+            headers: {
+                  'Content-Type': 'application/json',
+                   'X-CSRFToken': this.token
+            }
+           
+         })
+         .then(res => {
+           this.CustomerConcern = res.data
+
+                // hai
+                    var data = this.CustomerConcern.filter(
+                      (element)=>{
+                        return element.ConcernType.toLowerCase().includes('complement') && element.EmpCode == this.globalEMployeeCode && (new Date(element.date_created).toString().substring(4,7)+new Date(element.date_created).getFullYear()) == this.model_filter_commendation
+                      }
+                    )
+                      // andi
+                    var temp = []
+                    for (let index = 0; index < data.length; index++) {
+                      const element = data[index];
+                      var obj ={
+                        "id": 22,
+                        "ConcernType":element.ConcernType,
+                        "ConcernCategory": element.ConcernCategory,
+                        "EmpCode": element.EmpCode,
+                        "ConcernCategoryIDPlace": element.ConcernCategoryIDPlace,
+                        "Name": element.Name,
+                        "message" : element.YourConcern,
+                        "Topic": element.Topic,
+                        "OtherConcern": element.OtherConcern,
+                        "date_created": new Date(element.date_created).toString().substring(0,15),
+                        "time" : this.formatAMPM(new Date(element.date_created))
+
+
+
+                      }
+                    
+                      
+                      
+                      temp.push(obj)
+                      if(index == data.length - 1){
+                        this.data_commendation = temp
+                        
+                      }
+                      
+                    }
+
+
+                    if(this.model_filter_commendation == 'No Filter'){
+
+
+                      
+                        var data = this.CustomerConcern.filter(
+                          (element)=>{
+                            return element.ConcernType.toLowerCase().includes('complement') && element.EmpCode == this.globalEMployeeCode
+                          }
+                        )
+                          // andi
+                        var temp = []
+                        for (let index = 0; index < data.length; index++) {
+                          const element = data[index];
+                          var obj ={
+                            "id": 22,
+                            "ConcernType":element.ConcernType,
+                            "ConcernCategory": element.ConcernCategory,
+                            "EmpCode": element.EmpCode,
+                            "ConcernCategoryIDPlace": element.ConcernCategoryIDPlace,
+                            "Name": element.Name,
+                            "message" : element.YourConcern,
+                            "Topic": element.Topic,
+                            "OtherConcern": element.OtherConcern,
+                            "date_created": new Date(element.date_created).toString().substring(0,15),
+                            "time" : this.formatAMPM(new Date(element.date_created))
+
+
+
+                          }
+                        
+                          
+                          
+                          temp.push(obj)
+                          if(index == data.length - 1){
+                            this.data_commendation = temp
+                            
+                          }
+                          
+                        }
+
+
+
+
+
+                    }
+
+          
+
+
+
+
+
+         })
+         .catch(err => {
+           console.error(err); 
+         })
+
+
+
+
+        },
+
+
+       
+        
+        filtermoyungcomplaint(){
+         
+          axios.get(`${this.global_hostname}/api/GET_CustomerConcern/`,{
+            
+            headers: {
+                  'Content-Type': 'application/json',
+                   'X-CSRFToken': this.token
+            }
+           
+         })
+         .then(res => {
+           this.CustomerConcern = res.data
+
+                // hai
+                    var data = this.CustomerConcern.filter(
+                      (element)=>{
+                        return element.ConcernType.toLowerCase().includes('complaint') && element.EmpCode == this.globalEMployeeCode && (new Date(element.date_created).toString().substring(4,7)+new Date(element.date_created).getFullYear()) == this.model_filter_complaint
+                      }
+                    )
+                      // andi
+                    var temp = []
+                    for (let index = 0; index < data.length; index++) {
+                      const element = data[index];
+                      var obj ={
+                        "id": element.id,
+                        "ConcernType":element.ConcernType,
+                        "ConcernCategory": element.ConcernCategory,
+                        "EmpCode": element.EmpCode,
+                        "ConcernCategoryIDPlace": element.ConcernCategoryIDPlace,
+                        "Name": element.Name,
+                        "message" : element.YourConcern,
+                        "Topic": element.Topic,
+                        "OtherConcern": element.OtherConcern,
+                        "date_created": new Date(element.date_created).toString().substring(0,15),
+                        "time" : this.formatAMPM(new Date(element.date_created))
+
+
+
+                      }
+                    
+                      
+                      
+                      temp.push(obj)
+                      if(index == data.length - 1){
+                        this.data_comlaints = temp
+                        
+                      }
+                      
+                    }
+
+
+                    if(this.model_filter_complaint == 'No Filter'){
+
+                        var data = this.CustomerConcern.filter(
+                          (element)=>{
+                            return element.ConcernType.toLowerCase().includes('complaint') && element.EmpCode == this.globalEMployeeCode
+                          }
+                        )
+                          // andi
+                        var temp = []
+                        for (let index = 0; index < data.length; index++) {
+                          const element = data[index];
+                          var obj ={
+                            "id": element.id,
+                            "ConcernType":element.ConcernType,
+                            "ConcernCategory": element.ConcernCategory,
+                            "EmpCode": element.EmpCode,
+                            "ConcernCategoryIDPlace": element.ConcernCategoryIDPlace,
+                            "Name": element.Name,
+                            "message" : element.YourConcern,
+                            "Topic": element.Topic,
+                            "OtherConcern": element.OtherConcern,
+                            "date_created": new Date(element.date_created).toString().substring(0,15),
+                            "time" : this.formatAMPM(new Date(element.date_created))
+
+
+
+                          }
+                        
+                          
+                          
+                          temp.push(obj)
+                          if(index == data.length - 1){
+                            this.data_comlaints = temp
+                            
+                          }
+                          
+                        }
+
+                    }
+
+
+         })
+         .catch(err => {
+           console.error(err); 
+         })
+
+
+
+
+        },
+
+
+
+        displayCommendation(empcode){
+
+axios.get(`${this.global_hostname}/api/GET_CustomerConcern/`,{
+  
+  headers: {
+        'Content-Type': 'application/json',
+         'X-CSRFToken': this.token
+  }
+ 
+})
+.then(res => {
+ this.CustomerConcern = res.data
+
+          var data = this.CustomerConcern.filter(
+            (element)=>{
+              return element.ConcernType.toLowerCase().includes('complement') && element.EmpCode == empcode
+            }
+          )
+            // andi
+          var temp = []
+          for (let index = 0; index < data.length; index++) {
+            const element = data[index];
+            var obj ={
+              "id": 22,
+              "ConcernType":element.ConcernType,
+              "ConcernCategory": element.ConcernCategory,
+              "EmpCode": element.EmpCode,
+              "ConcernCategoryIDPlace": element.ConcernCategoryIDPlace,
+              "Name": element.Name,
+              "message" : element.YourConcern,
+              "Topic": element.Topic,
+              "OtherConcern": element.OtherConcern,
+              "date_created": new Date(element.date_created).toString().substring(0,15),
+              "time" : this.formatAMPM(new Date(element.date_created))
+
+
+
+            }
+            this.options_filtercustomercommendation.push(new Date(element.date_created).toString().substring(4,7)+new Date(element.date_created).getFullYear())
+            
+            
+            temp.push(obj)
+            if(index == data.length - 1){
+              this.data_commendation = temp
+
+              this.options_filtercustomercommendation.push('No Filter')
+             var a =  [...new Set(this.options_filtercustomercommendation)]
+             this.options_filtercustomercommendation =a 
+            }
+            
+          }
+
+
+
+
+
+
+
+})
+.catch(err => {
+ console.error(err); 
+})
+
+
+
+
+
+
+},
+
+        displayComplaint(empcode){
+
+axios.get(`${this.global_hostname}/api/GET_CustomerConcern/`,{
+  
+  headers: {
+        'Content-Type': 'application/json',
+         'X-CSRFToken': this.token
+  }
+ 
+})
+.then(res => {
+ this.CustomerConcern = res.data
+
+          var data = this.CustomerConcern.filter(
+            (element)=>{
+              return element.ConcernType.toLowerCase().includes('complaint') && element.EmpCode == empcode
+            }
+          )
+            // andi
+          var temp = []
+          for (let index = 0; index < data.length; index++) {
+            const element = data[index];
+            var obj ={
+              "id": element.id,
+              "ConcernType":element.ConcernType,
+              "ConcernCategory": element.ConcernCategory,
+              "EmpCode": element.EmpCode,
+              "ConcernCategoryIDPlace": element.ConcernCategoryIDPlace,
+              "Name": element.Name,
+              "message" : element.YourConcern,
+              "Topic": element.Topic,
+              "OtherConcern": element.OtherConcern,
+              "date_created": new Date(element.date_created).toString().substring(0,15),
+              "time" : this.formatAMPM(new Date(element.date_created))
+
+
+
+            }
+            this.options_filtercustomercomplaint.push(new Date(element.date_created).toString().substring(4,7)+new Date(element.date_created).getFullYear())
+            
+            
+            temp.push(obj)
+            if(index == data.length - 1){
+              this.data_comlaints = temp
+              this.options_filtercustomercomplaint.push('No Filter')
+              var a = [...new Set(this.options_filtercustomercomplaint)]
+              this.options_filtercustomercomplaint = a
+            }
+            
+          }
+
+
+
+
+
+
+
+})
+.catch(err => {
+ console.error(err); 
+})
+
+
+
+
+
+
+},
+formatAMPM(date) {
+  var hours = date.getHours();
+  var minutes = date.getMinutes();
+  var ampm = hours >= 12 ? 'pm' : 'am';
+  hours = hours % 12;
+  hours = hours ? hours : 12; 
+  minutes = minutes < 10 ? '0'+minutes : minutes;
+  var strTime = hours + ':' + minutes + ' ' + ampm;
+ 
+  return strTime;
+ },
+
+
+        GetTvrRecord(empcode){
+          // andi complaint
+          this.displayComplaint(empcode)
+          this.displayCommendation(empcode)
+          this.globalEMployeeCode = empcode
+
+          this.GetAttedance(empcode)
+          var employeeempcode = empcode
+          axios.get(`${this.global_hostname}/api/TVR/`,{
+           
+             headers: {
+                   'Content-Type': 'application/json',
+                    'X-CSRFToken': this.token
+             }
+            
+          })
+          .then(res => {
+            var data = res.data
+            
+            var obj = data.filter(
+              (element)=>{
+                return element.EmpCode == employeeempcode
+              }
+            )
+           
+            var temp = []
+            for (let index = obj.length - 1; index >0; index--) {
+              const element = obj[index];
+
+
+              var obj = {
+                "id": element.id,
+                "EmpCode": element.EmpCode,
+                "CaseNO": element.CaseNO,
+                "IncidentDate": new Date(element.IncidentDate).toString().substring(0,15),
+                "Type": element.Type,
+                "NatureofOffense": element.NatureofOffense,
+                "Decision": element.Decision,
+                "DateofDecision": element.DateofDecision,
+                "ReportedBy": element.ReportedBy
+              }
+              this.tvrRecord.push(obj)
+
+
+            
+           
+            }
+
+
+          })
+          .catch(err => {
+            console.error(err); 
+          })
+        },
+        GetAttedance(empcode){
+          var empcod = empcode
+      
+            axios.get(`${this.global_hostname}/api/Employee/`,{
+             
+               headers: {
+                     'Content-Type': 'application/json',
+                      'X-CSRFToken': this.token
+               }
+              
+            })
+            .then(res => {
+                  var data  = res.data
+
+              var ifo = data.filter(
+                (element)=>{
+                  return element.EmpCode == empcode
+
+                }
+              )
+               
+                if(ifo[0].Designation.toLowerCase().includes('bus driver') || ifo[0].Designation.toLowerCase().includes('conductor')){
+                    this.dispatch(empcod)
+                }else{
+                  this.TimeKeepingsystem(empcod)
+                }
+            })
+            .catch(err => {
+              console.error(err); 
+            })
+
+        },
+        TimeKeepingsystem(empcod){
+          var empcode = empcod
+          axios.get(`${this.global_hostname}/api/TIMEKEEPING/`,{
+          
+             headers: {
+                   'Content-Type': 'application/json',
+                    'X-CSRFToken': this.token
+             }
+            
+          })
+          .then(res => {
+            var data = res.data
+
+            var filterdata = data.filter(
+              (element)=>{
+                return element.EmpCode == empcode
+              }
+            )
+            //identify jobtitle
+            this.joblevelemployee  = filterdata[0].Position.toLowerCase()
+            var temp= []
+            var date_collection = []
+            for (let index = filterdata.length -1 ; index >0; index--) {
+              const element = filterdata[index];
+              var date_identifier = element.date_created.substring(0,10).replace(/-/g,"/")
+             
+              date_collection.push(date_identifier)
+              console.log(date_collection)
+
+              
+            //  finaldispatch
+              // this.DispatchRecord.push(obj)
+              if(index == 1){
+            
+                this.events = date_collection
+             
+                var newset = [...new Set(date_collection)]
+             
+               
+                var AttendanceInformation = []
+                for (let index = 0; index < newset.length; index++) {
+                  const element = newset[index];
+                  var  obj = {
+                    
+                      "identifier" : element,
+                      "info" : this.getpinsokan(filterdata,element)
+                    
+               
+            
+    
+                     }
+                     AttendanceInformation.push(obj)
+                     if(index == newset.length - 1){
+                        console.log('diapct information')
+
+                        console.log(AttendanceInformation)
+                        this.Dispatch_Attendance = AttendanceInformation
+                        this.date = this.AttendanceInformation[0].identifier
+                     }
+                  
+                }
+              }
+
+            }
+
+
+
+
+          })
+          .catch(err => {
+            console.error(err); 
+          })
+        },
+        dispatch(empcod){
+          var empcode = empcod
+          axios.get(`${this.global_hostname}/api/DISPATCH/`,{
+          
+             headers: {
+                   'Content-Type': 'application/json',
+                    'X-CSRFToken': this.token
+             }
+            
+          })
+          .then(res => {
+            var data= res.data
+            var filterdata = data.filter(
+              (element)=>{
+                return element.EmpCode == empcode
+              }
+            )
+            //identify jobtitle
+            this.joblevelemployee  = filterdata[0].EmpPosition.toLowerCase()
+            var temp= []
+            var date_collection = []
+            for (let index = filterdata.length -1 ; index >0; index--) {
+              const element = filterdata[index];
+              var date_identifier = element.date_created.substring(0,10).replace(/-/g,"/")
+             
+              date_collection.push(date_identifier)
+              console.log(date_collection)
+
+              
+            //  finaldispatch
+              // this.DispatchRecord.push(obj)
+              if(index == 1){
+            
+                this.events = date_collection
+                var newset = [...new Set(date_collection)]
+               
+                var AttendanceInformation = []
+                for (let index = 0; index < newset.length; index++) {
+                  const element = newset[index];
+                  var  obj = {
+                    
+                      "identifier" : element,
+                      "info" : this.getpinsokan(filterdata,element)
+                    
+               
+            
+    
+                     }
+                     AttendanceInformation.push(obj)
+                     if(index == newset.length - 1){
+                        console.log('diapct information')
+
+                        console.log(AttendanceInformation)
+                        this.Dispatch_Attendance = AttendanceInformation
+                        this.date = this.AttendanceInformation[0].identifier
+                     }
+                  
+                }
+              }
+              console.log('dispatch')
+              console.log(this.DispatchRecord) 
+              
+              
+            }
+          })
+          .catch(err => {
+            console.error(err); 
+          })
+
+
+
+
+        },
+
+        getpinsokan(data,date){
+          // var data = [
+            
+          // ]
+
+          var filterred = data.filter(
+            (element)=>{
+              return element.date_created.substring(0,10).replace(/-/g,"/") == date
+            }
+          )
+
+          console.log('cariadfasdm')
+          console.log(filterred,date)
+          console.log(filterred)
+          return filterred
+
+        },
+      GetHRCopy(){
+
+          axios.get(`${this.global_hostname}/api/GET_HR_COPY_EVALUATION_RESULT/`,{
+           
+             headers: {
+                   'Content-Type': 'application/json',
+                    'X-CSRFToken': this.token
+             }
+            
+          })
+          .then(res => {
+          var hrcopy = res.data
+          this.HrCopy_RESULT = hrcopy
+          this.GetParticipantVote()
+
+          })
+          .catch(err => {
+            console.error(err); 
+          })
+},
+
+GetParticipantVote(){
+  axios.get(`${this.global_hostname}/api/GET_PARTICIPANTS_VOTE/`,{
+   
+
+
+     headers: {
+           'Content-Type': 'application/json',
+            'X-CSRFToken': this.token
+     }
+    
+  })
+  .then(res => {
+  
+
+    var participant = res.data
+    this.Participant_result = participant
+
+
+    this.sorter()
+  })
+  .catch(err => {
+    console.error(err); 
+  })
+},
+sorter(){
+
+  var temp = []
+
+
+  for (let index = 0; index < this.HrCopy_RESULT.length; index++) {
+    const element = this.HrCopy_RESULT[index];
+          var participantvote = this.participants_solve(element.id)
+          var length = 0
+         try {
+          
+           length =  participantvote.length
+          
+         } catch (error) {
+           length = 0
+           console.log()
+         }
+        
+          var obj = {
+            "length" : length,
+            "id": element.id,
+            "empcode": element.empcode,
+            "evaluation_sheet": element.evaluation_sheet,
+            "employeefullname": element.employeefullname,
+            "datehired": element.datehired,
+            "jobstatus": element.jobstatus,
+            "supervisorrater": element.supervisorrater,
+            "send": element.send,
+            "designation": element.designation,
+            "departmentsection": element.departmentsection,
+            "placeofassignment": element.placeofassignment,
+            "readyfordeliberation": element.readyfordeliberation,
+            "delibationisdone": element.delibationisdone,
+            "date_created": element.date_created,
+            "date_updated": element.date_updated,
+            "participant" : participantvote,
+            //step1
+          }
+
+          temp.push(obj)
+          var a = new Date()
+          if(index == this.HrCopy_RESULT.length - 1){
+            var a = temp.filter(
+              (element)=>{
+                  return element.readyfordeliberation == true && element.delibationisdone == false && a.getDate() ==  new Date(element.date_updated).getDate()
+              }
+            )
+            this.HRCOPYANDPARTICIPANTVOTE = temp
+           
+            
+          }
+
+    
+  }
+
+},
+participants_solve(hrcopyid){
+
+        var id = hrcopyid
+              var participant =  this.Participant_result
+        var data = participant.filter(
+          function (element){
+            return element.evaluation_sheet == id
+          },
+
+
+
+
+          )
+        var temp  =  []
+          for (let index = 0; index < data.length; index++) {
+            const element = data[index];
+            var ob = {
+                      "id": element.id,
+                "evaluation_sheet": element.evaluation_sheet,
+                "participants": element.participants,
+                "finaldecision": element.finaldecision,
+                "date_created": this.sort_date_sorted(element),
+
+                "date_updated": element.date_updated
+            }
+            temp.push(ob)
+            var len = []
+            if(index  == data.length - 1){
+              var datas = temp
+              if(datas.length >=2){
+                var optio
+                var op = this.OptionOfParticipant
+               
+                for (let index2 = 0; index2 < op.length; index2++) {
+                  const element = op[index2];
+                  var a = datas.filter(
+                    (element)=>{
+                      return element.finaldecision == element.value
+                    }
+                  )
+              
+                  len.push(a)
+                 
+                    //myend
+                }
+                //bry
+
+            //     var ob = {
+            //           "id": element.id,
+            //     "evaluation_sheet": 'status',
+            //     "participants": 'status',
+            //     "finaldecision" : 'status',
+            //     "date_created": this.sort_date_sorted(element),
+
+            //     "date_updated": element.date_updated
+                 
+            // }
+
+              }
+              return datas
+            } 
+          }
+
+
+
+
+
+},
+
+sort_date_sorted(element){
+
+var d = new Date();
+
+var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+
+var init_y = element.date_created.substring(0,4);
+var init_m  = parseInt(element.date_created.substring(5,7));
+var init_d = element.date_created.substring(8,10);
+var d = new Date(init_y,init_m,init_d);
+var m  = months[parseInt(d.getMonth()) - 1];
+
+var y = d.getFullYear()
+var d = d.getDate();
+var result = `${m} ${d}, ${y}`
+return result
+
+
+
+},
+Gettheparticipant(){
+
+},
+
+
+
+
+        yourmessage(){
+       
+
+          
+        },
+       get_documents(empcode,category){
+          
+            var empcode_code = empcode
+            var category_cat = category
+            
+              
+                  var info = this.documents
+                  var array = []
+
+                  for (let index = 0; index < info.length; index++) {
+                    const element = info[index];
+
+                    if( element.empcode == empcode_code  && element.category == category_cat ){
+                   
+                              var str = element.files
+                                var res = str.charAt(str.length-3);
+                                res += str.charAt(str.length-2);
+                                res += str.charAt(str.length-1);
+
+                                var obj = {
+                                  "Description": element.Description,
+                                  "category": element.category,
+                                  "classification": element.classification,
+                                  "empcode": element.empcode,
+                                  "files": element.files,
+                                  "id": element.id,
+                                  "url": element.url,
+                                  "icon" : res
+                                }
+                               
+
+                          array.push(obj)
+                    }
+
+                    if(index == info.length -1 ){
+
+
+                      return array
+                    }
+                    
+                  }
+                  //  var filterdbyempcode = info.filter(
+                  //       function(element){
+                       
+                  //          return element.empcode == empcode_code && element.category == category_cat
+                  //       }
+                  //  )
+                   
+                  
+                 
+                   
+                  
+                 
+                  
+                  
+                 
+        
+       
+       },
+
+       get_criteria(id,empcode){
+            var percriteria = this.PerCriteria
+            var aa = id
+          
+            var info = percriteria.filter(
+                    function(element){
+
+                        return element.evaluation_period_per_month == aa
+                    }
+            )
+                    //kahapon
+        
+            return info
+
+
+       },
+
+       getPermonth(id,empcode){
+         //get tvr record for emplyee
+        
+              var data = this.PerMonth
+
+          var temp = []
+              for (let index = 0; index < data.length; index++) {
+                const element = data[index];
+                if(element.empcode == empcode){
+
+                      var obj = {
+                        "id": element.id,
+                        "empcode": element.empcode,
+                        "evaluation_period": element.evaluation_period,
+                        "month_name": element.month_name,
+                        "criteria" : this.get_criteria(element.id,empcode)
+                      
+                      }
+
+                      temp.push(obj)
+
+                }
+
+                if(index == data.length - 1){
+                 
+
+                  return temp
+
+
+
+                }
+                
+              }
+           
+
+              
+
+
+       },
+
+       //sort the evaluation
+       sort(empcode){
+       
+        this.GetTvrRecord(empcode)
+          
+           //   EvaluationPeriod : [],
+        //  PerMonth : [],
+        //  PerCriteria : [],
+        //  HrCopy : [],
+
+        var temp = []
+            var hrcopy = this.HrCopy
+          
+            for (let index = 0; index < hrcopy.length; index++) {
+              const element = hrcopy[index];
+
+
+              var obj = {
+                  "id": element.id,
+                    "empcode": element.empcode,
+                    "evaluation_sheet": element.evaluation_sheet,
+                    "employeefullname": element.employeefullname,
+                    "datehired": element.datehired,
+                    "jobstatus": element.jobstatus,
+                    "supervisorrater": element.supervisorrater,
+                    "designation": element.designation,
+                    "departmentsection": element.departmentsection,
+                    "placeofassignment": element.placeofassignment,
+                    "readyfordeliberation": element.readyfordeliberation,
+                    "delibationisdone": element.delibationisdone,
+                    "date_created": this.sort_date(element),
+                    "date_updated": element.date_updated,
+                    "permonth" : this.getPermonth(element.id,element.empcode)
+              }
+             temp.push(obj)
+              if(index == hrcopy.length -1){
+
+
+                this.final_month = temp
+               
+
+              }
+
+              
+            }
+
+
+
+       },
+       sort_date(element){
+
+        var d = new Date();
+        var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+       
+        
+         var init_y = element.date_created.substring(0,4);
+          var init_m  = parseInt(element.date_created.substring(6,7));
+         var init_d = element.date_created.substring(8,10);
+        var d = new Date(init_y,init_m,init_d);
+         var m  = months[parseInt(d.getMonth()) - 1];
+         var y = d.getFullYear()
+        var d = d.getDate();
+         var result = `${m} ${d}, ${y}`
+        return result
+        
+        
+        
+       },
+         //get 201 file
+       get_201_file(empcode){
+        setTimeout(() => {
+          this.solver(empcode)
+        },3000);
+
+         axios.get(`${this.global_hostname}/api/GET_DOCUMENT_201_CONTENT/`,{
+          
+            headers: {
+                  'Content-Type': 'application/json',
+                   'X-CSRFToken': this.token
+            }
+           
+         })
+         .then(res => {
+            this.documents = res.data
+            this.$q.loading.hide()
+         })
+         .catch(err => {
+          
+         })
+
+
+
+         var file = []
+         
+           axios.get(`${this.global_hostname}/api/DOCUMENT_201_COLUMN/`,{
+                  
+                   headers: {
+                               'Content-Type': 'application/json',
+                                  'X-CSRFToken': this.token
+                   }
+                  
+              })
+              .then(res => {
+              
+                  var data = res.data
+                  
+                  for(var i = 0 ; i < data.length ; i++){
+                           let element = data[i]
+                           
+                           var obj = {
+                                    "id": element.id,
+                                    "category": element.category,
+                                    "documents" : this.get_documents(empcode,element.category),
+                                    "evaluation" : this.sort(empcode)
+                           }
+                           file.push(obj)
+
+
+                              if(i == data.length - 1){
+                                  
+                                    this.final201file = file
+                                 
+                                    
+                                
+                                  
+                                  }
+                  }  
+                 
+                
+              })
+              .catch(err => {
+                  
+              })
+       },
+
+       savefinalscore(){
+        //CARULASAN
+         var obj = {
+          "evaluation_sheet": `${this.global_hostname}/api/HR_COPY_EVALUATION_RESULT/${this.GlobaEvaluationId}/`,
+        "participants": '{{user}}',
+        "finaldecision": this.decision,
+         } 
+         
+         
+          this.$q.loading.show({message: 'Saving.... <b>process</b> Please wait.<br/><span class="text-primary"></span>'
+           })
+
+                    axios.post(`${this.global_hostname}/api/PARTICIPANTS_VOTE/`,obj,{
+       
+            headers: {
+                  'Content-Type': 'application/json',
+                   'X-CSRFToken': this.token
+            }
+           
+         })
+         .then(res => {
+           console.log(res)
+
+
+            //  dito fdasfd
+                       
+
+              this.decision = ''
+
+      //         this.percriteria()
+      //     this.getEvaluaition_permonth()
+      //   this.getEvaluationperiod()
+
+      // this.get_hr_copy()
+      // this.participantstable_chck()
+  
+      
+     
+
+      //   this.GetHRCopy()
+
+          this.CHECKVOTES(this.GlobaEvaluationId)
+                       
+           
+         })
+         .catch(err => {
+           console.error(err); 
+         })
+
+
+
+
+
+
+
+         var evaluation_id = this.GlobaEvaluationId
+         var empcode = this.GlobalEmpcode
+
+//          var payload ={
+           
+//                     "evaluation_sheet": `${this.global_hostname}/api/HR_COPY_EVALUATION_RESULT/${evaluation_id}/`,
+//               "participants": '{{ user }}',
+//               "finaldecision": this.decision,
+
+//          }
+//          alert()
+//         console.log('^^^^^^^^^^^^^^^^^^ CARULAFNASF')
+//         console.log(payload)
+//          axios.post(`${this.global_hostname}/api/PARTICIPANTS_VOTE/`,payload,{
+       
+//             headers: {
+//                   'Content-Type': 'application/json',
+//                    'X-CSRFToken': this.token
+//             }
+           
+//          })
+//          .then(res => {
+//            console.log(res)
+
+// this.participantstable_chck()
+         
+//             //brylle
+
+// this.decision = ''
+            
+           
+//          })
+//          .catch(err => {
+//            console.error(err); 
+//          })
+
+         
+       },
+
+
+       CHECKVOTES(EVALUATIONSHEET){
+         var evaluationsheet = EVALUATIONSHEET
+         axios.get(`${this.global_hostname}/api/GET_PARTICIPANTS_VOTE/`,{
+        
+            headers: {
+                  'Content-Type': 'application/json',
+                   'X-CSRFToken': this.token
+            }
+           
+         })
+         .then(res => {
+            var info = res.data
+              var filteredresult = info.filter(
+                (element)=>{
+                  return element.evaluation_sheet == evaluationsheet
+                }
+              )
+
+              var count = filteredresult.length
+              if(count == 3){
+                //DECISION
+
+                var option  = this.OptionOfParticipant
+                var counter = 0
+                var array = []
+                for (let index = 0; index < option.length; index++) {
+                  const element1 = option[index];
+                  console.log(element1)
+                  
+                   
+                    var natira = filteredresult.filter(
+                      (element)=>{
+                        return element.finaldecision == element1.value
+                      } 
+                    )
+                    counter = natira.length
+                      array.push(counter)
+
+                      if(index == option.length - 1){
+                          console.log(array)
+                          var set = [...new Set(array)]//201
+                          var getindex = array.indexOf(Math.max(...set))
+
+                          console.log(option[getindex].value)
+                       
+                        
+
+                         var obj = {
+                          "evaluation_sheet": `${this.global_hostname}/api/HR_COPY_EVALUATION_RESULT/${this.GlobaEvaluationId}/`,
+                        "participants": 'finaldecision',
+                        "finaldecision": option[getindex].value,
+                        } 
+
+                        axios.post(`${this.global_hostname}/api/PARTICIPANTS_VOTE/`,obj,{
+                         
+                           headers: {
+                                 'Content-Type': 'application/json',
+                                  'X-CSRFToken': this.token
+                           }
+                          
+                        })
+                        .then(res => {
+                          
+                          location.reload()
+                          
+                        })
+                        .catch(err => {
+                          console.error(err); 
+                        })
+                        
+                        
+                      }
+                }
+
+              }else{
+                location.reload()
+              }
+
+
+         })
+         .catch(err => {
+           console.error(err); 
+         })
+
+       },
+       part(id){
+
+        var participant = this.participantstable
+
+        var temp = []
+        for (let index2 = 0; index2 < participant.length; index2++) {
+                const element2 = participant[index2];
+
+                   
+
+
+
+
+                   if(id == element2.evaluation_sheet){
+                     var obj_2 = {
+                      "id": 1,
+                    "evaluation_sheet": element2.evaluation_sheet,
+                    "participants": element2.participants,
+                    "finaldecision": element2.finaldecision,
+                    "date_created": this.dateformtter(element2.date_created),
+                     }
+
+                    temp.push(obj_2)
+                    
+
+
+                      
+
+
+                      
+                   }
+
+                   if(index2 == participant.length - 1 ){
+
+                  
+                    return temp
+                   
+
+
+                   }
+              }
+
+
+       },
+       checktheparticipantstable(){
+          var data = this.FilteredEvaluationSheet
+         
+
+
+      
+        var datastore = []
+        for (let index = 0; index < data.length; index++) {
+          const element = data[index];
+       
+             var obj = {
+                      "empcode": element.empcode,
+                      "evaluation_sheet": element.evaluation_sheet,
+                      "employeefullname": element.employeefullname,
+                      "datehired": element.datehired,
+                      "jobstatus": element.jobstatus,
+                      "supervisorrater": element.supervisorrater,
+                      "designation": element.designation,
+                      "departmentsection": element.departmentsection,
+                      "placeofassignment": element.placeofassignment,
+                     
+                      "participant" : this.part(element.id)
+                    }
+
+                    datastore.push(obj)
+
+
+                    if(index == data.length - 1){
+                      this.dataMONITORED = datastore
+                    }
+
+
+
+              
+             
+
+          
+        }
+
+
+         
+
+       },
+       //format date into string
+       dateformtter(element){
+
+          
+            var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            
+             var init_y = element.substring(0,4);
+              var init_m  = parseInt(element.substring(6,7));
+             var init_d = element.substring(8,10);
+            var d = new Date(init_y,init_m,init_d);
+             var m  = months[parseInt(d.getMonth()) - 1];
+             var y = d.getFullYear()
+            var d = d.getDate();
+             var result = `${m} ${d}, ${y}`
+
+             return result
+
+            
+            
+            
+
+
+       },
+       get_partipantstable(){
+         axios.get(`${this.global_hostname}/api/GET_PARTICIPANTS_VOTE/`,{
+         
+            headers: {
+                  'Content-Type': 'application/json',
+                   'X-CSRFToken': this.token
+            }
+           
+         })
+         .then(res => {
+         
+            var user = '{{ user }}'
+            this.participantstable = res.data
+
+          
+
+            this.Monitortheresult()
+           
+
+
+            var container = []
+          
+            
+          
+
+
+         })
+         .catch(err => {
+           console.error(err); 
+         })
+       },
+       Monitortheresult(){
+
+         axios.get(`${this.global_hostname}/api/GET_HR_COPY_EVALUATION_RESULT/`,{
+          
+            headers: {
+                  'Content-Type': 'application/json',
+                   'X-CSRFToken': this.token
+            }
+           
+         })
+         .then(res => {
+        
+                      var data = res.data
+
+                        var filteredForDeliberation = data.filter(
+                          function(element){
+
+                                return element.readyfordeliberation == true && element.delibationisdone == false
+                          }
+                        )
+
+
+                        var monitoredinfo = filteredForDeliberation
+                        this.FilteredEvaluationSheet = monitoredinfo
+                        this.checktheparticipantstable()
+                      
+           
+         })
+         .catch(err => {
+           console.error(err); 
+         })
+
+       },
+         
+         //check the participants table that alraedy exist
+        get_partipantstableforrendering(){
+         axios.get(`${this.global_hostname}/api/GET_PARTICIPANTS_VOTE/`,{
+         
+            headers: {
+                  'Content-Type': 'application/json',
+                   'X-CSRFToken': this.token
+            }
+           
+         })
+         .then(res => {
+          
+           
+            
+
+            var fromparticipant = res.data
+            
+         
+            
+            var user = '{{user}}'
+           
+               
+               
+                  
+                              
+          
+
+
+         })
+         .catch(err => {
+           console.error(err); 
+         })
+       },
+       
+        //get list employee to deliberate
+        getEmployeeReadyForDeliberation(){
+
+          axios.get(`${this.global_hostname}/api/GET_HR_COPY_EVALUATION_RESULT/`,{
+          
+             headers: {
+                   'Content-Type': 'application/json',
+                    'X-CSRFToken': this.token
+             }
+            
+          })
+          .then(res => {
+           
+
+            var data = res.data
+
+              var user = '{{user}}'
+            
+             
+              
+            var filteredForDeliberation = data.filter(
+              function(element){
+              
+                    return element.readyfordeliberation == true && element.delibationisdone == false
+              }
+            )
+
+            var container = []
+           
+            
+            this.DataforDeleberation = filteredForDeliberation
+            var containerinfo = []
+         
+                //              this.go = true
+
+                // this.CurrentEmployee = this.DataforDeleberation
+                // this.DataforDeleberation_final = this.DataforDeleberation
+
+
+
+                //                this.deliberation_length = this.CurrentEmployee.length
+
+                //              this.fullname =   this.CurrentEmployee[0].employeefullname 
+
+
+                //                this.datehired  = this.CurrentEmployee[0].datehired
+                //                this.designation = this.CurrentEmployee[0].designation
+                //                this.jobstatus = this.CurrentEmployee[0].jobstatus
+                //                this.department = this.CurrentEmployee[0].departmentsection
+
+
+
+                //                 this.GlobalEmpcode = this.CurrentEmployee[0].empcode
+                //                 this.GlobaEvaluationId =  this.CurrentEmployee[0].id
+                //                this.get_201_file(this.CurrentEmployee[0].empcode)
+
+
+
+
+             
+           
+             var ids = []
+             if(this.ParticipantsTable.length > 0){
+                
+                   var containerinfo = []     
+               
+              for (let index = 0; index < this.DataforDeleberation.length; index++) {
+                const element = this.DataforDeleberation[index];
+                 //current
+                  //dito
+               
+                     for ( var i = 0 ; i < this.ParticipantsTable.length ; i++ ){
+                     var element1 = this.ParticipantsTable[i]
+                     
+                     
+            
+
+                          if((parseInt(element1.evaluation_sheet) == parseInt(element.id))  ){
+            
+                            
+                                 if(element1.participants == user){
+                               
+                                  ids.push(element1.evaluation_sheet)
+                               
+                                 }
+                               
+              
+                          
+                        
+                           
+                          }
+
+    if(index ==  this.DataforDeleberation.length -1 && i == this.ParticipantsTable.length - 1  ){
+                                    var collectionid = [...new Set(ids)]
+                                    var temp = []
+                                    var counter = 0
+                                   if(collectionid.length > 0){
+
+
+                                    for (let index = 0; index < this.DataforDeleberation.length; index++) {
+                                      const element = this.DataforDeleberation[index];
+                                              for (let index2 = 0; index2 < collectionid.length; index2++) {
+                                                const id = collectionid[index2];
+
+                                                    if(element.id == id){
+                                                      counter = 1
+
+                                                    }
+                                                    if(index2 == collectionid.length - 1){
+                                                                  if( counter == 0){
+                                                                    temp.push(element)
+
+                                                                  
+                                                                  }else{
+                                                                    counter = 0
+                                                                }
+                                                              
+                                                    }
+
+                                                  if(index == this.DataforDeleberation.length - 1 && index2 == collectionid.length - 1){
+                                                                this.CurrentEmployee = temp
+                                                              this.DataforDeleberation_final =  temp
+                                                            
+                                                      
+                                                  }
+                                        
+                                      }
+                                      
+                                    }
+
+
+                                      //end if
+                                   }
+                                   else{
+
+                                   
+
+                                    this.CurrentEmployee =  this.DataforDeleberation 
+                                    this.DataforDeleberation_final =  this.DataforDeleberation 
+                                   
+
+                                   }
+
+                              
+                        
+
+
+
+             
+         
+       
+       
+                        if(this.DataforDeleberation_final.length > 0){
+              
+
+                           this.go = true
+
+
+                               this.deliberation_length = this.CurrentEmployee.length
+
+                             this.fullname =   this.CurrentEmployee[0].employeefullname
+                          
+
+                               this.datehired  = this.CurrentEmployee[0].datehired
+                               this.designation = this.CurrentEmployee[0].designation
+                               this.jobstatus = this.CurrentEmployee[0].jobstatus
+                               this.department = this.CurrentEmployee[0].departmentsection
+
+
+                             
+                                this.GlobalEmpcode = this.CurrentEmployee[0].empcode
+                                this.GlobaEvaluationId =  this.CurrentEmployee[0].id
+                               this.get_201_file(this.CurrentEmployee[0].empcode)
+
+
+
+                          }else{
+                            this.go = false
+                            this.$q.loading.hide()
+
+
+                          }
+                          
+      
+
+               
+               
+               //don
+               }
+                        
+                        
+                        
+                        
+                        
+                        
+                       
+                        
+                        
+                  
+                  
+                    
+                  
+                 //loop 
+               }
+                 
+              
+                        
+                 
+                 
+                 
+                 
+                 
+                 
+               
+                  
+                
+              }
+             
+                
+                
+                
+                
+                //length
+                }
+             if(this.ParticipantsTable.length == 0){
+                     
+                       this.CurrentEmployee = this.DataforDeleberation
+                     this.DataforDeleberation_final = this.DataforDeleberation
+                   
+                                this.go = true
+
+
+                                    this.deliberation_length = this.CurrentEmployee.length
+
+                                  this.fullname =   this.CurrentEmployee[0].employeefullname 
+
+
+                                    this.datehired  = this.CurrentEmployee[0].datehired
+                                    this.designation = this.CurrentEmployee[0].designation
+                                    this.jobstatus = this.CurrentEmployee[0].jobstatus
+                                    this.department = this.CurrentEmployee[0].departmentsection
+
+
+
+                                     this.GlobalEmpcode = this.CurrentEmployee[0].empcode
+                                     this.GlobaEvaluationId =  this.CurrentEmployee[0].id
+                                       this.get_201_file(this.CurrentEmployee[0].empcode)
+                
+                
+                }
+              
+             
+               
+          
+          
+           
+           
+           
+           
+          })
+          .catch(err => {
+            console.error(err); 
+          })
+
+        },
+        getEvaluationperiod(){
+
+          axios.get(`${this.global_hostname}/api/POST_EVALUATION_PERIOD/`,{
+         
+                  headers: {
+                        'Content-Type': 'application/json',
+                          'X-CSRFToken': this.token
+                  }
+            
+          })
+          .then(res => {
+          
+
+            this.EvaluationPeriod = res.data
+       
+
+
+
+          })
+          .catch(err => {
+            console.error(err); 
+          })
+
+        },
+       getEvaluaition_permonth(){
+        
+
+         
+                  
+        },
+        
+        
+        participantstable_chck(){
+
+
+          axios.get(`${this.global_hostname}/api/GET_PARTICIPANTS_VOTE/`,{
+           
+             headers: {
+                   'Content-Type': 'application/json',
+                    'X-CSRFToken': this.token
+             }
+            
+          })
+          .then(res => {
+               
+
+                  this.PerMonth = res.data
+                
+            
+                this.ParticipantsTable = res.data
+                
+                this.getEmployeeReadyForDeliberation()
+              })
+              .catch(err => {
+                console.error(err); 
+              })
+              
+        },
+                    getcopyhr(){
+
+                              axios.get(`${this.global_hostname}/api/GET_HR_COPY_EVALUATION_RESULT/`,{
+                              
+                                headers: {
+                                      'Content-Type': 'application/json',
+                                        'X-CSRFToken': this.token
+                                }
+                                
+                              })
+                              .then(res => {
+                             
+                                this.HrCopy = res.data
+                              })
+                              .catch(err => {
+                                console.error(err); 
+                              })
+                            
+
+            },
+
+                    percriteria(){
+          
+
+            axios.get(`${this.global_hostname}/api/GET_PER_CRITERIA/`,{
+             
+               headers: {
+                     'Content-Type': 'application/json',
+                      'X-CSRFToken': this.token
+               }
+              
+            })
+            .then(res => {
+             
+
+
+              this.PerCriteria = res.data
+            })
+            .catch(err => {
+              console.error(err); 
+            })
+        },
+
+
+        oh_criteria(element_id){
+          var data = this.get_PER_CRITERIA
+          var id = element_id
+          var info = data.filter(
+            (element)=>{
+                return element.evaluation_period_per_month == id
+            }
+          )
+          
+            
+          return info
+
+        },
+          get_permonth_ev_result(id){
+           
+              var permonth = this.GET_PER_MONTH
+              var evaluationperiod_id = id
+
+            var obj_data = permonth.filter(
+              (element)=>{
+                  return element.evaluation_period == evaluationperiod_id
+              }
+            )
+
+
+
+
+
+          
+           
+              var temp = []
+              var data= []
+            for (let index = 0; index < obj_data.length; index++) {
+              const element = obj_data[index];
+                      if(index == 0){
+
+                        var obj = {
+                          "id": element.id,
+                          "empcode": element.empcode ,
+                          "evaluation_period": element.evaluation_period,
+                          "month_name": "Criteria ",
+                          "remarks": element.remarks,
+                          "per_criteria"  : this.oh_criteria(element.id),
+                        }
+                        temp.push(obj)
+
+                      }
+
+                var obj = {
+                  "id": element.id,
+                  "empcode": element.empcode ,
+                  "evaluation_period": element.evaluation_period,
+                  "month_name": element.month_name,
+                  "remarks": element.remarks,
+                  "per_criteria"  : this.oh_criteria(element.id),
+                }
+                temp.push(obj)
+                if(index == obj_data.length -1){
+                    data = temp
+                  
+                  
+                   return data
+
+                }
+
+                
+              
+            }
+            
+
+          },
+        //get the final results evaluationsheet
+        solver(empcode){
+         
+
+       var hrcopy =  this.EVALUATIONCOPY_FROM_HR
+         
+          var info  = hrcopy.filter(
+            (element)=>{
+                  return element.empcode == empcode
+            }
+          )
+            var obj = {
+                      "empcode": "emp02",
+                "employeefullname": "Cyrene Brylle Toriba Carulasanssss",
+                "datehired": "2019-09-02",
+                "designation": "Driver",
+                "departmentsection": "Operation",
+                "placeofassignment": "Cubao",
+                "supervisorrater": "admin",
+                "evaluation": this.get_permonth_ev_result(info[0].evaluation_sheet)
+            }
+            
+            this.final_evaluation_sheet.push(obj)
+           
+
+         
+            this.display_score()
+         
+
+
+        //  GET_PER_MONTH : [],
+        //  get_PER_CRITERIA : [],
+          //current
+        },
+
+        get_score(month,criteria){
+          var data = this.final_evaluation_sheet
+          this.render = data[0].evaluation
+
+          //dito
+
+         
+          // // alert(data[0].evaluation.length)
+          // alert(data[0].evaluation[0].per_criteria.length)
+          for (let index = 0; index <data[0].evaluation.length; index++) {
+            const element = data[0].evaluation[index].per_criteria;
+           
+            // alert(element[index].score +' '+ element[index].criteria)
+                    if(element.criteria == criteria){
+                     
+
+                    }
+
+                    if(index == data[0].evaluation.length -1 ){
+                
+                    }
+            
+            
+            
+          }
+
+          
+
+        },
+        solve_me()
+        {
+         
+          var data = this.final_evaluation_sheet
+           
+           
+           var id = data[0].evaluation[0].id
+          var len = this.render.length - 1
+
+           //bry
+
+           var cri = []
+          
+           var cri = data[0].evaluation[1].per_criteria //firstmonth
+
+          //  console.log(cri)
+           var temp = []
+           //display criteris
+           
+          
+          for (let index = 0; index < cri.length; index++) {
+            const element = cri[index];
+
+            temp.push(element.criteria)
+          
+
+                      
+            
+
+            
+          }
+          var res = 0
+          var everagepermonth = []
+          for (let index = 1; index < data[0].evaluation.length; index++) {
+            const element = data[0].evaluation[index];
+
+           
+            for (let index2 = 0; index2 < data[0].evaluation[index].per_criteria.length ; index2++) {
+              const element2 = data[0].evaluation[index].per_criteria[index2];
+             
+                res = res + element2.score
+
+                    if(index2 ==  data[0].evaluation[index].per_criteria.length  - 1){
+
+                      let final = res 
+                     
+                      var obj = {
+                        'month_name' : element.month_name,
+                        'score' : final
+
+                      }
+                      everagepermonth.push(obj)
+                      this.score_permonth = everagepermonth
+                      final = 0
+                      res = 0
+                    
+                      }
+              
+            }
+
+
+          }
+      
+          var addtotal = {
+            criteria : 'ACTUAL % OF RATINGS : '
+          }
+          this.render[0].per_criteria.push(addtotal)
+        
+          for (let index = 1; index < this.render.length; index++) {
+            const element = this.render[index];
+           
+            for (let index2 = 0; index2 < everagepermonth.length; index2++) {
+              const element2 = everagepermonth[index2];
+             
+              var obj =  {
+              'score' : element2.score
+            }
+              if(element.month_name == element2.month_name){
+                              element.per_criteria.push(obj)
+                              var obj =  {
+              'score' : ''
+            }
+                              element.per_criteria.push(obj)
+              }
+
+
+            }
+           
+           
+         
+
+          }
+          var finalresult = 0
+          var ratings = 0
+          for (let index = 0; index < everagepermonth.length; index++) {
+            const element = everagepermonth[index];
+            finalresult = finalresult + element.score
+                    if(index == everagepermonth.length -1 ){
+                      var finaleverage = finalresult / len
+
+                        ratings = finaleverage
+
+                }
+            
+          }
+          var addtotal = {
+            criteria : `TOTAL % PERFORMANCE RATINGS :  ${ratings}% `
+          }
+          this.render[0].per_criteria.push(addtotal)
+
+
+
+       
+          var temps = []
+          
+
+        },
+        display_score(){
+            var data = this.final_evaluation_sheet
+           
+            // alert(data[0].evaluation[0].month_name)
+            var id = data[0].evaluation[0].id
+            // var criteria = data[0].evaluation[0].per_criteria.filter(
+            //   (e)=>{
+            //     return e.id == id
+            //   }
+            // )
+
+            //bry
+
+            var cri = []
+          
+          
+
+            for (let index = 0; index < data[0].evaluation[0].per_criteria.length; index++) {
+              const element = data[0].evaluation[0].per_criteria[index];
+             // console.log(element.criteria + ' - ---- '+ element.id + ' ---  '+ element.score )
+
+             
+              var obj = {
+                  'id' : element.id,
+                  'cri' : element.criteria
+
+              }
+              cri.push(obj)
+              if (index == data[0].evaluation[0].per_criteria.length -1 ){
+                this.display_criteria = cri
+              
+                
+              }
+
+              
+            }
+
+            for (let index = 0; index < cri.length; index++) {
+              const element = cri[index];
+                for (let index2 = 0; index2 < data[0].evaluation.length; index2++) {
+                  const element2 = data[0].evaluation[index2];
+                  // console.log(element.cri +'777777'+ element.id)
+                  // console.log(element2.month_name,element.cri)
+                  
+                 
+                  // var info = element2['per_criteria'].filter(
+                  //   function(elements){
+                  //       return elements.criteria == element.cri
+                  //   }
+                  // )
+                  // bryll
+                   // console.log(info[0].score  + ' dfdsf55555 00000000'+ element.cri)
+                  
+                  console.log(element2)
+                  this.get_score(element2.month_name,element.cri)
+                  
+                  
+                }
+
+
+                if(index == cri.length - 1){
+                  this.solve_me()
+                }
+
+              
+            }
+          
+
+
+        },
+
+    
+
+
+    get_criteria_info(){
+      axios.get(`${this.global_hostname}/api/GET_PER_CRITERIA/`,{
+       
+         headers: {
+               'Content-Type': 'application/json',
+                'X-CSRFToken': this.token
+         }
+        
+      })
+      .then(res => {
+       
+
+          this.get_PER_CRITERIA = res.data
+          this.get_partipantstable()
+        //bry
+          
+      })
+      .catch(err => {
+        console.error(err); 
+      })
+    },
+
+      get_month_evaluation(){
+        axios.get(`${this.global_hostname}/api/GET_PER_MONTH/`,{
+        
+           headers: {
+                 'Content-Type': 'application/json',
+                  'X-CSRFToken': this.token
+           }
+          
+
+        })
+        .then(res => {
+
+          this.GET_PER_MONTH = res.data
+          this.get_criteria_info()
+        })
+        .catch(err => {
+          console.error(err); 
+        })
+      },
+        get_hr_copy(){
+
+          axios.get(`${this.global_hostname}/api/GET_HR_COPY_EVALUATION_RESULT/`,{
+        
+             headers: {
+                   'Content-Type': 'application/json',
+                    'X-CSRFToken': this.token
+             }
+            
+          })
+          .then(res => {
+            
+              this.EVALUATIONCOPY_FROM_HR =res.data
+              this.get_month_evaluation()
+             
+              
+
+          })
+          .catch(err => {
+            console.error(err); 
+          })
+        },
+
+        
+       
+
+
+
+
+
+
+    },
+    
+
+
+
+})
+
+</script>
+
+
+{% endblock %}
